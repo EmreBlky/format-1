@@ -1,0 +1,52 @@
+@charset "utf-8";
+/* CSS Document */
+
+#hycusdemosheader{ font-family:Georgia; font-size:30px;border-bottom:1px solid #676767;padding:5px 5px 8px;margin-bottom:10px; }
+		#idh, #idh:visited { color:#000; text-decoration:none; }
+		#hycusdemosheader span{ color:#999; }
+		#downloadbutton{ color:#ffffff;background:#03AEEB;float:right;font-size:20px;padding:5px;-moz-border-radius: 5px;-webkit-border-radius: 5px;border-radius: 5px;text-decoration:none; }
+		#downloadbutton:hover{ background:#888888; }
+		#hycucdemosbody{ padding:10px 0; min-height:500px; }
+		#hycusdemosfooter{ border-top:1px solid #676767; padding:10px; font-size:20px; }
+		#hycusdemosfooter a{ text-decoration:none; }
+		#wrapper{
+			width:600px;
+			margin:auto;
+		}
+		.spacer{
+			clear:both;
+			height:5px;
+		}
+
+		.tablesorter{
+			width:100%;
+			border-collapse:collapse;
+		}
+		.tablesorter, .tablesorter td{
+			border: 1px solid #dad9c7;
+		}
+		.tablesorter thead{
+			background:#E6EEEE;
+			cursor:pointer;
+		}
+		th.header {
+		    background-image: url(../images/sorting/bg.gif);
+		    cursor: pointer;
+		    font-weight: bold;
+		    background-repeat: no-repeat;
+		    background-position: center right;
+		    padding-right: 20px;
+		    border: 1px solid #dad9c7;
+		    margin-left: -1px;
+		}
+		th.headerSortDown {
+		    background-image: url(../images/sorting/desc.gif);
+		    background-color: #C3C3C3;
+		}
+		th.headerSortUp {
+		    background-image: url(../images/sorting/asc.gif);
+		    background-color: #C3C3C3;
+		}
+		#pagination{
+			margin:10px 0;
+		}

@@ -1,0 +1,1398 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"err",
+				"error_reporting"
+			],
+			[
+				"post",
+				"_POST"
+			],
+			[
+				"inst",
+				"installerList"
+			],
+			[
+				"devic",
+				"deviceList"
+			],
+			[
+				"GE",
+				"_GET"
+			],
+			[
+				"ins",
+				"inst_id"
+			],
+			[
+				"sim",
+				"sim_id"
+			],
+			[
+				"device",
+				"device_sno"
+			],
+			[
+				"insta",
+				"installation"
+			],
+			[
+				"on",
+				"online_crack"
+			],
+			[
+				"a",
+				"alert"
+			],
+			[
+				"wi",
+				"width"
+			],
+			[
+				"mar",
+				"margin-top"
+			],
+			[
+				"margin",
+				"margin-left"
+			],
+			[
+				"sele",
+				"select_query_inventory"
+			],
+			[
+				"mat",
+				"matrix_db"
+			],
+			[
+				"q",
+				"query1"
+			],
+			[
+				"gro",
+				"group_id"
+			],
+			[
+				"user_",
+				"user_id_hidden"
+			],
+			[
+				"ffc",
+				"ffcCount"
+			],
+			[
+				"arr",
+				"arr_tot"
+			],
+			[
+				"dataT",
+				"dataTable1"
+			],
+			[
+				"pop",
+				"popup1"
+			],
+			[
+				"row",
+				"row_id"
+			],
+			[
+				"sle",
+				"select"
+			],
+			[
+				"mi",
+				"minlength\tAttr"
+			],
+			[
+				"selectal",
+				"selectAllAccessory"
+			],
+			[
+				"access",
+				"accessory_data"
+			],
+			[
+				"st",
+				"style\tTag"
+			],
+			[
+				"chec",
+				"checkbox"
+			],
+			[
+				"model_",
+				"model_id"
+			],
+			[
+				"al",
+				"alert"
+			],
+			[
+				"pers",
+				"contact_person"
+			],
+			[
+				"conta",
+				"contact_number"
+			],
+			[
+				"tabl",
+				"tableID"
+			],
+			[
+				"alter",
+				"alt_cont_number"
+			],
+			[
+				"imei",
+				"imei_no"
+			],
+			[
+				"final",
+				"final_initi_blank"
+			],
+			[
+				"gr",
+				"group_id"
+			],
+			[
+				"dev",
+				"dev_imei"
+			],
+			[
+				"print",
+				"print_r"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "/opt/lampp/htdocs/service/serviceprovider/edit_installation.php",
+			"settings":
+			{
+				"buffer_size": 14327,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/opt/lampp/htdocs/inventory/assigndevicesinstaller.php",
+			"settings":
+			{
+				"buffer_size": 39507,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/opt/lampp/htdocs/inventory/private/master.php",
+			"settings":
+			{
+				"buffer_size": 21807,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "<?php\ninclude(\"config.php\");\ninclude(\"include/header.php\");\ninclude(\"device_status.php\");\ninclude_once(__DOCUMENT_ROOT.'/private/master.php');\n$branchId=$_SESSION['branch_id'];\n$login_name= $_SESSION['user_name_inv'];\t\n$masterObj = new master();\n//$branchId=2;\nif(!isset($_SESSION['branch_id']))\n{\n ?><script><?php echo(\"location.href = '\".__SITE_URL.\"/index.php';\");?></script><?php\n}\n$notif_count=0;\n$SelectRecdDispatchedDevices=select_Procedure(\"CALL SelectRecdDispatchedDevices('\".$branchId.\"')\");\n$SelectRecdDispatchedDevices=$SelectRecdDispatchedDevices[0];\n/*  echo \"<pre>\";\nprint_r($SelectRecdDispatchedDevices); \n\"</pre>\";die; */  \n$rowcount=count($SelectRecdDispatchedDevices); \n$installerList=db__select_staging(\"select * from installer where branch_id='\".$_SESSION['branch_id'].\"' and is_delete=1\");\n$branchList=select_Procedure(\"CALL GetBranch()\");\n$branchList=$branchList[0];\n//$strBranchID=$_SESSION['branch_id'];\nif (isset($_POST['submit']))\n{\n\t$strResult='';\n\t\n\t$challan_mode=$Installer;\n\t if ($challan_mode == 1)\n      {\n        $strChallanMode = \"DispatchChallanNo\";\n      }\n      else if ($ChallanMode == 3)\n       {\n          $strChallanMode = \"SimDispatchChallanNo\";\n       }\n      else\n       {\n         $strChallanMode = \"InstallerChallanNo\";\n       }\n\t\n\t    $strCH = \"CHNO\";\n\t   $strSqlQuery =$masterObj->selectChallanNo($strChallanMode);\n\t   if(count($strSqlQuery)>0)\n\t   {\n\t\t   $strResult=$strSqlQuery[0]['Id']+1;\n\t   }\n\t   $strChallanNo=$strCH.$strResult; \n\t   if($branchId==1)\n\t   {\n\t\t\tif($_POST['radio_value']=='by_sendrepDelhi')\n\t\t\t{\n\t\t\t\t$arrDeviceId=array();\n\t\t\t\tfor($i=0;$i<$rowcount;$i++)\n\t\t\t\t{\n\t\t\t\t   if(isset($_POST['rowVal'][$i]))\n\t\t\t\t   {\n\t\t\t\t\t\t$remark=$_POST['remark'][$i];\n\t\t\t\t\t\t$data=explode('##',$_POST['rowVal'][$i]);\n\t\t\t\t\t\t$DeviceId=$data[0];\n\t\t\t\t\t\t$arrDeviceId[$i]=$DeviceId;\n\t\t\t\t\t\t$itgc_id=$data[1];\n\t\t\t\t\t\t$device_imei=$data[2];\n\t\t\t\t\t\t$antena=$data[3];\n\t\t\t\t\t\t$immob_type=$data[4];\n\t\t\t\t\t\t$immob_count=$data[5];\n\t\t\t\t\t\t$connectors=$data[6];\n\t\t\t\t\t\t$item_id=$data[7];\n\t\t\t\t\t\t$st1=$data[8];\n\t\t\t\t\t\t$selectDeviceType=$masterObj->selectDeviceType($item_id);\n\t\t\t\t\t\t//echo \"<pre>\";print_r($selectDeviceType[0]['item_name']); die;\n\t\t\t\t\t\t$device_type=$selectDeviceType[0]['item_name'];\n\t\t\t\t\t\t$l1=$_SESSION['branch_id'];\n\t\t\t\t\t\tif($l1!=1)\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\tif ($st1 == 64 || $st1 == 82)\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t$DeviceStatus=$SendToRepair_ByBranch;\n\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\telse\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t$DeviceStatus=$SendToRepair_ByBranch;\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\telse\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\tif ($st1 == 64 || $st1 == 82)\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t $DeviceStatus = $DeviceRemoved;\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\telse\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t $DeviceStatus = $DeviceRemoved;\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\t\n\t\t\t\t\t\t$device_Removed_Date=date('Y-m-d H:i:s');\n\t\t\t\t\t\t$dispatchBranch=1;\n\t\t\t\t\t\t$branchIds=1;\n\t\t\t\t\t\t$Is_Branch_Recevied=$branchId;\n\t\t\t\t\t\t$InstallerID=$_POST['installer_list'];\n\t\t\t\t\t\t$deviceRemoveBranch=$branchId;\n\t\t\t\t\t\t$deviceRemoveProblem = \"device removed(At time of Stock Received By branch)\";\n\t\t\t\t\t\t$AssignedToBranch_Repair=select_Procedure(\"CALL AssignedToBranch_Repair('\".$DeviceId.\"','\".$DeviceStatus.\"','\".$remark.\"','\".$dispatchBranch.\"','\".$Is_Branch_Recevied.\"','\".$device_Removed_Date.\"','\".$deviceRemoveProblem.\"')\");\n\t\t\t\t\t\t$updateChallanDetails=$masterObj->updateChallanDetails($DeviceId); \n\t\t\t\t\t\t$insertChallanDetails=$masterObj->insertChallanDetails($strChallanNo,$DeviceId,$antena,$immob_type,$immob_count,$connectors,$branchIds,$device_Removed_Date); \n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t   } \n\t\t\t   }\n\t\t\t   $updateApplicationSetting=$masterObj->updateApplicationSetting($strChallanMode,$strResult); \n\t\t\t\tfor($i=0;$i<count($arrDeviceId);$i++)\n\t\t\t\t{\n\t\t\t\t\t$devId.= $arrDeviceId[$i].',';\n\t\t\t\t}\n\t\t\t\t $arrDeviceIdStr=substr($devId,0,strlen($devId)-1);\t\n\t\t\t\t\t\techo \"<script type='text/javascript'>   \n\t\t\t\t\t\twindow.open('challan_send_toRepair.php?challanNo=$strChallanNo&deviceIDList=$arrDeviceIdStr');\n\t\t\t\t\t\t</script>\";\t\n\t\t\t\t\t\t?><script><?php echo(\"location.href = '\".__SITE_URL.\"/assigndevicesinstaller.php';\");?></script><?\t\n\t\t\t}\n\t\t\telse if($_POST['radio_value']=='by_installer')\n\t\t\t{\n\t\t\t   if($_POST['installer_list']==0)\n\t\t\t\t{\n\t\t\t\t\t $errorMsg='Please Select Installer Name';\n\t\t\t\t\t echo \"<script type='text/javascript'>alert('$errorMsg');</script>\";\n\t\t\t\t\t \n\t\t\t\t}\n\t\t\t   else\n\t\t\t\t{\n\t\t\t\t\t$arrDeviceId=array();\n\t\t\t\t\tfor($i=0;$i<$rowcount;$i++)\n\t\t\t\t\t{\n\t\t\t\t\t\tif(isset($_POST['rowVal'][$i]))\n\t\t\t\t\t\t   {\n\t\t\t\t\t\t\t   $notif_count=$i+1;\n\t\t\t\t\t\t\t\t$remark=$_POST['remark'][$i];\n\t\t\t\t\t\t\t\t$data=explode('##',$_POST['rowVal'][$i]);\n\t\t\t\t\t\t\t\t//print_r($data);die;\n\t\t\t\t\t\t\t\t$DeviceId=$data[0];\n\t\t\t\t\t\t\t\t$arrDeviceId[$i]=$DeviceId;\n\t\t\t\t\t\t\t\t$itgc_id=$data[1];\n\t\t\t\t\t\t\t\t$device_imei=$data[2];\n\t\t\t\t\t\t\t\t$antena=$data[3];\n\t\t\t\t\t\t\t\t$immob_type=$data[4];\n\t\t\t\t\t\t\t\t$immob_count=$data[5];\n\t\t\t\t\t\t\t\t$connectors=$data[6];\n\t\t\t\t\t\t\t\t$item_id=$data[7];\n\t\t\t\t\t\t\t\t$st1=$data[8];\n\t\t\t\t\t\t\t\t//$selectDeviceType=$masterObj->selectDeviceType($item_id);\n\t\t\t\t\t\t\t\t//echo \"<pre>\";print_r($selectDeviceType[0]['item_name']); die;\n\t\t\t\t\t\t\t\t//$device_type=$selectDeviceType[0]['item_name'];\n\t\t\t\t\t\t\t\t$l1=$_SESSION['branch_id'];\n\t\t\t\t\t\t\t\t//$BranchID=$_SESSION['session_id'];\n\t\t\t\t\t\t\t\t$Installer_id=$_POST['installer_list'];\n\t\t\t\t\t\t\t\t$selectInstallerName=$masterObj->selectInstallerName($Installer_id);\n\t\t\t\t\t\t\t\t$Installer_name=$selectInstallerName[0]['inst_name']; \n\t\t\t\t\t\t\t\t$installer_mobile=$selectInstallerName[0]['installer_mobile']; \n\t\t\t\t\t\t\t\tif ($st1 == 64 || $st1 == 82)\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t $DeviceStatus=$AssignToInstaller;\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\telse\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t $DeviceStatus=$AssignToInstaller;\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t//echo $branchId;\n\t\t\t\t\t\t\t\t//die;\n\t\t\t\t\t\t\t\t//echo $DeviceStatus;\n\t\t\t\t\t\t\t\t$Insaller_AssignDate=date('Y-m-d H:i:s');\n\t\t\t\t\t\t\t\t$dispatchBranch=1;\n\t\t\t\t\t\t\t\t$Is_Branch_Recevied=$strBranchID;\n\t\t\t\t\t\t\t\t$AssignedDevicesToInstaller=select_Procedure(\"CALL AssignedDevicesToInstaller('\".$DeviceId.\"','\".$DeviceStatus.\"','\".$remark.\"','\".$Installer_name.\"','\".$branchId.\"')\");\n\t\t\t\t\t\t\t\t$selectChallanDetails=$masterObj->selectChallanDetails($strChallanNo,$DeviceId);\n\t\t\t\t\t\t\t\t//echo '<pre>';print_r($selectChallanDetails);die;\n\t\t\t\t\t\t\t\t//echo count($selectChallanDetails);die;\n\t\t\t\t\t\t\t\tif(count($selectChallanDetails)<1)\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t//echo 'tt';\n\t\t\t\t\t\t\t\t\t//echo $installer_id; die;\n\t\t\t\t\t\t\t\t\t$insertChallanDetailsDeadDeviceInstaller=$masterObj->insertChallanDetailsDeadDeviceInstaller($strChallanNo,$DeviceId,$antena,$immob_type,$immob_count,$connectors,$Installer_id,$branchId,$Insaller_AssignDate);\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\telse\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t//echo $installer_id; die;\n\t\t\t\t\t\t\t\t\tif(count($selectChallanDetails)>0)\n\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\tif($selectChallanDetails[0][\"ChallanNo\"] != \"\")\n\t\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t\t$updateChallanDetails=$masterObj->updateChallanDetails($DeviceId); \n\t\t\t\t\t\t\t\t\t\t\t$insertChallanDetailsDeadDeviceInstaller=$masterObj->insertChallanDetailsDeadDeviceInstaller($strChallanNo,$DeviceId,$antena,$immob_type,$immob_count,$connectors,$Installer_id,$branchId,$Insaller_AssignDate);\n\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\t\telse\n\t\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t\t$updateChallanDetailsNotChallanNoExist=$masterObj->updateChallanDetailsNotChallanNoExist($strChallanNo,$antena,$immob_type,$immob_count,$connectors,$Installer_id,$DeviceId); \n\t\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\t\tif($Installer_id == -1)\n\t\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t\t$updateNewDeviceRequest=$masterObj->updateNewDeviceRequest($DeviceId,$selectChallanDetails[0][\"BranchID\"]); \n\t\t\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\t}\t\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t //header( \"Location:challan_assign_device_installer.php?challanNo=\".$strChallanNo );\n\t\t\t\t\t\t\t// echo $strChallanNo;\n\t\t\t\t\t\t\t// echo $Installer_name; die;\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t //$params = http_build_query(array('challanNo' => $strChallanNo, 'to_installer' => $Installer_name));\n\t\t\t\t\t\t\t //header( \"Location: \" . $playerurl . \"?\" . $params);\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t \n\t\t\t\t\t\t\t/* $redirect = \"challan_assign_device_installer.php?\".http_build_query($arr);\n\t\t\t\t\t\t\theader( \"Location: $redirect\" ); */\n\t\t\t\t\t\t  }\n\t\t\t\t\t}\n\t\t\t\t\t $updateApplicationSetting=$masterObj->updateApplicationSetting($strChallanMode,$strResult); \n\t\t\t\tfor($i=0;$i<count($arrDeviceId);$i++)\n\t\t\t\t{\n\t\t\t\t\t$devId.= $arrDeviceId[$i].',';\n\t\t\t\t}\n\t\t\t\t $arrDeviceIdStr=substr($devId,0,strlen($devId)-1);\n\t\t\t\techo \"<script type='text/javascript'>   \n\t\t\t\twindow.open( 'challan_assign_device_installer.php?challanNo=$strChallanNo&to_installer=$Installer_name&deviceIDList=$arrDeviceIdStr');\n\t\t\t\t</script>\";\n\t\t\t\t?><script><?php echo(\"location.href = '\".__SITE_URL.\"/assigndevicesinstaller.php';\");?></script><?\n\t\t\t\t}\n\t\t\t}\n\t\t\telse if($_POST['radio_value']=='by_branch')\n\t\t\t {\n\t\t\t\t if($_POST['branch_list']==0)\n\t\t\t\t  {\n\t\t\t\t\t   $errorMsg='Please Select Branch';\n\t\t\t\t\t   echo \"<script type='text/javascript'>alert('$errorMsg');</script>\";\n\t\t\t\t  }\n\t\t\t\t  else\n\t\t\t\t  {\n\t\t\t\t  \t \t$arrDeviceId=array();\n\t\t\t\t\t  for($i=0;$i<$rowcount;$i++)\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\tif(isset($_POST['rowVal'][$i]))\n\t\t\t\t\t\t\t{\n\t\t\t\t\t \n\t\t\t\t\t\t\t\t$data=explode('##',$_POST['rowVal'][$i]);\n\t\t\t\t\t\t\t\t//print_r($data);die;\n\t\t\t\t\t\t\t\t$DeviceId=$data[0];\n\t\t\t\t\t\t\t\t$arrDeviceId[$i]=$DeviceId;\n\t\t\t\t\t\t\t\t$itgc_id=$data[1];\n\t\t\t\t\t\t\t\t$device_imei=$data[2];\n\t\t\t\t\t\t\t\t$antena=$data[3];\n\t\t\t\t\t\t\t\t$immob_type=$data[4];\n\t\t\t\t\t\t\t\t$immob_count=$data[5];\n\t\t\t\t\t\t\t\t$connectors=$data[6];\n\t\t\t\t\t\t\t\t$item_id=$data[7];\n\t\t\t\t\t\t\t\t$st1=$data[8];\n\t\t\t\t\t\t\t\t$remark=$_POST['remark'][$i];\n\t\t\t\t\t\t\t\t//$st1=$status;\n\t\t\t\t\t\t\t\t//$l1=$_SESSION['session_id'];\n\t\t\t\t\t\t\t\t//$BranchID=$_SESSION['session_id'];\n\t\t\t\t\t\t\t\t//$Installer_name=$_POST['installer_list'];\n\t\t\t\t\t\t\t\tif ($st1 == 64 || $st1 == 82)\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\tif($_POST['branch_list']==2)\n\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t$DeviceStatus=$FinalAttachSim;\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\telse\n\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t$DeviceStatus=$OutOfStock;\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\telse\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\tif($_POST['branch_list']==1)\n\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t$DeviceStatus=$FinalAttachSim;\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\telse\n\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t$DeviceStatus=$OutOfStock;\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t}\n\n\t\t\t\t\t\t\t\t$branch_send_date=date('Y-m-d H:i:s');\n\t\t\t\t\t\t\t\t$dispatchBranch_id=$_POST['branch_list'];\n\t\t\t\t\t\t\t\t$selectDispatchBranch =$masterObj->selectDispatchBranch($dispatchBranch_id);\n\t\t\t\t\t\t\t\t$dispatch_branch=$selectDispatchBranch[0]['branch_name'];\n\t\t\t\t\t\t\t\t$Is_Branch_Recevie=$branchId;\n\t\t\t\t\t\t\t\t$AssignedToBranch_Repair=select_Procedure(\"CALL AssignedDevicesToInstaller_branch('\".$DeviceId.\"','\".$DeviceStatus.\"','\".$remark.\"','\".$Is_Branch_Recevie.\"','\".$dispatchBranch_id.\"','\".$branch_send_date.\"')\"); \n\t\t\t\t\t\t\t\t$updateChallanDetails=$masterObj->updateChallanDetails($DeviceId); \n\t\t\t\t\t\t\t\t$insertChallanDetails=$masterObj->insertChallanDetails($strChallanNo,$DeviceId,$antena,$immob_type,$immob_count,$connectors,$dispatchBranch_id,$branch_send_date); \n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t  }\n\t\t\t\t\t\t }\n\t\t\t\t\t\t $updateApplicationSetting=$masterObj->updateApplicationSetting($strChallanMode,$strResult); \n\t\t\t\t\t\t for($i=0;$i<count($arrDeviceId);$i++)\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t$devId.= $arrDeviceId[$i].',';\n\t\t\t\t\t\t}\n\t\t\t\t\t\t  $arrDeviceIdStr=substr($devId,0,strlen($devId)-1); \n\t\t\t\t\t\t\t\techo \"<script type='text/javascript'>   \n\t\t\t\t\t\t\t\twindow.open('challan_assign_device_branch.php?challanNo=$strChallanNo&branch_name=$dispatch_branch&deviceIDList=$arrDeviceIdStr');\n\t\t\t\t\t\t\t\t</script>\";\n\t\t\t\t\t\t\t\t?><script><?php echo(\"location.href = '\".__SITE_URL.\"/assigndevicesinstaller.php';\");?></script><?\n\t\t\t\t  }\n\t\t\t\t \n\t\t\t   }\n\t\t\t   else\n\t\t\t   {\n\t\t\t\t   $errorMsg=\"Please select either Installer Name,Branch Name or Send To Repair Center Delhi  \";\n\t\t\t\t\techo \"<script type='text/javascript'>alert('$errorMsg');</script>\";\n\t\t\t   }\n\t\t   }   \n\t   else\n\t   {\n\t\t   if($_POST['radio_value']=='by_sendrepDelhi')\n\t\t   {\n\t\t   \t$arrDeviceId=array();\n\t\t\t  for($i=0;$i<$rowcount;$i++)\n\t\t\t  {\n\t\t\t  \t\n\t\t\t\t   if(isset($_POST['rowVal'][$i]))\n\t\t\t\t   {\n\t\t\t\t\t    $antena=$_POST['antenna'][$i];\n\t\t\t\t\t\t $immob_tp=$_POST['immob_type'][$i];\n\t\t\t\t\t\t if($immob_tp==1)\n\t\t\t\t\t\t {\n\t\t\t\t\t\t\t$immob_type=\"24VT\";\n\t\t\t\t\t\t }\n\t\t\t\t\t\t if($immob_tp==2)\n\t\t\t\t\t\t {\n\t\t\t\t\t\t\t$immob_type=\"12VT\";\n\t\t\t\t\t\t}\n\t\t\t\t\t\t$immob_count=$_POST['immob'][$i];\n\t\t\t\t\t\t$connectors=$_POST['connectors'][$i];\n\t\t\t\t\t   \n\t\t\t\t\t\t$data=explode('##',$_POST['rowVal'][$i]);\n\t\t\t\t\t\t//print_r($data);die;\n\t\t\t\t\t\t$DeviceId=$data[0];\n\t\t\t\t\t\t$arrDeviceId[$i]=$DeviceId;\n\t\t\t\t\t\t$itgc_id=$data[1];\n\t\t\t\t\t\t$device_imei=$data[2];\n\t\t\t\t\t\t//$antena=$data[3];\n\t\t\t\t\t\t//$immob_type=$data[4];\n\t\t\t\t\t\t//$immob_count=$data[5];\n\t\t\t\t\t\t//$connectors=$data[6];\n\t\t\t\t\t\t$item_id=$data[7];\n\t\t\t\t\t\t$st1=$data[8];\n\t\t\t\t\t\t$remark=$_POST['remark'][$i];\n\t\t\t\t\t\t$selectDeviceType=$masterObj->selectDeviceType($item_id);\n\t\t\t\t\t\t//echo \"<pre>\";print_r($selectDeviceType[0]['item_name']); die;\n\t\t\t\t\t\t$device_type=$selectDeviceType[0]['item_name'];\n\t\t\t\t\n\t\t\t\t\t\t$l1=$_SESSION['branch_id'];\n\t\t\t\t\t\tif($l1!=1)\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\tif ($st1 == 64 || $st1 == 82)\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t$DeviceStatus=$SendToRepair_ByBranch;\n\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\telse\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t$DeviceStatus=$SendToRepair_ByBranch;\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\telse\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\tif ($st1 == 64 || $st1 == 82)\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t$DeviceStatus = $DeviceRemoved;\n\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\telse\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t$DeviceStatus = $DeviceRemoved;\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t\t\n\t\t\t\t\t\t$device_Removed_Date=date('Y-m-d H:i:s');\n\t\t\t\t\t\t$dispatchBranch=1;\n\t\t\t\t\t\t$branchIds=1;\n\t\t\t\t\t\t$Is_Branch_Recevied=$branchId;\n\t\t\t\t\t\t$deviceRemoveProblem = \"device removed(At time of Stock Received By branch)\";\n\t\t\t\t\t\t$AssignedToBranch_Repair=select_Procedure(\"CALL AssignedToBranch_Repair('\".$DeviceId.\"','\".$DeviceStatus.\"','\".$remark.\"','\".$dispatchBranch.\"','\".$Is_Branch_Recevied.\"','\".$device_Removed_Date.\"','\".$deviceRemoveProblem.\"')\");\n\t\t\t\t\t\t$updateChallanDetails=$masterObj->updateChallanDetails($DeviceId); \n\t\t\t\t\t\t$insertChallanDetails=$masterObj->insertChallanDetails($strChallanNo,$DeviceId,$antena,$immob_type,$immob_count,$connectors,$branchIds,$device_Removed_Date); \n\t\t\t\t\t\t\n\n\t\t\t\t   }\n\t\t\t   }\n\t\t\t   $updateApplicationSetting=$masterObj->updateApplicationSetting($strChallanMode,$strResult);\n\t\t\t   $devId=\"\";\n\t\t\t  \n\t\t\t   for($i=0;$i<count($arrDeviceId);$i++)\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t$devId.= $arrDeviceId[$i].',';\n\t\t\t\t\t\t}\n\t\t\t $arrDeviceIdStr=substr($devId,0,strlen($devId)-1); \n\t\t\t\t\t\techo \"<script type='text/javascript'>   \n\t\t\t\t\t\twindow.open( 'challan_send_toRepair.php?challanNo=$strChallanNo&deviceIDList=$arrDeviceIdStr');\n\t\t\t\t\t\t</script>\";\n\t\t\t\t\t\t\n\t\t\t\t\t\t?><script><?php echo(\"location.href = '\".__SITE_URL.\"/assigndevicesinstaller.php';\");?></script><?\n\t\t   }\n\t\t\telse if($_POST['radio_value']=='by_installer')\n\t\t\t{\n\t\t\t   if($_POST['installer_list']==0)\n\t\t\t\t{\n\t\t\t\t\t $errorMsg='Please Select Installer Name';\n\t\t\t\t\t echo \"<script type='text/javascript'>alert('$errorMsg');</script>\";\n\t\t\t    }\n\t\t\t\telse\n\t\t\t\t{\n\t\t\t\t\t$arrDeviceId=array();\n\t\t\t\t\tfor($i=0;$i<$rowcount;$i++)\n\t\t\t\t\t{\n\t\t\t\t\t\tif(isset($_POST['rowVal'][$i]))\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t $antena=$_POST['antenna'][$i];\n\t\t\t\t\t\t\t $immob_tp=$_POST['immob_type'][$i];\n\t\t\t\t\t\t\t if($immob_tp==1)\n\t\t\t\t\t\t\t {\n\t\t\t\t\t\t\t\t$immob_type=\"24VT\";\n\t\t\t\t\t\t\t }\n\t\t\t\t\t\t\t if($immob_tp==2)\n\t\t\t\t\t\t\t {\n\t\t\t\t\t\t\t\t$immob_type=\"12VT\";\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t$immob_count=$_POST['immob'][$i];\n\t\t\t\t\t\t\t$connectors=$_POST['connectors'][$i];\n\t\t\t\t\t\t\t$data=explode('##',$_POST['rowVal'][$i]);\n\t\t\t\t\t\t\t//print_r($data);die;\n\t\t\t\t\t\t\t$DeviceId=$data[0];\n\t\t\t\t\t\t\t$arrDeviceId[$i]=$DeviceId;\n\t\t\t\t\t\t\t$itgc_id=$data[1];\n\t\t\t\t\t\t\t$device_imei=$data[2];\n\t\t\t\t\t\t\t//$antena=$data[3];\n\t\t\t\t\t\t\t//$immob_type=$data[4];\n\t\t\t\t\t\t\t//$immob_count=$data[5];\n\t\t\t\t\t\t\t//$connectors=$data[6];\n\t\t\t\t\t\t\t$item_id=$data[7];\n\t\t\t\t\t\t\t$st1=$data[8];\n\t\t\t\t\t\t\t$remark=$_POST['remark'][$i];\n\t\t\t\t\t\t\t$selectDeviceType=$masterObj->selectDeviceType($item_id);\n\t\t\t\t\t\t\t//echo \"<pre>\";print_r($selectDeviceType[0]['item_name']); die;\n\t\t\t\t\t\t\t$device_type=$selectDeviceType[0]['item_name'];\n\t\t\t\t\t\t\t$l1=$_SESSION['session_id'];\n\t\t\t\t\t\t\t//$BranchID=$branchId;\n\t\t\t\t\t\t\t$Installer_id=$_POST['installer_list'];\n\t\t\t\t\t\t\t$selectInstallerName=$masterObj->selectInstallerName($Installer_id);\n\t\t\t\t\t\t\t$Installer_name=$selectInstallerName[0]['inst_name'];\n\t\t\t\t\t\t\tif ($st1 == 64 || $st1 == 82)\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t$DeviceStatus=$AssignToInstaller;\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\telse\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t$DeviceStatus=$AssignToInstaller;\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t$Insaller_AssignDate=date('Y-m-d H:i:s');\n\t\t\t\t\t\t\t$dispatchBranch=1;\n\t\t\t\t\t\t\t//echo \"CALL AssignedDevicesToInstaller('\".$DeviceId.\"','\".$DeviceStatus.\"','\".$remark.\"','\".$Installer_name.\"','\".$branchId.\"')\";die();\n\t\t\t\t\t\t\t$AssignedToBranch_Repair=select_Procedure(\"CALL AssignedDevicesToInstaller('\".$DeviceId.\"','\".$DeviceStatus.\"','\".$remark.\"','\".$Installer_name.\"','\".$branchId.\"')\");\n\t\t\t\t\t\t\t//int intRowsEffected = this.ObjDisptachDevice.SaveChallanDetailInstaller(BranchID, strChallanNo, strDeviceIDs, strAntennaCount, strImmobilzerType, strImmobilzerCount, strConnectorCount, ddlInstallerName.SelectedValue, ChallanMode, \"A\");\n\t\t\t\t\t\t\t$selectChallanDetails=$masterObj->selectChallanDetails($strChallanNo,$DeviceId);\n\t\t\t\t\t\t\t//echo '<pre>';print_r($selectChallanDetails);die;\n\t\t\t\t\t\t\t\t//echo count($selectChallanDetails);die;\n\t\t\t\t\t\t\tif(count($selectChallanDetails)<1)\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t$insertChallanDetailsDeadDeviceInstaller=$masterObj->insertChallanDetailsDeadDeviceInstaller($strChallanNo,$DeviceId,$antena,$immob_type,$immob_count,$connectors,$Installer_id,$branchId,$Insaller_AssignDate);\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\telse\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\tif(count($selectChallanDetails)>0)\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\tif($selectChallanDetails[0][\"ChallanNo\"] != \"\")\n\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t $updateChallanDetails=$masterObj->updateChallanDetails($DeviceId); \n\t\t\t\t\t\t\t\t\t\t $insertChallanDetailsDeadDeviceInstaller=$masterObj->insertChallanDetailsDeadDeviceInstaller($strChallanNo,$DeviceId,$antena,$immob_type,$immob_count,$connectors,$Installer_id,$branchId,$Insaller_AssignDate);\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\telse\n\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t$updateChallanDetailsNotChallanNoExist=$masterObj->updateChallanDetailsNotChallanNoExist($strChallanNo,$antena,$immob_type,$immob_count,$connectors,$Installer_id,$DeviceId); \n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\tif($Installer_id == -1)\n\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t$updateNewDeviceRequest=$masterObj->updateNewDeviceRequest($DeviceId,$selectChallanDetails[0][\"BranchID\"]); \n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t}\t\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\t\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\t\t\t $updateApplicationSetting=$masterObj->updateApplicationSetting($strChallanMode,$strResult);  \n\t\t\t\t\t\t  for($i=0;$i<count($arrDeviceId);$i++)\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t$devId.= $arrDeviceId[$i].',';\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t $arrDeviceIdStr=substr($devId,0,strlen($devId)-1);\n\t\t\t\t\t\t\t  echo \"<script type='text/javascript'>   \n\t\t\t\t\t\t\twindow.open( 'challan_assign_device_installer.php?challanNo=$strChallanNo&to_installer=$Installer_name&deviceIDList=$arrDeviceIdStr');\n\t\t\t\t\t\t\t</script>\";\n\t\t\t\t\t\t\t?><script><?php echo(\"location.href = '\".__SITE_URL.\"/assigndevicesinstaller.php';\");?></script><?\n\t\t\t\t\n\t\t\t   }\n\t\t\t  else if($_POST['radio_value']=='by_branch')\n\t\t\t   {  \n\t\t\t\t \t if($_POST['branch_list']==0)\n\t\t\t\t\t {\n\t\t\t\t\t    $errorMsg='Please Select Branch';\n\t\t\t\t\t    echo \"<script type='text/javascript'>alert('$errorMsg');</script>\";\n\t\t\t\t    }\n\t\t\t\t\telse\n\t\t\t\t\t{\n\t\t\t\t\t\t$arrDeviceId=array();\n\t\t\t\t\t    for($i=0;$i<$rowcount;$i++)\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\tif(isset($_POST['rowVal'][$i]))\n\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t  $antena=$_POST['antenna'][$i];\n\t\t\t\t\t\t\t\t $immob_tp=$_POST['immob_type'][$i];\n\t\t\t\t\t\t\t\t if($immob_tp==1)\n\t\t\t\t\t\t\t\t {\n\t\t\t\t\t\t\t\t\t$immob_type=\"24VT\";\n\t\t\t\t\t\t\t\t }\n\t\t\t\t\t\t\t\t if($immob_tp==2)\n\t\t\t\t\t\t\t\t {\n\t\t\t\t\t\t\t\t\t$immob_type=\"12VT\";\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t$immob_count=$_POST['immob'][$i];\n\t\t\t\t\t\t\t\t$connectors=$_POST['connectors'][$i];\n\t\t\t\t\t\t\t\t$data=explode('##',$_POST['rowVal'][$i]);\n\t\t\t\t\t\t\t\t//print_r($data);die;\n\t\t\t\t\t\t\t\t$DeviceId=$data[0];\n\t\t\t\t\t\t\t\t$arrDeviceId[$i]=$DeviceId;\n\t\t\t\t\t\t\t\t$itgc_id=$data[1];\n\t\t\t\t\t\t\t\t$device_imei=$data[2];\n\t\t\t\t\t\t\t\t//$antena=$data[3];\n\t\t\t\t\t\t\t\t//$immob_type=$data[4];\n\t\t\t\t\t\t\t\t//$immob_count=$data[5];\n\t\t\t\t\t\t\t\t//$connectors=$data[6];\n\t\t\t\t\t\t\t\t$item_id=$data[7];\n\t\t\t\t\t\t\t\t$st1=$data[8];\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t$remark=$_POST['remark'][$i];\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t$st1=$status;\n\t\t\t\t\t\t\t\t$l1=$_SESSION['session_id'];\n\t\t\t\t\t\t\t\t$BranchID=$_SESSION['session_id'];\n\t\t\t\t\t\t\t\t$Installer_name=$_POST['installer_list'];\n\t\t\t\t\t\t\t\tif ($st1 == 64 || $st1 == 82)\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\tif($_POST['branch_list']==2)\n\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t$DeviceStatus=$FinalAttachSim;\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\telse\n\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t$DeviceStatus=$OutOfStock;\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\telse\n\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\tif($_POST['branch_list']==1)\n\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t//$DeviceStatus=$FinalAttachSim;\n\t\t\t\t\t\t\t\t\t\t$DeviceStatus=$New_Device_ByBranch;\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\telse\n\t\t\t\t\t\t\t\t\t{\n\t\t\t\t\t\t\t\t\t\t$DeviceStatus=$OutOfStock;\n\t\t\t\t\t\t\t\t\t}\t\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t$branch_send_date=date('Y-m-d H:i:s');\n\t\t\t\t\t\t\t\t$dispatchBranch_id=$_POST['branch_list'];\n\t\t\t\t\t\t\t\t$Is_Branch_Recevie=$branchId;\n\t\t\t\t\t\t\t\t$selectDispatchBranch =$masterObj->selectDispatchBranch($dispatchBranch_id);\n\t\t\t\t\t\t\t\t$dispatch_branch=$selectDispatchBranch[0]['branch_name'];\n\t\t\t\t\t\t\t\t$Is_Branch_Recevie=$branchId;\n\t\t\t\t\t\t\t\t$AssignedToBranch_Repair=select_Procedure(\"CALL AssignedDevicesToInstaller_branch('\".$DeviceId.\"','\".$DeviceStatus.\"','\".$remark.\"','\".$Is_Branch_Recevie.\"','\".$dispatchBranch_id.\"','\".$branch_send_date.\"')\");\n\t\t\t\t\t\t\t\t$updateChallanDetails=$masterObj->updateChallanDetails($DeviceId); \n\t\t\t\t\t\t\t\t$insertChallanDetails=$masterObj->insertChallanDetails($strChallanNo,$DeviceId,$antena,$immob_type,$immob_count,$connectors,$dispatchBranch_id,$branch_send_date); \n\t\t\t\t\t\t\t\t\n\t\t\t\t\t   }\n\t\t\t\t\t}\n\t\t\t\t\t$updateApplicationSetting=$masterObj->updateApplicationSetting($strChallanMode,$strResult); \n\t\t\t\t\t\tfor($i=0;$i<count($arrDeviceId);$i++)\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\t$devId.= $arrDeviceId[$i].',';\n\t\t\t\t\t\t}\n\t\t\t\t\t\t $arrDeviceIdStr=substr($devId,0,strlen($devId)-1);\n\t\t\t\t\t\n\t\t\t\t\t\t\t\techo \"<script type='text/javascript'>   \n\t\t\t\t\t\t\t\twindow.open( 'challan_assign_device_branch.php?challanNo=$strChallanNo&branch_name=$dispatch_branch&deviceIDList=$arrDeviceIdStr');\n\t\t\t\t\t\t\t\t</script>\";\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t?><script><?php echo(\"location.href = '\".__SITE_URL.\"/assigndevicesinstaller.php';\");?></script><?\n\t\t\t\t}\n\t\t\t}\n\t\t\telse\n\t\t\t{\n\t\t\t\t$errorMsg=\"Please select either Installer Name,Branch Name or Send To Repair Center Delhi\";\n\t\t\t\techo \"<script type='text/javascript'>alert('$errorMsg');</script>\";\n\t\t\t}\n\t   }\nob_end_flush();\t   \n}\n?>\n<head>\n\n</head>\n<body>\n<form name=\"assg_device\" id=\"assg_device\" method=\"post\" action=\"\"  onsubmit=\"return validateForm();\">\n <div class=\"color-sign\" style=\"margin: 11px 0 0px 0px;\">\n      <div class=\"cl-item\"><span class=\"lightblue\"></span><span >Light Blue :</span><span>Repaired Device</span></div>\n      <div class=\"cl-item\"><span class=\"white\"></span><span >White  :</span><span>New Device</span></div>\n      <div class=\"cl-item\"><span class=\"aqua\"></span><span >Aqua :</span><span>Recevied from Branch</span></div>\n      <div class=\"cl-item\"><span class=\"red\"></span><span >Red :</span><span>FFC Permanent</span></div>\n\t  <div class=\"cl-item\"><span class=\"lightgreen\"></span><span >Light Green :</span><span> FFC Device </span></div>\n </div>\n<article>\n  <div class=\"col-12\"> \n    <!-- BEGIN BORDERED TABLE PORTLET-->\n    <div class=\"portlet box yellow\">\n      <div class=\"portlet-title\">\n        <div class=\"caption\"> <i class=\"fa fa\"></i>Assign Devices To Installer </div>\n      </div>\n      <div class=\"portlet-body control-box \" style=\"margin-bottom:0;\">\n           <div class=\"content-box\">\n        \n           <div class=\"right-item\"> \n\t\t   <table>\n            <tr>\n              <td><input type=\"radio\" name=\"radio_value\" id=\"installer_name\" value=\"by_installer\"  onchange=\"by_installerName(this.value);\"></td>\n              <td>Installer Name</td>\n              <td><input type=\"radio\" name=\"radio_value\" id=\"branch_name\" value=\"by_branch\" onChange=\"by_branchName(this.value);\"></td>\n              <td>Branch Name </td>\n\t\t\t  <td><input type=\"radio\" name=\"radio_value\" id=\"send_rep_delhi\" value=\"by_sendrepDelhi\" onChange=\"by_send_rep_delhi(this.value);\"></td>\n              <td>Send To Repair Center Delhi \t </td>\n            </tr>\n          </table>\n\t\t  </div>\n\t\t  <select class=\"form-control\" name=\"installer_list\" id=\"installer_list\" style=\"display:none\" onChange=\"assign_installer(this.value);\">\n         <option value=\"0\">Select</option>\n\t\t\t<?\n\t\t\t\tfor($i=0;$i<count($installerList);$i++)\n\t\t\t{?>\n            <option value=\"<?=$installerList[$i]['inst_id']?>\"><?php echo $installerList[$i]['inst_name'];?>\n            </option>\n            <? } ?>\n\t\n         </select>\n\t\t <?php if($errorMsg){\"please select Installer\";}?>\n\t\t\n\t\t  <select class=\"form-control\" name=\"branch_list\" id=\"branch_list\" style=\"display:none\" onChange=\"assign_branch(this.value);\">\n         <option value=\"0\">Select</option>\n\t\t\t<?\n\t\t\t\tfor($i=0;$i<count($branchList);$i++)\n\t\t\t{?>\n            <option value=\"<?=$branchList[$i]['id']?>\"><?php echo $branchList[$i]['branch_name'];?>\n            </option>\n            <? } ?>\n\t\n         </select>\n\t\t\n\t\t \n          </div>\n\t\t  \n       \n    </div>\n\t<div class=\"portlet-body\" id=\"tt\"  style=\"\">\n        <table class=\"table table-bordered\"  id=\"filtertable\">\n         \n          <thead>\n            <tr>\n              <th><input type=\"checkbox\" name=\"checkAll[]\" id=\"checkAll\" onClick=\"checkAllId();\" class=\"checkAll\"></th>\n              <th> ITGC ID</th>\n\t\t\t  <th> IMEI </th>\n              <th> DispatchRecd Remarks</th>\n              <th> Remarks </th>\n              <th> Antenna </th>\n\t\t\t  <th> Immobilizer </th>\n\t\t\t  <th> Connectors </th>\n\t\t\t  <?php if($branchId!=1){?>\n\t\t\t  <th> Device Dispatchrecd Remarks </th>\n\t\t\t  <?php }?>\n\t\t\t  <th> IsFFCPermanent </th>\n            </tr>\n          </thead>\n          <tbody>\n            <?php \n\n\t\t\tfor($x=0;$x<$rowcount;$x++)\n\t\t\t{\n\t\t\t\t$y=$x+1;\n\t\t\t\t\n\t\t\t\t$repaired=$SelectRecdDispatchedDevices[$x]['is_repaired'];\n\t\t\t\t $is_ffc=$SelectRecdDispatchedDevices[$x]['is_ffc'];\n\t\t\t\t $is_permanent_ffc=$SelectRecdDispatchedDevices[$x]['is_permanent'];\n\t\t\t\t// $new_device=$deviceData[$x]['is_cracked'];\n\t\t\t\t if($is_permanent_ffc==1 && $is_ffc==0 )\n\t\t\t\t {\n                   $color=\"LightGreen\";\n\t\t\t\t\t$tool_tip=\"FFC device\";\n                 }\n\t\t\t\t else if($repaired==1)\n\t\t\t\t {\n\t\t\t\t\t$color=\"#7acde9\";\n\t\t\t\t\t$tool_tip=\"repaired Device\";\n\t\t\t\t\t\n                 }\n\t\t\t\t else\n\t\t\t\t {\n\t\t\t\t\t$color=\"#FFFFFF\";\n\t\t\t\t\t$tool_tip=\"new device\";\n\t\t\t\t }\n            ?>\n            <tr bgcolor=\"<?php echo $color; ?>\" title=\"<?php echo $tool_tip ?>\">\n              <td><input type=\"checkbox\" id=\"check<?php echo $y; ?>\" name=\"rowVal[]\" value=\"<?php echo $SelectRecdDispatchedDevices[$x]['device_id'];?>##<?php echo $SelectRecdDispatchedDevices[$x]['itgc_id'];?>##<?php echo $SelectRecdDispatchedDevices[$x]['device_imei']; ?>##<?php echo $SelectRecdDispatchedDevices[$x]['DispatchAntennaCount']; ?>##<?php echo $SelectRecdDispatchedDevices[$x]['DispatchImmobilizerType'];?>##<?php echo $SelectRecdDispatchedDevices[$x]['DispatchImmobilizerCount']; ?>##<?php echo $SelectRecdDispatchedDevices[$x]['DispatchConnectorCount']; ?>##<?php echo $SelectRecdDispatchedDevices[$x]['device_type']; ?>##<?php echo $SelectRecdDispatchedDevices[$x]['device_status']; ?>\" onClick=\"setRow('<?php echo $y; ?>');\" class=\"checkbox1\"></td>\n\t\t\t  <td><?php echo $SelectRecdDispatchedDevices[$x]['itgc_id']; ?></td>\n\t\t\t   \n\t\t\t   \n\t\t\t  <td><?php echo $SelectRecdDispatchedDevices[$x]['device_imei']; ?></td>\n\t\t\t   <td><?php echo $SelectRecdDispatchedDevices[$x]['dispatch_remarks'];?></td>\n\t\t\t   <input type=\"hidden\" id=\"hidden\" name=\"hidden\" value=<?php echo $branchId;?> >\n              <td><textarea rows=\"1\" cols=\"30\" id=\"remark<?php echo $y;?>\" name=\"remark[]\" disabled></textarea></td>\n\t\t\t  \t<?php if($branchId==1){?>\n\t\t\t  <td><?php echo $SelectRecdDispatchedDevices[$x]['DispatchAntennaCount']; ?></td>\n\t\t\t  <?php $imm_type=$SelectRecdDispatchedDevices[$x]['DispatchImmobilizerType'];\n\t\t\t  if($imm_type==1)\n\t\t\t  {\n\t\t\t\t  $immob_type=\"24VT\";\n\t\t\t  }\n\t\t\t  elseif($imm_type==2)\n\t\t\t  {\n\t\t\t\t  $immob_type=\"12VT\";\n\t\t\t  }\n\t\t\t  else\n\t\t\t  {\n\t\t\t\t  $immob_type=\"\";\n\t\t\t  }\n\t\t\n\t\t\t  ?>\n\t\t\t  \n\t\t\t  <td><?php echo 'immob type :'.$immob_type; echo '</br>'?>\n\t\t\t  <?php echo 'immob count :'.$SelectRecdDispatchedDevices[$x]['DispatchImmobilizerCount']; ?></td>\n\t\t\t  \n\t\t\t  <td><?php echo $SelectRecdDispatchedDevices[$x]['DispatchConnectorCount']; ?></td>\n\t\t\t  <?php }else{?>\n\t\t\t     <td>\n                <select id=\"antenna<?php echo $y;?>\" name=\"antenna[]\" disabled />\n                  <option role=\"presentation\"  value=\"0\">Select</option>\n                  <?php for($i=1;$i<=10;$i++){ ?>\n                  <option role=\"presentation\" value=\"<?php echo $i; ?>\"><?php echo $i; ?></option>\n                  <?php } ?>\n                </select>  \n              </td>\n              <td>\n\t\t\t  <select id=\"immob_type<?php echo $y;?>\" name=\"immob_type[]\" disabled />\n                  <option role=\"presentation\" value=\"0\">Select</option>\n\t\t\t\t  <option role=\"presentation\" value=\"1\">24VT</option>\n\t\t\t\t  <option role=\"presentation\" value=\"2\">12VT</option>\n\t\t\t  </select>  \n\t\t\t\t\n                <select id=\"immob<?php echo $y;?>\" name=\"immob[]\" disabled />\n                  <option role=\"presentation\"  value=\"0\">Select</option>\n                  <?php for($j=1;$j<=10;$j++){ ?>\n                  <option role=\"presentation\" value=\"<?php echo $j; ?>\"><?php echo $j; ?></option>\n                  <?php } ?>\n                </select>  \n              </td>\n\t\t\t  \n\t\t\t     <td>\n                <select id=\"connectors<?php echo $y;?>\" name=\"connectors[]\" disabled />\n                  <option role=\"presentation\" value=\"0\">Select</option>\n                  <?php for($j=1;$j<=10;$j++){ ?>\n                  <option role=\"presentation\" value=\"<?php echo $j; ?>\"><?php echo $j; ?></option>\n                  <?php } ?>\n                </select>  \n              </td>\n\t\t\t  <td><?php echo $SelectRecdDispatchedDevices[$x]['device_dispatchrecd_remarks']; ?></td>\n\t\t\t  <?php }?>\n\t\t\t  \n\t\t\t  <?php\n\t\t\t\t\t$isffc_permanent=$SelectRecdDispatchedDevices[$x]['is_permanent'];\n\t\t\t\t\tif($isffc_permanent==1)\n\t\t\t\t\t{\n\t\t\t\t\t\t$isffc_perm='True';\n\t\t\t\t\t}\n\t\t\t\t\telse\n\t\t\t\t\t{\n\t\t\t\t\t\t$isffc_perm='False';\n\t\t\t\t\t}\n\t\t\t  ?>\n\t\t\t  <td><?php echo $isffc_perm; ?></td>\n            </tr>\n            <?php } ?>\n           \n          </tbody>\n\t\t     </table>\n\t\t\t <tr>\n              <td colspan=\"11\"><input type=\"submit\" onClick=\"bulk()\" name=\"submit\" class=\"btn btn-default table-btn-submit\" id=\"submit\" value=\"Assign\"></td>\n            </tr>\n\t\t\t  </div>\n\t\t\t     </div>\n\t\t\t\t\t </div>\n          </form> \n\n    <!-- END BORDERED TABLE PORTLET--> \n  \n</article>\n<script type=\"text/javascript\">\nfunction by_installerName(number)\n{\n\tdocument.getElementById('installer_list').style.display = \"block\";\n\tdocument.getElementById('branch_list').style.display = \"none\";\n\tdocument.getElementById('send_delhi_list').style.display = \"none\";\n\t \n}\nfunction by_branchName(number)\n{\n\t document.getElementById('branch_list').style.display = \"block\";\n\t document.getElementById('installer_list').style.display = \"none\";\n\tdocument.getElementById('send_delhi_list').style.display = \"none\";\n}\nfunction by_send_rep_delhi(number)\n{\n\t //document.getElementById('send_delhi_list').style.display = \"block\";\n\t document.getElementById('installer_list').style.display = \"none\";\n\t document.getElementById('branch_list').style.display = \"none\";\n}\n\n</script>\n<script>\nfunction validateForm() \n{\n\t//var r = document.getElementsByName(\"radio_value\");\n      var test = document.getElementsByName(\"radio_value\");\n\t  var sizes = test.length;\n\t  var flag=0;\n\t  //alert(sizes);\n      for (i=0; i < sizes; i++) \n\t  {\n         if (test[i].checked==true)\n\t\t  {\n             // alert(test[i].value + ' you got a value');     \n             //return test[i].value;\n\t\t\t flag=1;\n          }\n      }\n\t//alert(flag);\n\t//alert(test[1].value);\n\tif(flag!=1)\n\t{\n\t\talert(\"Please select either Installer Name,Branch Name or Send To Repair Center Delhi\");\n\t\treturn false;\n\t}\n\telse\n\t{\n\t\tif(test[0].checked==true)\n\t\t{\n\t\t\tvar e = document.getElementById(\"installer_list\");\n\t\t\tvar inst_name = e.options[e.selectedIndex].value;\n\t\t\t//var strUser1 = e.options[e.selectedIndex].text;\n\t\t\t//alert(strUser1);\n\t\t\tif(inst_name==0)\n\t\t\t{\n\t\t\t\talert(\"Please Select Installer Name\");\n\t\t\t\tdocument.assg_device.installer_list.focus();\n\t\t\t\treturn false;\n\t\t\t} \n\t\t}\n\t\tif(test[1].checked==true)\n\t\t{\n\t\t\tvar e = document.getElementById(\"branch_list\");\n\t\t\tvar branch_name = e.options[e.selectedIndex].value;\n\t\t\tif(branch_name==0)\n\t\t\t{\n\t\t\t\talert(\"Please Select Branch Name\");\n\t\t\t\tdocument.assg_device.branch_list.focus();\n\t\t\t\treturn false;\n\t\t\t} \n\t\t}\n\t\n\t\t\n\t}\n\n\t\n}\n</script>\n<script>\n var $assign = jQuery.noConflict()\n  $assign('.checkbox1').on('change', function() {\n    var bool = $assign('.checkbox1:checked').length === $assign('.checkbox1').length;\n    $assign('#checkAll').prop('checked', bool);\n  });\n\n  $assign('#checkAll').on('change', function() {\n    $assign('.checkbox1').prop('checked', this.checked);\n  });\n</script>\n<script type=\"text/javascript\">\n/*   function checkAllId(){\n    var i;\n    var row = document.getElementById(\"checkAll\")\n    for(i=1;i<=<?php echo $rowcount; ?>;i++){\n      if(row.checked){\n        document.getElementById(\"remark\"+i).disabled = false;\n\t\tdocument.getElementById(\"antenna\"+i).disabled = false;\n        document.getElementById(\"immob\"+i).disabled = false;\n\t\tdocument.getElementById(\"immob_type\"+i).disabled = false;\n\t\tdocument.getElementById(\"connectors\"+i).disabled = false;\n        }\n      else\n      {\n        document.getElementById(\"remark\"+i).disabled = true;\n\t\tdocument.getElementById(\"antenna\"+i).disabled = true;\n        document.getElementById(\"immob\"+i).disabled = true;\n\t\tdocument.getElementById(\"immob_type\"+i).disabled = true;\n\t\tdocument.getElementById(\"connectors\"+i).disabled = true;\n      }\n    }  \n  }   */ \nfunction checkAllId(){\n    var i;\n    var row = document.getElementById(\"checkAll\");\n    var hide = document.getElementById(\"hidden\").value;\n\t//alert(<?php echo $rowcount;?>);\n\n\tif(hide==1){\n\t\t //alert('t');\n    for(i=1;i<=<?php echo $rowcount; ?>;i++){\n      if(row.checked){\n\n        document.getElementById(\"remark\"+i).disabled = false;\n\t // \tdocument.getElementById(\"antenna\"+i).disabled = false;\n  //       document.getElementById(\"immob\"+i).disabled = false;\n\t\t// document.getElementById(\"immob_type\"+i).disabled = false;\n\t\t// document.getElementById(\"connectors\"+i).disabled = false; \n        }\n      else\n      {\n        document.getElementById(\"remark\"+i).disabled = true;\n\t\tdocument.getElementById(\"antenna\"+i).disabled = true;\n        document.getElementById(\"immob\"+i).disabled = true;\n\t\tdocument.getElementById(\"immob_type\"+i).disabled = true;\n\t\tdocument.getElementById(\"connectors\"+i).disabled = true;\n      }\n    }  \n  }\n  else\n  {\n  \t   for(i=1;i<=<?php echo $rowcount; ?>;i++){\n      if(row.checked){\n\t\n        document.getElementById(\"remark\"+i).disabled = false;\n\t \tdocument.getElementById(\"antenna\"+i).disabled = false;\n        document.getElementById(\"immob\"+i).disabled = false;\n\t    document.getElementById(\"immob_type\"+i).disabled = false;\n\t\tdocument.getElementById(\"connectors\"+i).disabled = false; \n        }\n      else\n      {\n        document.getElementById(\"remark\"+i).disabled = true;\n\t\tdocument.getElementById(\"antenna\"+i).disabled = true;\n        document.getElementById(\"immob\"+i).disabled = true;\n\t\tdocument.getElementById(\"immob_type\"+i).disabled = true;\n\t\tdocument.getElementById(\"connectors\"+i).disabled = true;\n      }\n    }\n  }\n}  \n  function setRow(rowId){\n    var row = document.getElementById(\"check\"+rowId)\n    if(row.checked){\n      document.getElementById(\"remark\"+rowId).disabled = false;\n\t  document.getElementById(\"antenna\"+rowId).disabled = false;\n      document.getElementById(\"immob\"+rowId).disabled = false;\n\t  document.getElementById(\"immob_type\"+rowId).disabled = false;\n\t  document.getElementById(\"connectors\"+rowId).disabled = false;\n\n    }else{\n      document.getElementById(\"remark\"+rowId).disabled = true;\n\t    document.getElementById(\"antenna\"+rowId).disabled = true;\n      document.getElementById(\"immob\"+rowId).disabled = true;\n\t  document.getElementById(\"immob_type\"+rowId).disabled = true;\n\t  document.getElementById(\"connectors\"+rowId).disabled = true;\n    }\n  }\n</script>\n<script data-config>\n    var filtersConfig = {\n        base_path: 'dist/tablefilter/',\n        paging: true,\n\n        remember_grid_values: false,\n        remember_page_number: false,\n        remember_page_length: false,\n        alternate_rows: false,\n        btn_reset: true,\n        rows_counter: true,\n        loader: false,\n\n        status_bar: true,\n\n        status_bar_css_class: 'myStatus',\n\n        extensions:[{\n            name: 'sort',\n          types: [\n                    'number', 'number','number',\n                    'string','number', 'string','number'\n                ]\n        }]\n    };\n\n    var tf = new TableFilter('filtertable', filtersConfig);\n    tf.init();\n\n</script>\n  </form>\n</body>\n</html>\n\n?>",
+			"settings":
+			{
+				"buffer_size": 36548,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/opt/lampp/htdocs/inventory/viewdevicestatus.php",
+			"settings":
+			{
+				"buffer_size": 7983,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/opt/lampp/htdocs/service/serviceprovider/service.php",
+			"settings":
+			{
+				"buffer_size": 7792,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "<?php\ninclude(\"../connection.php\");\ninclude_once(__DOCUMENT_ROOT.'/include/header.inc.php');\ninclude_once(__DOCUMENT_ROOT.'/include/leftmenu.php');\ninclude_once(__DOCUMENT_ROOT.'/private/master.php');\n\n/*include($_SERVER['DOCUMENT_ROOT'].\"/service/include/header.inc.php\");\ninclude($_SERVER['DOCUMENT_ROOT'].\"/service/include/leftmenu.php\"); \ninclude($_SERVER['DOCUMENT_ROOT'].\"/service/private/master.php\");*/\n\n$masterObj = new master();\n\n/*mysql_query(\"BEGIN\");*/\n?>\n \n<?\n$Header=\"Edit Service\";\nif($_GET['show']==\"backtoservice\")\n{\n    $Header=\"Back to Service\";\n}\nif($_GET['show']==\"close\")\n{\n    $Header=\"Close Service\";\n}\n\n\n?>\n \n<div class=\"top-bar\">\n<h1><? echo $Header;?></h1>\n</div>\n<div class=\"table\">\n<?\n$date=date(\"Y-m-d H:i:s\");\n$account_manager=$_SESSION['username'];\nif(isset($_REQUEST['action'])==edit)\n{\n    $id=$_GET['id'];\n    $rows = select_query(\"SELECT * FROM services WHERE id='$id'\");\n\n}\n//print_r($rows);\n\nif(isset($_POST['submit']))\n{\n    \n    $name=$rows[0]['name'];\n    $client=$_POST['company_name'];\n    $user_id=$_POST['user_id'];\n    $veh_reg=$rows[0]['veh_reg'];\n    $new_sim_no=$_POST['sim_no'];\n    $device_imei= $_POST[\"device_imei\"];\n    $Notwoking=$_POST['Notwoking'];\n    $location=$_POST['location'];\n    $atime=$_POST['atime'];\n    $cnumber=$_POST['cnumber'];\n    $inst_name=$_POST['inst_name'];\n    $inst_name1=$_POST['inst_name1'];\n    $inst_id1=$_POST['installer_id'];\n    $payment_status=$_POST['payment_status'];\n    $device_office=$_POST['device_office'];\n    \n    $device_veh_change=$_POST['device_veh_change'];\n    //$vehicle_no_change=$_POST['vehicle_no_change'];\n    \n    $sim_change=$_POST['sim_change'];\n    $device_veh_sim_status = $device_veh_change.\"-\".$sim_change;\n    $amount=$_POST['amount'];\n    $paymode=$_POST['paymode'];\n    $inst_cur_location=$_POST['inst_cur_location'];\n    $removed_device_for_replace=$_POST['removed_device_for_replace'];\n    $reason=addslashes($_POST['reason']);\n    $problemservice=$_POST['problem_in_service'];\n    $problem=$_POST['problem'];\n    $ant_billing=$_POST['ant_billing'];\n    $ant_billing_amt=$_POST['ant_billing_amt']; \n    $ant_billing_reason=$_POST['ant_billing_reason']; \n    $time=$_POST['time'];\n    $pending=$_POST['pending'];\n    $newstatus=$_POST['newstatus'];\n    $device_status=$_POST['device_status'];\n    $service_chk=$_POST['service_chk'];\n    $sim_remove_status=$_POST['sim_remove_status'];\n    $ac_status=$_POST['ac_status'];\n    $immobilizer_status=$_POST['immobilizer_status'];\n    $data_check=$_POST['data_string'];\n   \n    if(isset($_POST['Extreason']) && $_POST['Extreason']!=\"\")\n    {\n        $reason= $_POST['reason'] .\"-\" .$_POST['Extreason'];\n    }\n       \n    $billing=$_POST['billing'];\n    if($billing==\"\") { $billing=\"no\"; }\n    $payment=$_POST['payment'];\n    if($payment==\"\") { $payment=\"no\"; }\n\n    if($_SESSION['BranchId']==\"1\"){\n        $acc_manager = \"triloki\";\n    }\n    else if($_SESSION['BranchId']==\"2\"){\n        $acc_manager = \"pankaj\";\n    }\n    else if($_SESSION['BranchId']==\"3\"){\n        $acc_manager = \"jaipurrequest\";\n    }\n    else if($_SESSION['BranchId']==\"6\"){\n        $acc_manager = \"asaleslogin\";\n    }\n    else if($_SESSION['BranchId']==\"7\"){\n        $acc_manager = \"ksaleslogin\";\n    }\n\n    /*$mobileno_query = mysql_query(\"select mobile_no from matrix.mobile_simcards where id in ( select sys_simcard from matrix.devices where id in (select sys_device_id from matrix.services where veh_reg='\".$veh_reg.\"'))\",$dblink);    \n    $sql1 = mysql_fetch_array($mobileno_query);*/\n    \n    $mobileno_query = $masterObj->getDeviceMobile($veh_reg);\n    \n    $Devicemobile = $mobileno_query[0][\"mobile_no\"];\n   \n    /*$get_date_query = mysql_query(\"select sys_created from matrix.services where veh_reg='\".$veh_reg.\"' limit 1\",$dblink);\n    $sql=mysql_fetch_array($get_date_query);*/\n    \n    $get_instdate = $masterObj->getDeviceInstaltiondate($veh_reg);\n    \n    $date_of_install = date(\"Y-m-d\",strtotime($get_instdate[0][\"sys_created\"]));\n\n\n    //$query1=(\"UPDATE services SET name='$name', veh_reg='$veh_reg', Notwoking='$Notwoking', location='$location', atime='$atime',  cnumber='$cnumber',inst_name='$inst_name',inst_cur_location='$inst_cur_location',reason='$reason',time='$time',close_date=inst_date='\".date(\"Y-m-d\").\"',newpending='0',newstatus='0' WHERE id='$id'\");\n   \n    /*$service_query = mysql_query(\"UPDATE services SET name='$name', veh_reg='$veh_reg', Notwoking='$Notwoking', location='$location', atime='$atime',  cnumber='$cnumber',payment_status='$payment_status',amount='$amount',paymode='$paymode',reason='$reason',sim_remove_status='$sim_remove_status',time='$time',close_date='\".date(\"Y-m-d\").\"',inst_date='\".date(\"Y-m-d\").\"', newpending='0', newstatus='0',problem='$problem' ,problem_in_service='$problemservice', billing='$billing',payment='$payment', ant_billing='$ant_billing', ant_billing_amt='$ant_billing_amt',ant_billing_reason='$ant_billing_reason',ac_status='$ac_status',immobilizer_status='$immobilizer_status', service_status=5, device_status='\".$device_status.\"',device_veh_sim_status='\".$device_veh_sim_status.\"',device_office='$device_office'  WHERE id='$id'\");*/\n   \n    mysql_query(\"update installer set status=0 where inst_id='$inst_id1'\",$dblink2);\n    \n/**************INVENTORY DATABASE CONNECTION(SERVER DATABASE PATH)**********************/   \n   \n     /*include($_SERVER['DOCUMENT_ROOT'].\"/service/sqlconnection.php\");*/\n    include_once(__DOCUMENT_ROOT.'/sqlconnection.php');\n   \n/************************* END ***********************************/\n\nif($service_chk == \"Service Done\")\n{\n    /*$veh_id_get = mysql_query(\"select id from matrix.services where veh_reg='$veh_reg'\");\n    $veh_reg_id = mysql_fetch_array($veh_id_get);*/\n    \n    $veh_reg_id = $masterObj->getVehicleId($veh_reg);\n    \n    $veh_service_id = $veh_reg_id[0]['id'];\n   \n    if(stristr($reason, 'Device removed') != \"\")\n    {\n        if($device_office != \"\")\n        {\n            $errorMsg = \"\";\n        }\n        else\n        {\n            $errorMsg = \"Please select Device Status\";\n        }\n    \n        if($errorMsg==\"\")    \n        {     \n            /*if(stristr($reason, '(device ok)') == \"\")\n        {*/\n        if($rows[0]['device_imei']!=\"\")\n        {\n          \n        $rows[0]['device_imei']=trim($rows[0]['device_imei']);\n        $rows[0]['device_imei']=str_replace(\"_\",\"\",$rows[0]['device_imei']);\n        \n        //$device_id = mssql_fetch_array(mssql_query(\"Select device_id from device where device_imei='\".$rows[0]['device_imei'].\"'\"));\n    \n        $device_id_inv = select_query_inventory(\"Select device_id from inventory.device where device_imei='\".$rows[0]['device_imei'].\"'\");\n        \n        if($device_id_inv[0]['device_id'] != \"\")\n        {\n          \n          /*$check_data = mssql_query(\"select count(device.device_imei) from device join device_repair on device.device_imei=device_repair.device_imei  where device.device_imei='\".$rows[0]['device_imei'].\"' and device.device_status in(84,85,86,79,68,105,62,70,94,95,83,81,66,75,82,57,63,116,103) and datediff(dd,device_repair.device_removed_recddate,getdate())>15\");\n        \n          $data_count = mssql_num_rows($check_data);*/\n    \n          $check_data_inv = select_query_inventory(\"select count(device.device_imei) as total from inventory.device join inventory.device_repair on device.device_imei=device_repair.device_imei  where device.device_imei='\".$rows[0]['device_imei'].\"' and device.device_status in(84,85,86,79,68,105,62,70,94,95,83,81,66,75,82,57,63,116,103) and datediff(device_repair.device_removed_recddate,now())>15\");\n        \n\n        //echo \"<pre>\";print_r($check_data_inv);die;\n        \n        if(count($check_data_inv) > 0)\n        {\n\n        if($reason == \"Device removed(kept in clients office)\")\n        {\n            /*$inventory_query=mssql_query(\"update device set device_status=103,dispatch_branch='\".$_SESSION['BranchId'].\"' where device_imei='\".$rows[0]['device_imei'].\"'\");*/\n            /*$inventory_query2 = mssql_query(\"update device_repair set device_status=103 where current_record=1 and device_imei='\".$rows[0]['device_imei'].\"'\");*/\n            \n            //mssql_query(\"update device_repair set current_record=0 where current_record=1 and  device_imei='\".$rows[0]['device_imei'].\"'\");\n            \n            /*$inventory_query2 = mssql_query(\"insert into device_repair(device_id, client_name,device_imei,veh_no, device_removed_date, device_removed_branch, device_removed_problem, current_record, device_status,Remove_installer_name,veh_service_id) values('\".$device_id_inv[0]['device_id'].\"','\".$name.\"','\".$rows[0]['device_imei'].\"','\".$veh_reg.\"','\".date('Y-m-d H:i:s').\"','\".$_SESSION['BranchId'].\"','\".$reason.\"','1','103','\".$inst_name1.\"','\".$veh_service_id.\"')\");*/\n            \n        \n            $Update_device_inv = array('device_status' => '103', 'dispatch_branch' =>  $_SESSION['BranchId']);\n            $condition_inv = array('device_imei' => $rows[0]['device_imei']);    \n            update_query_inventory('inventory.device', $Update_device_inv, $condition_inv);\n        \n            $Update_device_repair_inv = array('current_record' => '0');\n            $condition_repair_inv = array('device_imei' => $rows[0]['device_imei'], 'current_record' => '1');    \n            update_query_inventory('inventory.device_repair', $Update_device_repair_inv, $condition_repair_inv);\n        \n            $device_repair_inv = array('device_id' => $device_id_inv[0]['device_id'], 'client_name' => $name, 'device_imei' => $rows[0]['device_imei'], \n            'veh_no' => $veh_reg, 'device_removed_date' =>  date('Y-m-d H:i:s'), 'device_removed_branch' =>  $_SESSION['BranchId'], 'device_removed_problem' => $reason, 'current_record' =>  '1', 'device_status' =>  '103', 'Remove_installer_name' => $inst_name1, \n            'veh_service_id' =>  $veh_service_id);\n            \n            $Insert_inv = insert_query_inventory('inventory.device_repair', $device_repair_inv);\n        \n        }\n        else\n        {    \n          \n        if($device_status == \"Permanent\")\n        {\n            //echo \"update device set device_status=66, is_ffc=1 where device_imei='\".trim($rows[0]['device_imei']).\"'\";\n            /*mssql_query(\"update device set device_status=66, is_permanent=1, dispatch_branch='\".$_SESSION['BranchId'].\"' where device_imei='\".trim($rows[0]['device_imei']).\"'\");*/\n        \n            $Update_device_inv = array('device_status' => '66', 'is_permanent' => '1', 'dispatch_branch' =>  $_SESSION['BranchId']);\n            $condition_inv = array('device_imei' => $rows[0]['device_imei']);    \n            update_query_inventory('inventory.device', $Update_device_inv, $condition_inv);\n    \n        }\n        else\n        {\n            //echo \"update device set device_status=66 where device_imei='\".trim($rows[0]['device_imei']).\"'\";\n            /*mssql_query(\"update device set device_status=66, dispatch_branch='\".$_SESSION['BranchId'].\"' where device_imei='\".trim($rows[0]['device_imei']).\"'\");*/\n        \n            $Update_device_inv = array('device_status' => '66', 'dispatch_branch' =>  $_SESSION['BranchId']);\n            $condition_inv = array('device_imei' => $rows[0]['device_imei']);    \n            update_query_inventory('inventory.device', $Update_device_inv, $condition_inv);\n          \n        }\n        \n        //mysql_query(\"update matrix.services set device_removed_service=1 where id='$veh_service_id'\",$dblink);\n        $remove_st = 1;\n        $data1 = array('device_removed_service' => $remove_st);\n        $condition = array('id' => $veh_service_id);\n        \n        update_query_live_con('matrix.services', $data1, $condition);\n        update_query_live('matrix.services', $data1, $condition);\n          \n        /*$total = mssql_query(\"Select * from device_repair where device_imei='\".$rows[0]['device_imei'].\"'\");\n        $total_count = mssql_num_rows($total);*/\n            \n        \n        $total_inv = select_query_inventory(\"Select * from inventory.device_repair where device_imei='\".$rows[0]['device_imei'].\"'\");\n    \n        if(count($total_inv) > 0)\n        {\n            //echo \"total\";\n\n\t\t\t/*mssql_query(\"update device_repair set current_record=0 where device_imei='\".$rows[0]['device_imei'].\"'\");\n              \n            $inventory_query = mssql_query(\"insert into device_repair(device_id, client_name,device_imei,veh_no, device_removed_date, device_removed_branch, device_removed_problem, current_record, device_status,Remove_installer_name,veh_service_id) values('\".$device_id_inv[0]['device_id'].\"','\".$name.\"','\".$rows[0]['device_imei'].\"','\".$veh_reg.\"','\".date('Y-m-d H:i:s').\"','\".$_SESSION['BranchId'].\"','\".$reason.\"','1','66','\".$inst_name1.\"','\".$veh_service_id.\"')\");*/\n\n            $Update_device_repair_inv = array('current_record' => '0');\n            $condition_repair_inv = array('device_imei' => $rows[0]['device_imei'], 'current_record' => '1');    \n            update_query_inventory('inventory.device_repair', $Update_device_repair_inv, $condition_repair_inv);\n              \n            $device_repair_insert = array('device_id' => $device_id_inv[0]['device_id'], 'client_name' => $name, \n            'device_imei' => $rows[0]['device_imei'], 'veh_no' => $veh_reg, 'device_removed_date' =>  date('Y-m-d H:i:s'), 'device_removed_branch' =>  $_SESSION['BranchId'], 'device_removed_problem' => $reason, 'current_record' =>  '1', \n            'device_status' =>  '66', 'Remove_installer_name' => $inst_name1, 'veh_service_id' =>  $veh_service_id);\n            \n            $Insert_inv = insert_query_inventory('inventory.device_repair', $device_repair_insert);\n        }\n        else\n        {\n            //echo \"insert\";  \n\t\t\t\n\t\t\t/*$inventory_query = mssql_query(\"insert into device_repair(device_id, client_name,device_imei, veh_no,device_removed_date, device_removed_branch, device_removed_problem, current_record,device_status,Remove_installer_name,veh_service_id) values('\".$device_id_inv[0]['device_id'].\"','\".$name.\"','\".$rows[0]['device_imei'].\"','\".$veh_reg.\"','\".date('Y-m-d H:i:s').\"','\".$_SESSION['BranchId'].\"','\".$reason.\"','1','66','\".$inst_name1.\"','\".$veh_service_id.\"')\");*/\n\n            $device_repair_insert = array('device_id' => $device_id_inv[0]['device_id'], 'client_name' => $name, \n            'device_imei' => $rows[0]['device_imei'], 'veh_no' => $veh_reg, 'device_removed_date' =>  date('Y-m-d H:i:s'), 'device_removed_branch' =>  $_SESSION['BranchId'], 'device_removed_problem' => $reason, 'current_record' =>  '1', \n            'device_status' =>  '66', 'Remove_installer_name' => $inst_name1, 'veh_service_id' =>  $veh_service_id);\n            \n            $Insert_inv = insert_query_inventory('inventory.device_repair', $device_repair_insert);\n          \n        }\n    \n    \n    \n    \n        }\n        }\n        }\n        else\n        {\n        $errorMsg = \"This IMEI No does not exist in Inventory.Kindly Re-check IMEI no in Your Inventory Login.\";\n        //die();\n        }\n         \n        //}\n        /*elseif(stristr($reason,  '(device ok)') == true)\n        {\n        $rows[0]['device_imei']=str_replace(\"_\",\"\",$rows[0]['device_imei']);\n        mssql_query(\"update device set device_status=66 where device_imei='\".$rows[0]['device_imei'].\"'\");\n        mssql_query(\"insert into device_repair(client_name,device_imei,veh_no,device_removed_date,device_removed_branch,device_removed_problem) values('\".$name.\"','\".$rows[0]['device_imei'].\"','\".$veh_reg.\"','\".date('Y-m-d').\"','\".$_SESSION['BranchId'].\"','\".$reason.\"')\");\n          \n        $status=1;\n         \n        }*/\n        \n          }\n        }\n    }\n    else\n    {\n        //if($rows[0]['device_imei']!=\"\")\n        //{\n        //mssql_query(\"update device set device_status=66 where device_imei='\".$rows[0]['device_imei'].\"'\");       \n        //echo \"NO case <br/> update device set device_status=65 where device_imei='\".trim($rows[0]['device_imei']).\"'\";\n\n       /* $inventory_query = mssql_query(\"update device set device_status=65, dispatch_branch='\".$_SESSION['BranchId'].\"' where device_imei='\".trim($rows[0]['device_imei']).\"' and device_status not in(84,85,86,79,68,105,62,70,94,95,83,81,66,75,82,57,63,116,103)\");\n        \n        $inventory_query2 = mssql_query(\"update device_repair set device_status=65 where current_record=1 and device_imei='\".trim($rows[0]['device_imei']).\"' and device_status not in(84,85,86,79,68,105,62,70,94,95,83,81,66,75,82,57,63,116,103)\");*/\n\n        \n        $Update_device_inv = select_query_inventory(\"update inventory.device set device_status='65', dispatch_branch='\".$_SESSION['BranchId'].\"' where device_imei='\".trim($rows[0]['device_imei']).\"' and device_status not in(84,85,86,79,68,105,62,70,94,95,83,81,66,75,82,57,63,116,103)\");\n        \n        $Update_device_repair_inv = select_query_inventory(\"update inventory.device_repair set device_status='65' where current_record='1' and device_imei='\".trim($rows[0]['device_imei']).\"' and device_status not in(84,85,86,79,68,105,62,70,94,95,83,81,66,75,82,57,63,116,103)\");\n        \n        /*$Update_device_inv = array('device_status' => 65, 'dispatch_branch' =>  $_SESSION['BranchId']);\n        $condition_inv = array('device_imei' => $rows[0]['device_imei']);    \n        update_query_inventory('inventory.device', $Update_device_inv, $condition_inv);\n    \n        $Update_device_repair_inv = array('device_status' => 65);\n        $condition_repair_inv = array('device_imei' => $rows[0]['device_imei'], 'current_record' => 1);    \n        update_query_inventory('inventory.device_repair', $Update_device_repair_inv, $condition_repair_inv);*/\n\n\n        //mysql_query(\"update matrix.services set device_removed_service=0 where veh_reg='$veh_reg'\");\n\n        //mysql_query(\"update matrix.services set device_removed_service=0 where id='$veh_service_id'\",$dblink);\n        $remove_st = 0;\n        $data1 = array('device_removed_service' => $remove_st);\n        $condition = array('id' => $veh_service_id);\n        \n        update_query_live_con('matrix.services', $data1, $condition);\n        update_query_live('matrix.services', $data1, $condition);\n         \n        $errorMsg = \"\";\n        //}\n    }\n\n}\nelse\n{\n    $errorMsg = \"\";\n}\n\nif($errorMsg==\"\")    \n{\n    \n    /*$service_query = mysql_query(\"UPDATE services SET name='$name', veh_reg='$veh_reg', Notwoking='$Notwoking', location='$location', atime='$atime',  cnumber='$cnumber',payment_status='$payment_status',amount='$amount',paymode='$paymode',reason='$reason',sim_remove_status='$sim_remove_status',time='$time',close_date='\".date(\"Y-m-d\").\"',inst_date='\".date(\"Y-m-d\").\"', newpending='0', newstatus='0',problem='$problem' ,problem_in_service='$problemservice', billing='$billing',payment='$payment', ant_billing='$ant_billing', ant_billing_amt='$ant_billing_amt',ant_billing_reason='$ant_billing_reason',ac_status='$ac_status',immobilizer_status='$immobilizer_status', service_status=5,service_close_status='$service_chk', device_status='$device_status',device_veh_sim_status='$device_veh_sim_status',device_office='$device_office' WHERE id='$id'\",$dblink2);*/\n    \n    $service_query = mysql_query(\"UPDATE services SET payment_status='$payment_status', amount='$amount',paymode='$paymode', reason='$reason', sim_remove_status='$sim_remove_status', time='$time', close_date='\".date(\"Y-m-d\").\"', inst_date='\".date(\"Y-m-d\").\"', newpending='0', newstatus='0',problem='$problem' ,problem_in_service='$problemservice', billing='$billing',payment='$payment', ant_billing='$ant_billing', ant_billing_amt='$ant_billing_amt', ant_billing_reason='$ant_billing_reason', ac_status='$ac_status',immobilizer_status='$immobilizer_status', service_status=5, service_close_status='$service_chk', device_status='$device_status', device_veh_sim_status='$device_veh_sim_status', device_office='$device_office',data_check_string='$data_check' WHERE id='$id'\",$dblink2);\n\n    \n    //if(($service_query) and ($inventory_query)) \n    //        { \n    //            //*** Commit Transaction ***// \n    //            mysql_query(\"COMMIT\"); \n    //            //echo \"Database transaction was successful.\"; \n    //        } \n    //        else \n    //        { \n    //            //*** RollBack Transaction ***// \n    //            mysql_query(\"ROLLBACK\"); \n    //            echo \"Your request not submit successfully. Please try again.\"; \n    //            exit;\n    //        } \n\n\n    if($_POST[\"sim_change\"]==\"SimChange\")\n    {\n   \n        $rdd_date = date(\"Y-m-d\",strtotime($time));\n        $sim_remove_date = date(\"Y-m-d h:i:s A\",strtotime($time));\n       \n        /*$old_sim_sql_query = mssql_fetch_array(mssql_query(\"select * from sim where phone_no='\".$Devicemobile.\"'\"));\n        \n        $update_query = mssql_query(\"update sim set branch_id='\".$_SESSION['BranchId'].\"',Remove_installer_name='\".$inst_name1.\"',device_removed_problem='\".$reason.\"', SimRemoveDate='\".$sim_remove_date.\"' where sim_id='\".$old_sim_sql_query[\"sim_id\"].\"'\");\n       \n        $new_sim_query = mssql_fetch_array(mssql_query(\"select * from sim where phone_no='\".$new_sim_no.\"'\"));\n        \n        $new_update_query = mssql_query(\"update sim set Sim_Status=91, flag=1 where sim_id='\".$new_sim_query[\"sim_id\"].\"'\");\n        \n        $new_sim_update_device_tbl_query = mssql_query(\"update device set sim_id='\".$new_sim_query[\"sim_id\"].\"' where device_imei='\".trim($device_imei).\"'\");*/\n        \n\n\n        $old_sim_inv_query = select_query_inventory(\"select * from inventory.sim where phone_no='\".$Devicemobile.\"'\");\n        \n        $Update_sim_inv = array('branch_id' => $_SESSION['BranchId'], 'Remove_installer_name' =>  $inst_name1,\n        'device_removed_problem' =>  $reason, 'SimRemoveDate' =>  $sim_remove_date);\n        $condition_sim_inv = array('sim_id' => $old_sim_inv_query[0][\"sim_id\"]);    \n        update_query_inventory('inventory.sim', $Update_sim_inv, $condition_sim_inv);\n    \n        $new_sim_inv_query = select_query_inventory(\"select * from inventory.sim where phone_no='\".$new_sim_no.\"'\");\n    \n        $Update_newsim_inv = array('Sim_Status' => '91', 'flag' =>  '1');\n        $condition_newsim_inv = array('sim_id' => $new_sim_inv_query[0][\"sim_id\"]);    \n        update_query_inventory('inventory.sim', $Update_newsim_inv, $condition_newsim_inv);\n    \n        $Update_newsim_device_inv = array('sim_id' => $new_sim_inv_query[0][\"sim_id\"]);\n        $condition_newsim_device_inv = array('device_imei' => trim($device_imei));    \n        update_query_inventory('inventory.device', $Update_newsim_device_inv, $condition_newsim_device_inv);\n\n\n        if($sim_remove_status == \"With Sim\")\n        {\n            /*$old_sim_sql_query = mssql_fetch_array(mssql_query(\"select * from sim where phone_no='\".$Devicemobile.\"'\"));\n            \n            $update_query = mssql_query(\"update sim set Sim_Status=106, flag=2, active_status=1, branch_id='\".$_SESSION['BranchId'].\"', SimChangeInstallerName='\".$inst_name1.\"', SimRemoveDate='\".$sim_remove_date.\"', SimChangeRemarks='Sim Change - With Sim -\".$rows[0]['device_imei'].\"-\".$veh_reg.\"' where sim_id='\".$old_sim_sql_query[\"sim_id\"].\"'\");*/\n\n    \n            $old_sim_inv_query = select_query_inventory(\"select * from inventory.sim where phone_no='\".$Devicemobile.\"'\");\n        \n            $Update_oldsim_inv = array('Sim_Status' => '106', 'flag' => '2', 'active_status' => '1', 'branch_id' => $_SESSION['BranchId'],\n            'SimChangeInstallerName' =>  $inst_name1, 'SimRemoveDate' =>  $sim_remove_date, \n            'SimChangeRemarks' =>  \"Sim Change - With Sim -\".$rows[0]['device_imei'].\"-\".$veh_reg);\n            $condition_oldsim_inv = array('sim_id' => $old_sim_inv_query[0][\"sim_id\"]);    \n            update_query_inventory('inventory.sim', $Update_oldsim_inv, $condition_oldsim_inv);\n\n\n         }\n            \n        if($sim_remove_status == \"Without Sim\")\n        {\n            /*$old_sim_sql_query = mssql_fetch_array(mssql_query(\"select * from sim where phone_no='\".$Devicemobile.\"'\"));\n            \n            $update_query = mssql_query(\"update sim set Sim_Status=92, status=0, flag=3, active_status=1,  branch_id='\".$_SESSION['BranchId'].\"', SimChangeInstallerName='\".$inst_name1.\"', SimRemoveDate='\".$sim_remove_date.\"', SimChangeRemarks='Sim Change - Without Sim -\".$rows[0]['device_imei'].\"-\".$veh_reg.\"' where sim_id='\".$old_sim_sql_query[\"sim_id\"].\"'\");*/\n\n    \n            $old_sim_inv_query = select_query_inventory(\"select * from inventory.sim where phone_no='\".$Devicemobile.\"'\");\n        \n            $Update_oldsim_inv = array('Sim_Status' => '92', 'status' => '0', 'flag' => '3', 'active_status' => '1', 'branch_id' => $_SESSION['BranchId'],\n            'SimChangeInstallerName' =>  $inst_name1, 'SimRemoveDate' =>  $sim_remove_date, \n            'SimChangeRemarks' =>  \"Sim Change - Without Sim -\".$rows[0]['device_imei'].\"-\".$veh_reg);\n            $condition_oldsim_inv = array('sim_id' => $old_sim_inv_query[0][\"sim_id\"]);    \n            update_query_inventory('inventory.sim', $Update_oldsim_inv, $condition_oldsim_inv);\n\n         }\n       \n        $query=\"INSERT INTO `sim_change` (`date`,acc_manager, `client`, `user_id`, `reg_no`, `old_sim`, `new_sim`, reason, sim_change_date, inst_name) VALUES ('\".$time.\"','\".$acc_manager.\"','\".$client.\"','\".$user_id.\"','\".$veh_reg.\"','\".$Devicemobile.\"','\".$new_sim_no.\"','\".$reason.\"','\".$rdd_date.\"','\".$inst_name1.\"')\";\n           \n        mysql_query($query,$dblink2);\n           \n    }\n    \n       \n   if($_POST[\"device_veh_change\"]==\"DeviceChange\")\n    {\n        /*$check_data = mssql_query(\"select count(device.device_imei) from device join device_repair on device.device_imei=device_repair.device_imei  where device.device_imei='\".$rows[0]['device_imei'].\"' and device.device_status in(84,85,86,79,68,105,62,70,94,95,83,81,66,75,82,57,63,116) and datediff(dd,device_repair.device_removed_recddate,getdate())>15\");\n        \n        $data_count = mssql_num_rows($check_data);\n            \n        if($data_count > 0)\n        {\n        \n            $sim_remove_date = date(\"Y-m-d h:i:s A\",strtotime($time));\n            \n            $inventory_old_imei_query = mssql_query(\"update device set device_status=66 where device_imei='\".trim($device_imei).\"' and device_status not in(84,85,86,79,68,105,62,70,94,95,83,81,66,75,82,57,63,116,103)\");\n            \n            $inventory_old_imei_query2 = mssql_query(\"update device_repair set device_status=66 where current_record=1 and device_imei='\".trim($device_imei).\"' and device_status not in(84,85,86,79,68,105,62,70,94,95,83,81,66,75,82,57,63,116,103)\");\n            \n            $old_imei_device_id = mssql_fetch_array(mssql_query(\"Select device_id from device where device_imei='\".trim($device_imei).\"'\"));\n            $total = mssql_query(\"Select * from device_repair where device_imei='\".trim($device_imei).\"'\");\n            $total_count = mssql_num_rows($total);\n    \n            if($sim_remove_status == \"With Sim\")\n            {\n                $old_sim_sql_query = mssql_fetch_array(mssql_query(\"select * from sim where phone_no='\".$Devicemobile.\"'\"));\n                \n                $update_sime_query = mssql_query(\"update sim set Sim_Status=91, flag=1, active_status=1, branch_id='\".$_SESSION['BranchId'].\"', SimChangeInstallerName='\".$inst_name1.\"',SimRemoveDate='\".$sim_remove_date.\"', SimChangeRemarks='Device Change - With Sim -\".$rows[0]['device_imei'].\"-\".$veh_reg.\"' where sim_id='\".$old_sim_sql_query[\"sim_id\"].\"'\");\n               \n$inventory_device_query = mssql_query(\"insert into device_repair(device_id, client_name,device_imei, veh_no,device_removed_date, device_removed_branch, device_removed_problem, current_record,device_status,Remove_installer_name) values('\".$old_imei_device_id['device_id'].\"','\".$name.\"','\".$device_imei.\"','\".$veh_reg.\"','\".date('Y-m-d H:i:s').\"','\".$_SESSION['BranchId'].\"','Device Interchange - With Sim -\".$rows[0]['device_imei'].\"','0','66','\".$inst_name1.\"')\");\n                    \n                \n                                \n            }\n                \n            if($sim_remove_status == \"Without Sim\")\n            {\n                $old_sim_sql_query = mssql_fetch_array(mssql_query(\"select * from sim where phone_no='\".$Devicemobile.\"'\"));\n                \n                $update_sim_query = mssql_query(\"update sim set Sim_Status=92, status=0, flag=3, active_status=1, branch_id='\".$_SESSION['BranchId'].\"', SimChangeInstallerName='\".$inst_name1.\"', SimRemoveDate='\".$sim_remove_date.\"', SimChangeRemarks='Device Change - Without Sim -\".$rows[0]['device_imei'].\"-\".$veh_reg.\"' where sim_id='\".$old_sim_sql_query[\"sim_id\"].\"'\");\n                \n                $inventory_device_query = mssql_query(\"insert into device_repair(device_id, client_name,device_imei, veh_no,device_removed_date, device_removed_branch, device_removed_problem, current_record,device_status,Remove_installer_name) values('\".$old_imei_device_id['device_id'].\"','\".$name.\"','\".$device_imei.\"','\".$veh_reg.\"','\".date('Y-m-d H:i:s').\"','\".$_SESSION['BranchId'].\"','Device Interchange - Without Sim -\".$rows[0]['device_imei'].\"','0','66','\".$inst_name1.\"')\");\n                \n                \n                \n            }\n      }*/\n        \n\n    $check_data_inv = select_query_inventory(\"select count(device.device_imei) from inventory.device join inventory.device_repair on device.device_imei=device_repair.device_imei  where device.device_imei='\".$rows[0]['device_imei'].\"' and device.device_status in(84,85,86,79,68,105,62,70,94,95,83,81,66,75,82,57,63,116) and datediff(device_repair.device_removed_recddate,now())>15\");\n\n    if(count($check_data_inv) > 0)\n    {\n    \n        $sim_remove_date = date(\"Y-m-d h:i:s A\",strtotime($time));\n        \n        $inventory_old_imei_query_inv = select_query_inventory(\"update inventory.device set device_status='66' where \n\t\tdevice_imei='\".trim($device_imei).\"' and device_status not in(84,85,86,79,68,105,62,70,94,95,83,81,66,75,82,57,63,116,103)\");\n    \n        /*$inventory_old_imei_query_inv = array('device_status' => 66);\n        $condition_old_imei_inv = array('device_imei' => trim($device_imei));    \n        update_query_inventory('inventory.device', $inventory_old_imei_query_inv, $condition_old_imei_inv);*/\n        \n        $inventory_old_imei_repair_inv = select_query_inventory(\"update inventory.device_repair set device_status='66' where current_record='1' and device_imei='\".trim($device_imei).\"' and device_status not in(84,85,86,79,68,105,62,70,94,95,83,81,66,75,82,57,63,116,103)\");\n\n        /*$inventory_old_imei_repair_inv = array('device_status' => 66);\n        $condition_old_imei_repair_inv = array('device_imei' => trim($device_imei), 'current_record' => 1);    \n        update_query_inventory('inventory.device_repair', $inventory_old_imei_repair_inv, $condition_old_imei_repair_inv);*/\n        \n        $old_imei_device_id_inv = select_query_inventory(\"Select device_id from inventory.device where device_imei='\".trim($device_imei).\"'\");\n        $total_inv = select_query_inventory(\"Select * from inventory.device_repair where device_imei='\".trim($device_imei).\"'\");\n        //$total_count = mssql_num_rows($total);\n\n        if($sim_remove_status == \"With Sim\")\n        {\n            /*$old_sim_sql_query_inv = select_query_inventory(\"select * from inventory.sim where phone_no='\".$Devicemobile.\"'\");\n            \n            $update_sim_query_inv = array('Sim_Status' => '91', 'flag' => '1', 'active_status' =>  '1', 'branch_id' => $_SESSION['BranchId'],\n            'SimChangeInstallerName' =>  $inst_name1, 'SimRemoveDate' =>  $sim_remove_date, \n            'SimChangeRemarks' =>  \"Device Change - With Sim -\".$rows[0]['device_imei'].\"-\".$veh_reg);\n            $condition_sim_inv = array('sim_id' => $old_sim_sql_query_inv[0][\"sim_id\"]);    \n            update_query_inventory('inventory.sim', $update_sim_query_inv, $condition_sim_inv);*/\n\n            $device_change_repair_insert = array('device_id' => $old_imei_device_id_inv[0]['device_id'], 'client_name' => $name, \n            'device_imei' => $device_imei, 'veh_no' => $veh_reg, 'device_removed_date' =>  date('Y-m-d H:i:s'), \n            'device_removed_branch' =>  $_SESSION['BranchId'], \n            'device_removed_problem' => \"Device Interchange - With Sim -\".$rows[0]['device_imei'], 'current_record' =>  '0', \n            'device_status' =>  '66', 'Remove_installer_name' => $inst_name1);\n    \n            $Insert_inv = insert_query_inventory('inventory.device_repair', $device_change_repair_insert);\n                                    \n        }\n        \n        if($sim_remove_status == \"Without Sim\")\n        {\n            $old_sim_sql_query_inv = select_query_inventory(\"select * from inventory.sim where phone_no='\".$Devicemobile.\"'\");\n            \n            $update_sim_query_inv = array('Sim_Status' => '92', 'status' => '0', 'flag' => '3', 'active_status' => '1', \n            'branch_id' => $_SESSION['BranchId'],\n            'SimChangeInstallerName' =>  $inst_name1, 'SimRemoveDate' =>  $sim_remove_date, \n            'SimChangeRemarks' =>  \"Device Change - Without Sim -\".$rows[0]['device_imei'].\"-\".$veh_reg);\n            $condition_sim_inv = array('sim_id' => $old_sim_sql_query_inv[0][\"sim_id\"]);    \n            update_query_inventory('inventory.sim', $update_sim_query_inv, $condition_sim_inv);\n            \n            $device_change_repair_insert = array('device_id' => $old_imei_device_id_inv[0]['device_id'], 'client_name' => $name, \n            'device_imei' => $device_imei, 'veh_no' => $veh_reg, 'device_removed_date' =>  date('Y-m-d H:i:s'), \n            'device_removed_branch' =>  $_SESSION['BranchId'], 'device_removed_problem' => \"Device Interchange - Without Sim -\".$rows[0]['device_imei'], 'current_record' =>  '0', 'device_status' =>  '66', 'Remove_installer_name' => $inst_name1);\n            \n            $Insert_inv = insert_query_inventory('inventory.device_repair', $device_change_repair_insert);\n                \n        }\n    }\n\n\n         $query=\"INSERT INTO `device_change` (`date`,acc_manager, `client`, `user_id`, `device_imei`, `mobile_no`, `reg_no`, date_of_install, inst_name, device_model) VALUES ('\".$time.\"','\".$acc_manager.\"','\".$client.\"','\".$user_id.\"','\".$device_imei.\"','\".$Devicemobile.\"','\".$veh_reg.\"','\".$date_of_install.\"','\".$inst_name1.\"','\".$rows[0]['device_model'].\"')\";\n       \n          mysql_query($query,$dblink2);\n       \n    }\n   \n    if($_POST[\"device_veh_change\"]==\"VehiclenoChange\")\n    {\n           \n         $query=\"INSERT INTO `vehicle_no_change` (`date`, acc_manager,`client`, `user_id`, `old_reg_no`, inst_name) VALUES ('\".$time.\"','\".$acc_manager.\"','\".$client.\"','\".$user_id.\"','\".$veh_reg.\"','\".$inst_name1.\"')\";\n       \n        mysql_query($query,$dblink2);\n      \n    }   \n    \n    mysql_close($dblink2);\n    header(\"location:service.php\");\n  }\n\n}\n\nif(isset($_POST['update']))\n    {\n    $inst_name = $rows[0]['name'];\n    $inst_name1=$_POST['inst_name1'];\n    $inst_id1=$_POST['installer_id'];\n    $inst_cur_location=$_POST['inst_cur_location'];\n    $billing=$_POST['billing'];\n    if($billing==\"\") { $billing=\"no\"; }\n    $payment=$_POST['payment'];\n    if($payment==\"\") { $payment=\"no\"; }\n     if( $_POST['assignJob']==\"OngoingJob\")\n    {\n        $inst_idname=$_POST['inst_name'];\n\n        $ArrInst=explode(\"#\",$_POST['inst_name']);\n        $inst_name =$ArrInst[1];\n        $inst_id =$ArrInst[0];\n        $job_type=1;\n         \n        mysql_query(\"update installer set status=1 where inst_id='$inst_id'\",$dblink2);\n        mysql_query(\"update installer set status=0 where inst_id='$inst_id1'\",$dblink2);\n    }\n    else\n    {\n       \n          $inst_idname=$_POST['inst_name_all'];\n\n        $ArrInst=explode(\"#\",$_POST['inst_name_all']);\n        $inst_name =$ArrInst[1];\n        $inst_id =$ArrInst[0];\n         mysql_query(\"update installer set status=0 where inst_id='$inst_id1'\",$dblink2);\n        $job_type=2;\n    }\n\n    $pending=mysql_query(\"UPDATE services SET inst_id='$inst_id',inst_name='$inst_name',inst_cur_location='$inst_cur_location' ,billing='$billing',payment='$payment', service_status=2, job_type='$job_type'  WHERE id='$id'\",$dblink2);\n    //mysql_query(\"update installer set status=1 where inst_name='$inst_name'\",$dblink2);\n   // mysql_query(\"update installer set status=0 where inst_name='$inst_name1'\",$dblink2);\n   \n    mysql_close($dblink2);\n    header(\"location:service.php\");\n    }\n   \nif(isset($_POST['backservice']))\n    {\n    $pending=$_POST['newpending'];\n    $last_reason = $_POST['last_reason'];\n    $back_reason=$_POST['reason_to_back'];\n    $inst_name1=$_POST['inst_name1'];\n    $inst_id1=$_POST['installer_id'];\n   \n    $update_backquery = \"UPDATE services SET newpending='1', newstatus='0', back_reason='\".$last_reason.\" \".$back_reason.\" - \".$date.\"', service_staxtus=3  WHERE id='$id'\";\n   \n    mysql_query($update_backquery,$dblink2);\n   \n    mysql_query(\"UPDATE installer SET STATUS=0 WHERE inst_id='$inst_id1'\",$dblink2);\n   \n    mysql_close($dblink2);\n    header(\"location:service.php\");\n    }\n?>\n<script type=\"text/javascript\">\nfunction req_info(form3)\n    {         \n        \n        if(document.getElementById('problemservice').checked == true)\n         {\n      if(document.form3.problem.value ==\"\"){\n               alert(\"please select Problem\");\n               return false;\n           }\n          }\n\n        if(document.getElementById('ant_billing').checked == true)\n         {\n      if(document.form3.ant_billing_amt.value ==\"\"){\n               alert(\"please enter Billing Amount\");\n               document.form3.ant_billing_amt.focus();\n               return false;\n           }\n          }\n\n    var reason_list=ltrim(document.form3.reason.value);\n        //alert(reason_list);\n        if(reason_list ==0)\n        {\n           alert(\"please Select reason\");\n           document.form3.reason.focus();\n           return false;\n         }\n       \n        if(reason_list == \"Device removed (against payment)\" || reason_list == \"Device removed(Buy Back)\")\n        {\n    var device_chk = document.form3.device_status[0].checked;\n    var device_chk1 = document.form3.device_status[1].checked;\n    if(device_chk  == false && device_chk1  == false)\n    {\n      alert(\"please Select Device Removed Temporary/Permanent\");\n      return false;\n    }\n    }\n\n        if(document.getElementById('sim_change').checked == true)\n         {\n           if(document.form3.sim_no.value ==\"\"){\n               alert(\"please Select Sim No\");\n               return false;\n           }\n          \n          }\n\n    //  var device_change = document.getElementById('device_veh_change').checked;\n      var sim_change = document.getElementById('sim_change').checked;\n      //device_change == true ||\n       if( sim_change == true)\n         {\n            var sim_remove_status = document.form3.sim_remove_status[0].checked;\n            var sim_remove_status1 = document.form3.sim_remove_status[1].checked;\n            if(sim_remove_status  == false && sim_remove_status1  == false)\n            {\n               alert(\"please Select Device Remove With Sim/Without Sim\");\n               return false;\n             }\n        }\n       \n         var ac_list=ltrim(document.form3.ac_status.value);\n        if(ac_list == \"\")\n        {\n           alert(\"please Select AC Status\");\n           document.form3.ac_status.focus();\n           return false;\n         }\n         var immobilizer_list=ltrim(document.form3.immobilizer_status.value);\n        if(immobilizer_list == \"\")\n        {\n           alert(\"please Select Immobilizer Status\");\n           document.form3.immobilizer_status.focus();\n           return false;\n         }\n       \n        var service_chked = document.form3.service_chk[0].checked;\n        var service_chked1 = document.form3.service_chk[1].checked;\n        if(service_chked  == false && service_chked1  == false)\n        {\n           alert(\"please Select Service Status\");\n           return false;\n         }\n     \n    var data_chk = ltrim(document.form3.data_string.value);\n        if(data_chk == \"\")\n        {\n           alert(\"please Enter Device Data String.\");\n           return false;\n         }\n         \n         //alert(document.getElementById('ant_billing').value);\n        /*if(reason_list ==\"Antenna Change\")\n        {\n           if(document.getElementById('ant_billing').checked == false){\n               alert(\"please Select Antenna Billing\");\n               document.getElementById('ant_billing').focus();\n               return false;\n           }\n         }*/\n         \n         \n        /*var remove_device=document.form3.removed_device_for_replace.checked;\n        //alert(remove_device);\n       \n        if(remove_device==true && reason_list==0 ){\n           \n               alert(\"please select Reason List\");\n               document.form3.reason.focus();\n               return false;\n              \n        }\n        if(reason_list=='Device Removed (DIMTS Problem)' && remove_device==false){\n           \n               alert(\"please select Device Removed for Replace\");\n               document.form3.removed_device_for_replace.focus();\n               return false;\n              \n        }*/\n       \n        var Job=ltrim(document.form3.assignJob.value);   \n        //alert(Job);\n        if(Job==\"OngoingJob\")\n        {\n        var inst_name=ltrim(document.form3.inst_name.value);\n\n        if(inst_name==\"\")\n        {\n        alert(\"Please Enter Intallation Name\");\n        document.form3.inst_name.focus();\n        return false;\n        }\n        }\n        else\n        {\n        var inst_name=ltrim(document.form3.inst_name_all.value);\n\n        if(inst_name==\"\")\n        {\n        alert(\"Please Enter Intallation Name\");\n        document.form3.inst_name.focus();\n        return false;\n        }\n        }\n   var inst_cur_location=ltrim(document.form3.inst_cur_location.value);   \n   if(inst_cur_location==\"\")\n  {\n   alert(\"Please Enter Installer Current Location\");\n   document.form3.inst_cur_location.focus();\n   return false;\n   }\n   /*if(document.form3.reason.value ==\"\")\n  {\n   alert(\"please enter reason\");\n   document.form3.reason.focus();\n   return false;\n   }*/\nif(document.form3.time.value ==\"\")\n  {\n   alert(\"please enter time\");x\n   document.form3.time.focus();\n   return false;\n   }\n  \n}\nfunction req_info1(form3){   \n    var reason=ltrim(document.form3.reason_to_back.value);   \n   if(reason==\"\")\n  {\n   alert(\"Please Enter Reason To Back Services\");\n   document.form3.reason_to_back.focus();\n   return false;\n   }\n\n}\n\nfunction req_info2(form3){   \n            var Job=ltrim(document.form3.assignJob.value);   \n        alert(Job);\n        if(Job==\"OngoingJob\")\n        {\n        var inst_name=ltrim(document.form3.inst_name.value);\n\n        if(inst_name==\"\")\n        {\n        alert(\"Please Enter Installer Name\");\n        document.form3.inst_name.focus();\n        return false;\n        }\n        }\n        else\n        {\n        var inst_name=ltrim(document.form3.inst_name_all.value);\n\n        if(inst_name==\"\")\n        {\n        alert(\"Please Enter Installer Name\");\n        document.form3.inst_name.focus();\n        return false;\n        }\n        }\n\n   var inst_cur_location=ltrim(document.form3.inst_cur_location.value);   \n   if(inst_cur_location==\"\")\n  {\n   alert(\"Please Enter Installer Current Location\");\n   document.form3.inst_cur_location.focus();\n   return false;\n   }\n\n}\nfunction ltrim(stringToTrim) {\n    return stringToTrim.replace(/^\\s+/,\"\");\n    }\n   \nfunction Status(radioValue)\n{\n   if(radioValue==\"Yes\")\n    {\n    document.getElementById('No').style.display = \"none\";\n    document.getElementById('Yes').style.display = \"block\";\n    }\n    else if(radioValue==\"No\")\n    {\n\n    document.getElementById('No').style.display = \"block\";\n    document.getElementById('Yes').style.display = \"none\";\n    }\n    else\n    {\n    document.getElementById('No').style.display = \"none\";\n    document.getElementById('Yes').style.display = \"none\";\n    }\n   \n}  \n\nfunction Status12(radioValue)\n{\n   if(radioValue==\"Yes\")\n    {\n    document.getElementById('No').style.display = \"none\";\n    document.getElementById('Yes').style.display = \"block\";\n    }\n    else if(radioValue==\"No\")\n    {\n\n    document.getElementById('No').style.display = \"block\";\n    document.getElementById('Yes').style.display = \"none\";\n    }\n    else\n    {\n    document.getElementById('No').style.display = \"none\";\n    document.getElementById('Yes').style.display = \"none\";\n    }\n   \n}  \n\n//var Path=\"http://trackingexperts.com/service/\";\nvar Path=\"<?php echo __SITE_URL;?>/\";\n\nfunction DropdownShow(InstallerId)\n{\n\n    if(document.getElementById('sim_change').checked == true)\n    {\n    document.getElementById('DropdownShow').style.display = \"block\";\n       \n    var rootdomain=\"http://\"+window.location.hostname\n    var loadstatustext=\"<img src='\"+rootdomain+\"/images/icons/other/waiting.gif' />\"\n    document.getElementById(\"DropdownShow\").innerHTML=loadstatustext;\n    $.ajax({\n            type:\"GET\",\n            url:Path +\"userInfo.php?action=sim_change_dropdown\",\n   \n             data:\"InstallerId=\"+InstallerId,\n            success:function(msg){\n                 \n            document.getElementById(\"DropdownShow\").innerHTML = msg;\n                           \n            }\n        });\n      }\n      else\n        {\n        document.getElementById('DropdownShow').style.display = \"none\";\n        }\n} \n\n</script>\n\n<script type=\"text/javascript\">\n\n        $(function () {\n             \n            $(\"#time\").datetimepicker({});\n        });\n\n    </script>     \n<?php echo \"<p align='left' style='padding-left: 250px;width: 500px;' class='message'>\" .$errorMsg. \"</p>\" ; ?>\n\n<style type=\"text/css\" >\n.errorMsg{border:1px solid red; }\n.message{color: red; font-weight:bold; }\n</style>\n\n<form method=\"post\" action=\"\" name=\"form3\">\n\n<table style=\"width: 900px;\" cellspacing=\"2\" cellpadding=\"3\" border=\"1\">\n    <tr>\n            <td  align=\"right\"><label  id=\"lbDlClient\"><strong>Client Name:</strong></label></td>\n            <td align=\"center\"> \n               <label><strong><?php echo $rows[0]['name'];?></strong> </label>\n            </td>\n            \n            <td  align=\"right\"><strong>Vehicle No:</strong></td>\n            <td align=\"center\">\n                <label><strong><?php echo $rows[0]['veh_reg'];?></strong> </label></td>\n                \n            <td  align=\"right\"><strong>Notwoking:</strong></td>\n            <td align=\"center\"> \n                    <label><strong><?php echo $rows[0]['Notwoking'];?></strong> </label></td>\n        </tr>\n        <tr>\n            <td  align=\"right\"><strong>Location:</label></strong></td>\n            <td align=\"center\">\n                <label><strong><?php echo $rows[0]['location'];?></strong> </label></td>\n\n            <td  align=\"right\"><strong>Available Time:</label></strong></td>\n            <td align=\"center\">\n                <label><strong><?php echo $rows[0]['atime'];?></strong> </label></td>\n            \n            <td  align=\"right\"><strong>Person Name: </strong></td>\n            <td align=\"center\">\n                <label><strong><?php echo $rows[0]['pname'];?></strong> </label></td>\n       </tr>\n       <tr>\n          <td  align=\"right\"><strong>Contact No:</label></strong></td>\n          <td align=\"center\"> <label><strong><?php echo $rows[0]['cnumber'];?></strong> </label></td>\n          \n          <td  align=\"right\"><strong>Device Model:</label></strong></td>\n          <td align=\"center\"> <label><strong><?php echo $rows[0]['device_model'];?></strong> </label></td>\n          \n          <td  align=\"right\"><strong>Installer Name:</label></strong></td>\n          <td align=\"center\"> <label><strong><?php echo $rows[0]['inst_name'];?></strong> </label></td>\n       </tr>\n   </table>\n   \n   <table width=\"50%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n    <tr>\n        <td><td><input name=\"id\" type=\"hidden\" id=\"id\" value=\"<?php echo $rows[0]['id'];?>\">\n                <input name=\"user_id\" type=\"hidden\" id=\"user_id\" value=\"<?php echo $rows[0]['user_id'];?>\">\n                <input name=\"company_name\" type=\"hidden\" id=\"company_name\" value=\"<?php echo $rows[0]['company_name'];?>\">\n                <input name=\"device_imei\" type=\"hidden\" id=\"device_imei\" value=\"<?php echo $rows[0]['device_imei'];?>\">\n                <input type=\"hidden\" name=\"installer_id\" value=\"<?php echo $rows[0]['inst_id'];?>\" />\n                <input type=\"hidden\" name=\"inst_name1\" id=\"inst_name1\" value=\"<?php echo $rows[0]['inst_name'];?>\" />\n        </td></td>\n    </tr>\n    <tr>\n        <td colspan=\"2\">&nbsp;</td>\n    </tr>\n    <!--<tr>\n        <td  align=\"right\">Client Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td><input type=\"text\" name=\"name\" id=\"name\" readonly value=\"<?php echo $rows[0]['name'];?>\" /></td>\n    </tr>\n    <tr style=\"\">\n        <td align=\"right\">Vehicle No:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td><input type=\"text\" name=\"veh_reg\" id=\"veh_reg\" readonly value=\"<?php echo $rows[0]['veh_reg'];?>\" /></td>\n    </tr>\n    <tr>\n        <td height=\"32\" align=\"right\">Notwoking:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td><input type=\"text\" name=\"Notwoking\" id=\"Notwoking\" readonly value=\"<?php echo $rows[0]['Notwoking'];?>\" /></td>\n    </tr>\n    <tr>\n        <td height=\"32\" align=\"right\">Location:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td><input type=\"text\" name=\"location\" readonly id=\"location\" value=\"<?php echo $rows[0]['location'];?>\" /></td>\n    </tr>\n    <tr>\n        <td height=\"32\" align=\"right\">Available Time:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td><input type=\"text\" name=\"atime\" readonly id=\"atime\" value=\"<?php echo $rows[0]['atime'];?>\" /></td>\n    </tr>\n    <tr>\n        <td height=\"32\" align=\"right\">Person Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td><input type=\"text\" name=\"pname\" readonly id=\"pname\" value=\"<?php echo $rows[0]['pname'];?>\" /></td>\n    </tr>\n    <tr>\n        <td height=\"32\" align=\"right\">Contact No:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td><input type=\"text\" name=\"cnumber\" readonly id=\"cnumber\" value=\"<?php echo $rows[0]['cnumber'];?>\" /></td>\n    </tr>\n    <tr>\n        <td height=\"32\" align=\"right\">Device Model:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td><input type=\"text\" name=\"device_model\" readonly id=\"device_model\" value=\"<?php echo $rows[0]['device_model'];?>\" /></td>\n    </tr>\n\n    <tr>\n        <td height=\"32\" align=\"right\">Installer Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td><input type=\"text\" name=\"inst_name1\" readonly id=\"inst_name1\" value=\"<?php echo $rows[0]['inst_name'];?>\" />\n        <input type=\"hidden\" name=\"installer_id\" value=\"<?php echo $rows[0]['inst_id'];?>\" /></td>\n    </tr>-->\n    \n    <? if($_GET['show']==\"edit\"){?>\n    \n    <tr>\n        <td>&nbsp;</td>\n        <td>\n        <input type=\"radio\" value=\"OngoingJob\" id=\"assignJob\" name=\"assignJob\" onclick=\"document.getElementById('inst_name').style.display = 'block';document.getElementById('inst_name_all').style.display = 'none';\">Ongoing Job\n       \n        <input type=\"radio\" value=\"PendingJob\" id=\"assignJob\" name=\"assignJob\" onclick=\"document.getElementById('inst_name').style.display = 'none';document.getElementById('inst_name_all').style.display = 'block';\">Pending Job\n        </td>\n    </tr>\n    <tr>\n        <td height=\"32\" align=\"right\">Change Installer Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td>\n        <?php\n        \n        $query=\"SELECT inst_id,inst_name,concat(inst_id,'#',inst_name) as idname FROM installer where status=0 and is_delete=1 and branch_id=\".$_SESSION['BranchId'];\n        $result=mysql_query($query,$dblink2);\n       \n        ?>\n        <? //$name1=$row['inst_id'].\"#\".$row['inst_name']; ?>\n         <select name=\"inst_name\" id=\"inst_name\" style=\"display:none\"  ><option value=\"0\">Select Name</option>\n        <? while($row=mysql_fetch_array($result)) { ?>\n        <option value=<?=$row['idname'];?>><?=$row['inst_name']?></option>\n        <? } ?>\n        </select>\n        <?php\n        \n        $query=\"SELECT inst_id,inst_name,concat(inst_id,'#',inst_name) as idname FROM installer where is_delete=1 and branch_id=\".$_SESSION['BranchId'];\n        $result=mysql_query($query,$dblink2);\n       \n        ?>\n         <select name=\"inst_name_all\" id=\"inst_name_all\"  style=\"display:none\" ><option value=\"0\">Select Name</option>\n        <? while($row=mysql_fetch_array($result)) { ?>\n        <option value=<?=$row['idname'];?>><?=$row['inst_name']?></option>\n        <? } ?>\n        </select>\n        </td>\n    </tr>\n    \n    <?php } ?>\n    \n<!--     <tr>\n        <td width=\"47%\" height=\"27\" align=\"right\">Payment Status*:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td width=\"53%\"><select name=\"payment_status\" id=\"payment_status\">\n                            <option value=\"\">Select Payment Status</option>\n                            <option value=\"Not Required\" <? if($_POST[\"payment_status\"]=='Not Required') {?> selected=\"selected\" <? } ?> >Not Required</option>\n                            <option value=\"Collected\" <? if($_POST[\"payment_status\"]=='Collected') {?> selected=\"selected\" <? } ?> >Collected</option>\n                            <option value=\"Not collected\" <? if($_POST[\"payment_status\"]=='Not collected') {?> selected=\"selected\" <? } ?> >Not collected</option>\n                    </select></td>\n    </tr> -->\n    <!-- <tr>\n        <td height=\"32\" align=\"right\">Amount:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td><input type=\"text\" name=\"amount\" id=\"amount\" value=\"<?php echo $rows[0]['amount'];?>\" /></td>\n    </tr> -->\n   <!--  <tr>\n        <td width=\"47%\" height=\"27\" align=\"right\">Mode*:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td width=\"53%\"><select name=\"paymode\" id=\"paymode\">\n                            <option value=\"\">Select Payment mode</option>\n                            <option value=\"Cash\" <? if($_POST[\"paymode\"]=='Cash') {?> selected=\"selected\" <? } ?> >Cash</option>\n                            <option value=\"cheque\" <? if($_POST[\"paymode\"]=='cheque') {?> selected=\"selected\" <? } ?> >cheque</option>\n                            <option value=\"DD\" <? if($_POST[\"paymode\"]=='DD') {?> selected=\"selected\" <? } ?> >DD</option>\n                   </select></td>\n    </tr> -->\n\n   <!--  <tr>\n        <td>&nbsp;</td>\n        <td><input type=\"checkbox\" name=\"billing\" id=\"billing\" value=\"yes\" />Bill Delivery\n        <input type=\"checkbox\" name=\"payment\" id=\"payment\" value=\"yes\" />Collect Payment </td>\n    </tr> -->\n     <? if($_GET['show']==\"edit\"){?>\n    <tr>\n        <td height=\"32\" align=\"right\">Installer Current Location:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td><input type=\"text\" name=\"inst_cur_location\" id=\"inst_cur_location\" value=\"<?php echo $rows[0]['inst_cur_location'];?>\" /></td>\n    </tr>\n    <? } ?>\n    <tr>\n        <td height=\"32\" align=\"right\"> Problem in service:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td>\n    <input type=\"radio\" value=\"G-Trac Side\" <?php if($result['problem_in_service']==\"G-Trac Side\"){echo \"checked=\\\"checked\\\"\"; }?> id=\"problemservice\" name=\"problem_in_service\" >G-Trac Side\n       \n         <input type=\"radio\" value=\"Client Side\" <?php if($result['problem_in_service']==\"Client Side\"){echo \"checked=\\\"checked\\\"\"; }?> id=\"problemservice\" name=\"problem_in_service\" >Client Side        \n         \n         <!--<input type=\"radio\" value=\"Installer Side\" <?php //if($result['problem_in_service']==\"Installer Side\"){echo \"checked=\\\"checked\\\"\"; }?> id=\"problemservice\" name=\"problem_in_service\" onclick=\"document.getElementById('problem').style.display = 'block';\">Installer Side\n       \n         <input type=\"radio\" value=\"Client Side\" <?php //if($result['problem_in_service']==\"Client Side\"){echo \"checked=\\\"checked\\\"\"; }?> id=\"problemservice\" name=\"problem_in_service\" onclick=\"document.getElementById('problem').style.display = 'none';\">Client Side-->\n        </td>\n    </tr>\n    <tr>\n        <td height=\"32\" align=\"right\">Problem&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td>\n            <select name=\"problem\" id=\"problem\" >\n                <option value=\"\">--Select One</option>\n                <option value=\"Software Problem\" <? if($_POST[\"problem\"]=='Software Problem') {?> selected=\"selected\" <? } ?> >Software Problem</option>\n                <option value=\"Repair / R & D\" <? if($_POST[\"problem\"]=='Repair / R & D') {?> selected=\"selected\" <? } ?> >Repair / R & D </option>\n                <option value=\"Installer\" <? if($_POST[\"problem\"]=='Installer') {?> selected=\"selected\" <? } ?> >Installer </option>\n                <option value=\"Sim Problem\" <? if($_POST[\"problem\"]=='Sim Problem') {?> selected=\"selected\" <? } ?> >Sim Problem </option>\n            </select>\n            <!--<textarea name=\"problem\" id=\"problem\" style=\"display:none\" value=\"<?php echo $rows[0]['problem'];?>\" /></textarea>-->\n        </td>\n\n    </tr>\n    <!-- <tr>\n        <td height=\"32\" align=\"right\">Antenna Billing:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td>\n       \n        <Input type = 'Radio' Name ='ant_billing' id=\"ant_billing\" value= 'Yes' <?php if($result['ant_billing']==\"Yes\"){echo \"checked=\\\"checked\\\"\"; }?>\n        onchange=\"Status(this.value)\"\n        >Yes\n       \n        <Input type = 'Radio' Name ='ant_billing' id=\"ant_billing\" value= 'No' <?php if($result['ant_billing']==\"No\"){echo \"checked=\\\"checked\\\"\"; }?>\n        onchange=\"Status(this.value)\"\n        >No</td>\n    </tr> -->\n    <!-- <tr>\n       <td colspan=\"2\">\n            <table  id=\"Yes\"  align=\"center\"  style=\"padding-left: 80px;width: 300px;display:none;border:1\" cellspacing=\"5\" cellpadding=\"5\">\n                <tr>\n                    <td> <label  id=\"lbDlBilling\">Billing Amount</label></td>\n                    <td> <input type=\"text\" name=\"ant_billing_amt\" id=\"billing_amt\" value=\"<?=$result['ant_billing_amt']?>\" /></td>\n                </tr>\n            </table>\n       \n          <table  id=\"No\" align=\"center\"   style=\"padding-left: 80px;width: 300px;display:none;border:1\" cellspacing=\"5\" cellpadding=\"5\">\n            <tr>\n                <td> <label  id=\"lbDlBilling\">Billing Reason</label></td>\n                <td> <input type=\"text\" name=\"ant_billing_reason\" id=\"billing_reason\" value=\"<?=$result['ant_billing_reason']?>\" /></td>\n            </tr>\n          </table>\n      </td>\n </tr> -->\n</table>\n\n<table width=\"50%\" border=\"0\" cellpadding=\"2\" cellspacing=\"2\">\n\n<? if($_GET['show']==\"close\"){?>\n\n    <!--<tr>\n        <td align=\"right\">\n        Device Removed For Replace\n        </td>\n        <td>\n            <input type=\"checkbox\" name=\"removed_device_for_replace\" id=\"removed_device_for_replace\" value=\"Device removed\" />\n        </td>\n    </tr>-->\n    <tr>\n    <td height=\"32\" align=\"right\">Reason:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td>\n\n    <?php\n     $query=\"SELECT * FROM reason where reason_for='service' order by reason asc\";\n    $result_reason=select_query($query);\n   \n    ?>\n    <SCRIPT LANGUAGE=\"JavaScript\">\n     <!--\n        function ShowTextBox(reason)\n        {\n            //alert(reason);\n    if(reason==\"Device re-installed\")\n            {\n               document.getElementById(\"Extreason\").style.display = 'block';\n    document.getElementById(\"against_payment\").style.display = 'none';\n            }\n            else if(reason==\"Device removed (against payment)\" || reason==\"Device removed(Buy Back)\")\n            {\n               document.getElementById(\"against_payment\").style.display = 'block';\n    document.getElementById(\"Extreason\").style.display = 'none';\n            }\n            else\n            {\n               document.getElementById(\"Extreason\").style.display = 'none';\n     document.getElementById(\"against_payment\").style.display = 'none';\n            }\n   \n        }\n     //-->\n     </SCRIPT>\n    \n    <select name=\"reason\" id=\"reason\"   style=\"width:200px\" onChange=\"ShowTextBox(this.value)\">\n        <option value=\"0\">Select Name</option>\n        <? for($i=0;$i<count($result_reason);$i++) {\n        $highlight=\"\";\n        if($_POST[\"reason\"]==$result_reason[$i]['reason'])\n            {\n            $highlight=\"selected\";\n            }\n            ?>\n        <option value=\"<?=$result_reason[$i]['reason']?>\" <?=$highlight ?> ><?=$result_reason[$i]['reason']?></option>\n        <? } ?>\n    </select>\n\n      <input type=\"text\" name=\"Extreason\" id=\"Extreason\" value=\"\" style=\"display:none\" />   </td>\n    </tr>\n    <tr>\n        <td colspan=\"2\" align=\"center\">\n            <table id='against_payment' style=\"display:none\" >\n                <tr >\n                    <td align=\"right\">Device Remove:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n                    <td>\n                    <input type=\"radio\" name=\"device_status\" id=\"device_status\" value=\"Temporary\" />Temporary\n                    <input type=\"radio\" name=\"device_status\" id=\"device_status\" value=\"Permanent\" />Permanent\n                    </td>\n                </tr> \n           </table>  \n       </td>\n    </tr>\n    <tr>\n        <td align=\"right\">Device Status:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td><select name=\"device_office\" id=\"device_office\">\n            <option value=\"\">--Select--</option>\n            <option value=\"G-Trac Office\" <? if($_POST[\"device_office\"]=='G-Trac Office') {?> selected=\"selected\" <? } ?> >G-Trac Office</option>\n            <option value=\"Client Office\" <? if($_POST[\"device_office\"]=='Client Office') {?> selected=\"selected\" <? } ?> >Client Office</option>\n            </select>\n        </td>\n    </tr>   \n    <tr>\n        <td align=\"right\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td>\n        <input type=\"radio\" name=\"device_veh_change\" id=\"device_veh_change\" value=\"DeviceChange\" />Device Change\n        <input type=\"radio\" name=\"device_veh_change\" id=\"device_veh_change\" value=\"VehiclenoChange\" />Vehicle No. Change\n        </td>\n    </tr>\n    <tr>\n        <td align=\"right\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td>\n        <input type=\"checkbox\" name=\"sim_change\" id=\"sim_change\" value=\"SimChange\" onchange=\"DropdownShow(<?echo $rows[0]['inst_id'];?>)\" />Sim Change\n        </td>\n    </tr>\n    <tr>\n        <td height=\"32\" align=\"right\">New Sim No*:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td>\n        <div id=\"DropdownShow\">\n        \n         </div>\n        </td> \n    </tr>\n    <tr>\n        <td>&nbsp;</td>\n        <td>\n        <input type=\"radio\" name=\"sim_remove_status\" id=\"sim_remove_status\" value=\"With Sim\" />With Sim\n        <input type=\"radio\" name=\"sim_remove_status\" id=\"sim_remove_status\" value=\"Without Sim\" />Without Sim\n        </td>\n    </tr>   \n   \n    <tr>\n        <td height=\"32\" align=\"right\">AC Status*:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td><select name=\"ac_status\" id=\"ac_status\">\n                <option value=\"\">--Select--</option>\n                <option value=\"Working\" <? if($_POST[\"ac_status\"]=='Working') {?> selected=\"selected\" <? } ?> >Working</option>\n                <option value=\"Not Working\" <? if($_POST[\"ac_status\"]=='Not Working') {?> selected=\"selected\" <? } ?> >Not Working</option>\n                <option value=\"Not Applicable\" <? if($_POST[\"ac_status\"]=='Not Applicable') {?> selected=\"selected\" <? } ?> >Not Applicable</option>\n                </select></td>\n    </tr>\n    <tr>\n        <td height=\"32\" align=\"right\">Immobilizer Status*:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td><select name=\"immobilizer_status\" id=\"immobilizer_status\">\n                <option value=\"\">--Select--</option>\n                <option value=\"Working\" <? if($_POST[\"immobilizer_status\"]=='Working') {?> selected=\"selected\" <? } ?> >Working</option>\n                <option value=\"Not Working\" <? if($_POST[\"immobilizer_status\"]=='Not Working') {?> selected=\"selected\" <? } ?> >Not Working</option>\n                <option value=\"Not Applicable\" <? if($_POST[\"immobilizer_status\"]=='Not Applicable') {?> selected=\"selected\" <? } ?> >Not Applicable</option>\n                </select></td>\n    </tr>\n    <tr>       \n        <td width=\"48%\" height=\"32\" align=\"right\">Time:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td width=\"52%\"><input type=\"text\" style=\"width:180px\" name=\"time\" id=\"time\" value=\"<?php echo date('Y-m-d H:i');?>\" /></td>\n    </tr>\n    <tr>\n\n        <td align=\"right\">Service Status:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td>\n        <input type=\"radio\" name=\"service_chk\" id=\"service_chk\" value=\"Service Done\" />Service Done\n        <input type=\"radio\" name=\"service_chk\" id=\"service_chk\" value=\"Service Not Done\" />Service Not Done\n        </td>\n    </tr>\n    <tr>\n        <td align=\"right\">Data Check:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td><textarea name=\"data_string\" id=\"data_string\" rows=\"5\" cols=\"25\" placeholder=\"last 2 to 3 string line enter\"></textarea> </td>\n    </tr>\n<?}//$rows[0]['time']?>\n<? if($_GET['show']==\"backtoservice\"){?>\n    <tr>\n        <td height=\"32\" align=\"right\">Reason To Back Services:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>\n        <td><textarea name=\"reason_to_back\" id=\"reason_to_back\" rows=\"5\" cols=\"15\"></textarea>\n            <input type=\"hidden\" name=\"last_reason\" value=\"<?php echo $rows[0]['back_reason'];?>\" /> </td>\n    </tr>\n<? } ?>\n\n    <tr>\n        <td height=\"32\" align=\"right\">\n        <? if($_GET['show']==\"edit\")\n        {\n            ?><input type=\"submit\" name=\"update\" id=\"update\" value=\"Update\" onClick=\"return req_info2(form3)\"/><?\n        }\n        if($_GET['show']==\"close\")\n        {\n            ?><input type=\"submit\" name=\"submit\" value=\"Close\" align=\"right\" onClick=\"return req_info(form3)\"/>&nbsp;&nbsp;&nbsp;&nbsp;<?\n        }\n        if($_GET['show']==\"backtoservice\")\n        {\n            ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type=\"submit\" name=\"backservice\" value=\"back to service\" align=\"right\" onClick=\"return req_info1(form3)\" /><?\n        }\n        ?>\n       \n        </td>\n        <td><input type=\"button\" name=\"Cancel\" value=\"Cancel\" onClick=\"window.location = 'service.php' \" /></td>\n    </tr>\n\n \n</table>\n</form>\n \n \n<?\ninclude(\"../include/footer.inc.php\");\n\n?>\n\n<script>Status12(\"<?=$result['ant_billing'];?>\");</script>",
+			"file": "/opt/lampp/htdocs/service/serviceprovider/editservice.php",
+			"file_size": 67329,
+			"file_write_time": 131486389281052969,
+			"settings":
+			{
+				"buffer_size": 65963,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/opt/lampp/htdocs/InstallerAPI/install_service_close.php",
+			"settings":
+			{
+				"buffer_size": 3061,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "<?php\ninclude(\"../connection.php\");\ninclude_once(__DOCUMENT_ROOT.'/include/header.inc.php');\ninclude_once(__DOCUMENT_ROOT.'/include/leftmenu.php');\n\n/*include($_SERVER['DOCUMENT_ROOT'].\"/service/include/header.inc.php\");\ninclude($_SERVER['DOCUMENT_ROOT'].\"/service/include/leftmenu.php\");  */\n?>\n<script>\nvar Path=\"<?php echo __SITE_URL;?>/\";\n//var Path=\"http://trackingexperts.com/service/\";\n\nfunction forwardtoRepair(row_id)\n{\n   var retVal = prompt(\"Write Comment : \", \"Comment\");\n  if (retVal)\n  {\n  addComment(row_id,retVal);\n      return ture;\n  }\n  else\n    return false;\n}\n\nfunction addComment(row_id,retVal)\n{\n    //alert(user_id);\n    //return false;\n  $.ajax({\n        type:\"GET\",\n        url:Path +\"userInfo.php?action=forward_Repair_Install_Comment\",\n          \n         data:\"row_id=\"+row_id+\"&comment=\"+retVal,\n        success:function(msg){\n            alert(msg);\n            location.reload(true);        \n        }\n    });\n}\n</script>\n\n<div class=\"top-bar\">\n  <h1>Installation List</h1>\n</div>\n<div class=\"top-bar\">\n  <div style=\"float:right\";><font style=\"color:#ADFF2F;font-weight:bold;\">GreenYellow:</font> Urgent Installation</div>\n  <br/>\n  <div style=\"float:right\";><font style=\"color:#FFC184;font-weight:bold;\">Light Orange:</font> Back From Repair</div>\n  <br/>\n  <div style=\"float:right\";><font style=\"color:#bbdefb;font-weight:bold;\">Light Blue:</font> Installer Closed </div>\n  <br/>\n  <div style=\"float:right\";><font style=\"color:#CCCCCC;font-weight:bold;\">Grey:</font> Closed Installation</div>\n</div>\n<div class=\"table\">\n  <? $mode=$_GET['mode'];\nif($mode=='') { $mode=\"new\"; }\n    \n  if($mode=='close')\n    {\n    //$rs = mysql_query(\"SELECT * FROM installation where reason!='' or rtime!='' and branch_id=\".$_SESSION['BranchId'].\"  order by id desc\");\n     \n    $rs = select_query(\"SELECT * FROM installation where (installation_status='5' or installation_status='6') and  (branch_id=\".$_SESSION['BranchId'].\"  or inter_branch=\".$_SESSION['BranchId'].\") order by id desc limit 1000\");\n    }\n    else if($mode=='new')\n    {\n    //$rs = mysql_query(\"SELECT * FROM services  where inst_name!='' and inst_cur_location!='' and newpending!='1' order by id desc\");\n    //$rs = mysql_query(\"SELECT * FROM installation  where inst_name!='' and rtime='' and inst_cur_location!='' and newpending!='1'  and branch_id=\".$_SESSION['BranchId'] .\" order by id desc\");\n    //and reason='' and rtime=''\n    \n    $rs = select_query(\"SELECT * FROM installation  where (installation_status=2 or installation_status=17 or installation_status=18)  and (branch_id=\".$_SESSION['BranchId'] .\" or inter_branch=\".$_SESSION['BranchId'].\") order by id desc\");\n    }    \n\n    ?>\n  <div style=\"float:right\"><a href=\"installations.php?mode=new\">New</a> | <a href=\"installations.php?mode=close\">Closed</a></div>\n  <table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" class=\"display\" id=\"example\">\n    <thead>\n      <tr>\n        <th>Sl. No</th>\n        <th>Request By </th>\n        <th>Request Date </th>\n        <th width=\"10%\" align=\"center\"><font color=\"#0E2C3C\"><b>Sales Person </b></font></th>\n        <th width=\"10%\" align=\"center\"><font color=\"#0E2C3C\"><b>Client Name </b></font></th>\n        <th width=\"7%\" align=\"center\"><font color=\"#0E2C3C\"><b>No.Of Installation <br/>\n          /IP Box</b></font></th>\n        <th width=\"9%\" align=\"center\"><font color=\"#0E2C3C\"><b>Branch Location</b></font></th>\n          <th><font color=\"#0E2C3C\"><b>Landmark</b></font></th>\n        <th width=\"10%\" align=\"center\"><font color=\"#0E2C3C\"><b>Time</b></font></th>\n        <th><font color=\"#0E2C3C\"><b>Device Type</b></font></th>\n         <th><font color=\"#0E2C3C\"><b>Accessories</b></font></th>\n        <th width=\"10%\" align=\"center\"><font color=\"#0E2C3C\"><b>Client Contact No.</b></font></th>\n        <th width=\"10%\" align=\"center\"><font color=\"#0E2C3C\"><b>Installer Name</b></font></th>\n        <th>View Detail</th>\n        <? if($mode=='close')\n       {?>\n        <th><font color=\"#0E2C3C\"><b>Closed</b></font></th>\n        <?}\n        else\n        {?>\n        <th><font color=\"#0E2C3C\"><b>Edit</b></font></th>\n        <th><font color=\"#0E2C3C\"><b>Back/Forward</b></font></th>\n        <th><font color=\"#0E2C3C\"><b>Close</b></font></th>\n        <!--<td><font color=\"#0E2C3C\"><b>Delete</b></font></td>-->\n        \n        <?}?>\n      </tr>\n    </thead>\n    <tbody>\n      <?php \n    \n    //while ($row = mysql_fetch_array($rs)) \n    for($i=0;$i<count($rs);$i++)\n    {\n        if($rs[$i]['IP_Box']==\"\") $ip_box=\"Not Required\";  else $ip_box=\"$rs[$i][IP_Box]\"; \n    \n    ?>\n      \n      <!-- <tr align=\"Center\" <? if(($rs[$i]['reason'] && $rs[$i]['time']) ||  $rs[$i]['back_reason']) { ?> style=\"background:#CCCCCC\" <? }?>> -->\n      <tr align=\"Center\"  <? if($rs[$i]['installation_status']==5 or $rs[$i]['installation_status']==6 )  {  ?> style=\"background:#CCCCCC;\" <? }\n    elseif($rs[$i]['required']=='urgent' && $rs[$i]['fwd_repair_to_install']==''){ ?>style=\"background:#ADFF2F\" <? } elseif($rs[$i]['installation_status']=='2' && $rs[$i]['fwd_repair_to_install']!=''){ echo 'style=\"background-color:#FFC184\"';} elseif($rs[$i]['installer_close_status']!=''){ echo 'style=\"background-color:#bbdefb\"';}?>>\n        <td><?php echo $i+1; ?></td>\n        <td>&nbsp;<?php echo $rs[$i]['request_by'];?></td>\n        <td>&nbsp;<?php echo $rs[$i]['req_date'];?></td>\n        <td width=\"10%\" align=\"center\">&nbsp;\n          <?php $sales_name = select_query(\"select name from sales_person where id='\".$rs[$i]['sales_person'].\"' \"); echo $sales_name[0]['name'];?></td>\n        <? $sql=\"SELECT Userid AS id,UserName AS sys_username FROM addclient  WHERE Userid=\".$rs[$i][\"user_id\"];\n    $rowuser=select_query($sql);\n    ?>\n        <td><?php echo $rowuser[0][\"sys_username\"];?></td>\n        <?php if($_SESSION['BranchId']==1 && $rs[$i]['instal_reinstall']=='installation')\n        {\n          ?>\n            <td width=\"10%\" align=\"center\">&nbsp;\n              <?php $no_of_inst = $rs[$i]['installation_approve'] - $rs[$i]['installation_made']; echo \"$no_of_inst <br/><br/>/$ip_box\";?></td>\n            <?php } else {?>\n            <td width=\"10%\" align=\"center\">&nbsp;\n              <?php $no_of_inst = $rs[$i]['no_of_vehicals'] - $rs[$i]['installation_made'];echo \"$no_of_inst <br/><br/>/$ip_box\";?></td>\n        <?php\n         } ?>\n        \n        <!--<td width=\"9%\" align=\"center\">&nbsp;<?php echo $rs[$i]['location'];?></td>-->\n        \n        <?php if($rs[$i]['location']!=\"\"){?>\n     <td align=\"\">\n         <?php \n          $sql_InstRqst2 = select_query(\"select inst_req_id from installation WHERE id='\".$rs[$i]['id'].\"'\");\n            $sql_Inst2 = select_query(\"select landmark from installation_request WHERE id='\".$sql_InstRqst2[0]['inst_req_id'].\"'\");\n                \n                echo $sql_Inst2[0]['landmark'].\"<br>\";\n            ?>    \n          \n\n        </td>\n        <?php }else{ $city=select_query(\"select * from tbl_city_name where branch_id='\".$rs[$i]['inter_branch'].\"'\");?>\n        <td width=\"9%\" align=\"center\">&nbsp;<?php echo $city[0]['city'];?></td>\n        <?php }?>\n\n\n        <td>\n        <?php \n       \n          $sql1 = select_query(\"select Zone_area from installation WHERE id='\".$rs[$i]['id'].\"'\");\n      $sql2 = select_query(\"SELECT name FROM re_city_spr_1 WHERE id='\".$sql1[0]['Zone_area'].\"'\");\n\n          echo $sql2[0]['name'];\n          \n         ?>\n        </td>\n\n       \n        <td width=\"10%\" align=\"center\">&nbsp;<?php echo $rs[$i]['time'];?></td>\n       <td align=\"center\" nowrap>\n\n          <?php \n       \n             $sqlDevice=select_query(\"SELECT device_type FROM device_type where id='\".$rs[$i][\"device_type\"].\"' \"); \n             $sqlModel=select_query(\"SELECT device_model FROM device_model where id='\".$rs[$i][\"model\"].\"' \"); \n         \n            echo $sqlModel[0]['device_model'].\"</br>\";\n            echo $sqlDevice[0]['device_type'];\n        \n          ?>\n\n          \n        </td>\n        <td>\n          <?php\n            echo $rs[$i]['acess_selection'];\n          ?>\n        </td>\n         <td>\n      <?php\n    \n        $sql_InstRqst = select_query(\"select inst_req_id from installation WHERE id='\".$rs[$i]['id'].\"'\");\n                $sql_Inst = select_query(\"select contact_person,contact_number,designation from installation_request WHERE id='\".$sql_InstRqst[0]['inst_req_id'].\"'\");\n                \n                echo $sql_Inst[0]['contact_person'].\"<br>\";\n                echo $sql_Inst[0]['contact_number'].\"<br>\";\n                echo $sql_Inst[0]['designation'].\"<br>\";\n            ?>\n    </td>\n        <!--<td width=\"10%\" align=\"center\" style=\"font-size:12px\">&nbsp;<?php echo $rs[$i]['inst_name'];?></td>-->\n        <td  style=\"font-size:12px\">&nbsp;<strong><?php echo $rs[$i]['inst_name'];\n        if($rs[$i]['job_type']==2)\n        {\n            echo \"<br/><font color='red'>(pending Job)</font>\";\n        }\n        else\n        {\n            echo \"<br/>(Ongoing Job)\";\n        }\n        ?> </strong></td>\n        <td><a href=\"#\" onclick=\"Show_record(<?php echo $rs[$i][\"id\"];?>,'installation','popup1'); \" class=\"topopup\">View Detail</a></td>\n        <? if($mode=='close')\n         {?>\n          <td>&nbsp; <span onClick=\"return editreason(<?php echo $rs[$i]['id'];?>);\"> Closed</span></td>\n          <?php \n        }\n        else\n        {?>\n          <?php if($rs[$i][\"inter_branch\"]==0 || $rs[$i][\"inter_branch\"]==$_SESSION['BranchId'])\n            {?>\n              <td><a href=\"edit_newinstallation.php?id=<?=$rs[$i]['id'];?>&action=edit&show=edit\">Edit</a></td>\n              <td><a href=\"edit_newinstallation.php?id=<?=$rs[$i]['id'];?>&action=edit&show=backtoservice\">Back</a>\n                <?php if($rs[$i]['fwd_install_to_repair']==\"\" && $rs[$i]['fwd_repair_to_install']==\"\" && $rs[$i]['installation_status']==2)\n                {?>\n                |<!--<a href=\"#\" onclick=\"return forwardtoRepair(<?php echo $rs[$i][\"id\"];?>);\">Forward to Repair</a>--> \n                <a href=\"forwardrequest-iframe.php?id=<?=$rs[$i][\"id\"];?>&req_id=2&height=220&width=480\" class=\"thickbox\">Forward</a>\n                <?php \n                } ?>\n                </td>\n              <td><a href=\"edit_newinstallation.php?id=<?=$rs[$i]['id'];?>&action=edit&show=close\">Close</a></td>\n              <?php \n          }\n          else\n          {?>\n          <td>Edit </td>\n          <td>Back</td>\n          <td>Close</td>\n          <?php \n          }\n      }?>\n      </tr>\n      <?php  \n    }\n     \n    ?>\n  </table>\n  <div id=\"toPopup\">\n    <div class=\"close\">close</div>\n    <span class=\"ecs_tooltip\">Press Esc to close <span class=\"arrow\"></span></span>\n    <div id=\"popup1\" style =\"height:100%;width:100%\"> <!--your content start--> \n      \n    </div>\n    <!--your content end--> \n    \n  </div>\n  <!--toPopup end-->\n  \n  <div class=\"loader\"></div>\n  <div id=\"backgroundPopup\"></div>\n</div>\n<?\ninclude(\"../include/footer.inc.php\");\n\n?>",
+			"file": "/opt/lampp/htdocs/service/serviceprovider/installations.php",
+			"file_size": 11135,
+			"file_write_time": 131500927040310896,
+			"settings":
+			{
+				"buffer_size": 10889,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "installation.php",
+			"settings":
+			{
+				"buffer_size": 12003,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "add_installation.php",
+			"settings":
+			{
+				"buffer_size": 53678,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "vehicle_no_change.php",
+			"settings":
+			{
+				"buffer_size": 14214,
+				"encoding": "UTF-8 with BOM",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/opt/lampp/htdocs/distance_google.php",
+			"settings":
+			{
+				"buffer_size": 888,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/opt/lampp/htdocs/format/js/function.js",
+			"settings":
+			{
+				"buffer_size": 16771,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/opt/lampp/htdocs/format/admin/userInfo.php",
+			"settings":
+			{
+				"buffer_size": 187589,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/opt/lampp/htdocs/format/admin/stockView.php",
+			"settings":
+			{
+				"buffer_size": 1620,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "userInfo.php",
+			"settings":
+			{
+				"buffer_size": 161816,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/opt/lampp/htdocs/service/serviceprovider/edit_newinstallation.php",
+			"settings":
+			{
+				"buffer_size": 44914,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/opt/lampp/htdocs/service/js/function.js",
+			"settings":
+			{
+				"buffer_size": 10064,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/opt/lampp/htdocs/service/include/header.inc.php",
+			"settings":
+			{
+				"buffer_size": 3622,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/opt/lampp/htdocs/service/userInfo.php",
+			"settings":
+			{
+				"buffer_size": 150260,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/opt/lampp/htdocs/format",
+		"/opt/lampp/htdocs/format/service_request"
+	],
+	"file_history":
+	[
+		"/opt/lampp/htdocs/distance_google .php",
+		"/opt/lampp/htdocs/upload/connection (copy).php",
+		"/media/tarun/HARD DISK/tarun/harish sir/format/admin/list_installation.php",
+		"/opt/lampp/htdocs/inventory/popupAlertStock.php",
+		"/opt/lampp/htdocs/format/admin/list_installation.php",
+		"/opt/lampp/htdocs/json.php",
+		"/media/tarun/HARD DISK/tarun/gtrac/json_data/final.php",
+		"/media/tarun/HARD DISK/tarun/gtrac/json/tt.php",
+		"/media/tarun/HARD DISK/tarun/gtrac/json/test.php",
+		"/media/tarun/HARD DISK/tarun/gtrac/json/final.php",
+		"/media/tarun/HARD DISK/tarun/jsontest/dummy.php",
+		"/media/tarun/HARD DISK/tarun/jsontest/sample.php",
+		"/media/tarun/HARD DISK/tarun/jsontest/databasejson.php",
+		"/opt/lampp/htdocs/inventory/recdremovedevice.php",
+		"/home/tarun/Desktop/master.php",
+		"/opt/lampp/htdocs/inventory/challan_assign_device_installer.php",
+		"/home/tarun/Desktop/inventory_update/assigndevicesinstaller.php",
+		"/home/tarun/Desktop/inventory_update_mam/inventory_update/assigndevicesinstaller.php",
+		"/opt/lampp/htdocs/service/connection.php",
+		"/opt/lampp/htdocs/inventory/include/header.php",
+		"/opt/lampp/htdocs/inventory/private/master_11_9_2017.php",
+		"/opt/lampp/htdocs/inventory/attachsim.php",
+		"/opt/lampp/htdocs/gtrac_admin2/include/header.php",
+		"/opt/lampp/htdocs/inventory/config.php",
+		"/opt/lampp/htdocs/inventory/connection.php",
+		"/opt/lampp/htdocs/inventory/private/lib/library_common.php",
+		"/opt/lampp/htdocs/format/service_request/update_reinstallation.php",
+		"/opt/lampp/htdocs/format/service_request/load_zone_area.php",
+		"/media/tarun/HARD DISK/tarun/harish sir/InstallerAPI/image.php",
+		"/media/tarun/HARD DISK/tarun/harish sir/InstallerAPI/install_service_close.php",
+		"/media/tarun/HARD DISK/tarun/harish sir/InstallerAPI/private/master.php",
+		"/media/tarun/HARD DISK/tarun/harish sir/InstallerApp/service.php",
+		"/opt/lampp/htdocs/inventory/private/lib/Zend/Db.php",
+		"/opt/lampp/htdocs/inventory/private/master.php",
+		"/opt/lampp/htdocs/inventory/assigndevicesinstaller.php",
+		"/opt/lampp/htdocs/sunil/container_view_import_rail.php",
+		"/opt/lampp/htdocs/sunil/container_view_import_rail.asp",
+		"/opt/lampp/htdocs/sunil/container_view_import_rail2.php",
+		"/opt/lampp/htdocs/inventory/assigndevicesinstaller_11_9_2017.php",
+		"/opt/lampp/htdocs/inventory/addrawdevice (copy).php",
+		"/opt/lampp/htdocs/inventory/dispatchdevice.php",
+		"/opt/lampp/htdocs/inventory/reassignsim.php",
+		"/opt/lampp/htdocs/inventory/assignsiminstaller.php",
+		"/opt/lampp/htdocs/inventory/onlineCrack.php",
+		"/opt/lampp/htdocs/inventory/challan_reass_sim_repair.php",
+		"/opt/lampp/htdocs/inventory/reassignsimRepair.php",
+		"/opt/lampp/htdocs/gtrac_admin2/include/footer.php",
+		"/media/tarun/HARD DISK/tarun/alert1/view.php",
+		"/opt/lampp/htdocs/inventory/reassignrepair.php",
+		"/opt/lampp/htdocs/service/js/function.js",
+		"/opt/lampp/htdocs/service/userInfo.php",
+		"/opt/lampp/htdocs/service/serviceprovider/edit_newinstallation.php",
+		"/opt/lampp/htdocs/inventory/viewdevicestatus.php",
+		"/opt/lampp/htdocs/inventory/challan_send_toRepair.php",
+		"/opt/lampp/htdocs/inventory/reassigndevice.php",
+		"/opt/lampp/htdocs/inventory/challan_reassign_installer.php",
+		"/opt/lampp/htdocs/inventory/challan_reassign.php",
+		"/opt/lampp/htdocs/inventory/challan_rem_recd.php",
+		"/opt/lampp/htdocs/inventory/viewsimstatus.php",
+		"/opt/lampp/htdocs/inventory/challan_assign_device_branch.php",
+		"/opt/lampp/htdocs/inventory/challan_dispatch.php",
+		"/opt/lampp/htdocs/inventory/private/common.php",
+		"/opt/lampp/htdocs/inventory/challan_rem_recd_11_9_2017.php",
+		"/opt/lampp/htdocs/inventory/recdremovedevice_11_9_2017.php",
+		"/opt/lampp/htdocs/kpmProcess/application/models/LoginAuthentication.php",
+		"/opt/lampp/htdocs/inventory/recdremovedevice_bybranch.php",
+		"/opt/lampp/htdocs/inventory/challan_send_toRepair_11_9_2017.php",
+		"/opt/lampp/htdocs/inventory/challan_assign_device_installer_11_9_2017.php",
+		"/opt/lampp/htdocs/inventory/challan_assign_device_branch_11_9_2017.php",
+		"/opt/lampp/htdocs/inventory/challan_reassign_11_9_2017.php",
+		"/opt/lampp/htdocs/inventory/challan_reassign_installer_11_9_2017.php",
+		"/opt/lampp/htdocs/inventory/reassigndevice_11_9_2017.php",
+		"/opt/lampp/htdocs/inventory/challan_dispatch_11_9_2017.php",
+		"/opt/lampp/htdocs/inventory/dispatchdevice_11_9_2017.php",
+		"/opt/lampp/htdocs/kpmProcess/application/controllers/Welcome.php",
+		"/opt/lampp/htdocs/service/serviceprovider/edit_installation.php",
+		"/opt/lampp/htdocs/inventory/addDevices_online_crack.php",
+		"/opt/lampp/htdocs/inventory/userInfo.php",
+		"/opt/lampp/htdocs/inventory/procedure.php",
+		"/opt/lampp/htdocs/inventory/branchrepairdevice.php",
+		"/opt/lampp/htdocs/inventory/assigndevicetobranch.php",
+		"/media/tarun/HARD DISK/tarun/gtrac/inventory/assigndevicesinstaller.php",
+		"/media/tarun/HARD DISK/tarun/gtrac/inventory/private/master.php",
+		"/opt/lampp/htdocs/format/connection.php",
+		"/opt/lampp/htdocs/service/private/master.php",
+		"/opt/lampp/htdocs/service/serviceprovider/installations_old.php",
+		"/home/tarun/Desktop/installations.php",
+		"/opt/lampp/htdocs/service (copy)/serviceprovider/forwardrequest-iframe.php",
+		"/opt/lampp/htdocs/service/serviceprovider/installations.php",
+		"/opt/lampp/htdocs/service/serviceprovider/edit_installation_old.php",
+		"/opt/lampp/htdocs/service/serviceprovider/new_installation.php",
+		"/opt/lampp/htdocs/inventory/repairdevice.php",
+		"/opt/lampp/htdocs/service (copy)/serviceprovider/forward_service_request.php",
+		"/opt/lampp/htdocs/service/serviceprovider/editnewservice.php",
+		"/opt/lampp/htdocs/service/support/all_branch_ser_inst.php",
+		"/opt/lampp/htdocs/gtrac_admin2/client_group_select.php",
+		"/opt/lampp/htdocs/format/service_request/installation.php",
+		"/opt/lampp/htdocs/format/service_request/add_installation.php",
+		"/opt/lampp/htdocs/service/userInfo_oid.php",
+		"/opt/lampp/htdocs/format/js/function.js",
+		"/opt/lampp/htdocs/inventory/addrawdevice.php",
+		"/opt/lampp/htdocs/format/service_request/re_installation.php",
+		"/opt/lampp/htdocs/format/service_request/update_installation.php",
+		"/opt/lampp/htdocs/service (copy)/serviceprovider/installations.php",
+		"/opt/lampp/htdocs/InstallerAPI/private/master.php",
+		"/opt/lampp/htdocs/format/admin/userInfo.php",
+		"/opt/lampp/htdocs/InstallerAPI/installertask.php",
+		"/opt/lampp/htdocs/format/admin/stockView.php",
+		"/opt/lampp/htdocs/format_latest/service_request/userInfo.php",
+		"/opt/lampp/htdocs/format_sss/service_request/userInfo.php",
+		"/opt/lampp/htdocs/format/service_request/userInfo.php",
+		"/opt/lampp/htdocs/format_latest/service_request/add_installation.php",
+		"/opt/lampp/htdocs/format_latest/js/function.js",
+		"/opt/lampp/htdocs/format_sss/service_request/add_installation.php",
+		"/opt/lampp/htdocs/format_sss/js/function.js",
+		"/opt/lampp/htdocs/format_latest/connection.php",
+		"/home/tarun/Desktop/getimei.txt",
+		"/home/tarun/Desktop/getimei2.txt",
+		"/opt/lampp/htdocs/format/include/header.inc.php",
+		"/opt/lampp/htdocs/service/servicecalling/service_request.php",
+		"/opt/lampp/htdocs/service/serviceprovider/newservice.php",
+		"/opt/lampp/htdocs/format/stock/list_imei_assign.php",
+		"/opt/lampp/htdocs/internal/system/database/DB_query_builder.php",
+		"/opt/lampp/htdocs/inventory/dispatchsim.php",
+		"/opt/lampp/htdocs/format/stock/userInfo.php",
+		"/opt/lampp/htdocs/format/service_request/back_installation.php",
+		"/opt/lampp/htdocs/service/serviceprovider/editservice.php",
+		"/opt/lampp/htdocs/service/servicecalling/tellycaller_sendmail.php"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"doneConfirm",
+			"Confir",
+			"Confiremat",
+			"Installationapprove",
+			"result",
+			"companyname",
+			"getCompanyName",
+			"selectChallanDetails",
+			"UPDATE challandetail",
+			"selectChallanDetails",
+			"dev_searchid",
+			"installer_view",
+			"fuel_sensor",
+			"send_notification",
+			"inst_name",
+			"installation",
+			"DetailInstalltion",
+			"rtime",
+			"datetimepicker",
+			"datetimepicker2",
+			"sim_change_dropdown",
+			"DropdownShow",
+			"req_info2",
+			"insertImage",
+			"backservice",
+			"back to service",
+			"backtoservice",
+			"Back",
+			"Branch",
+			"zone",
+			"db_STAGING",
+			"mysql_query",
+			"dblink2",
+			"update",
+			"db__select_staging",
+			"db__update_staging",
+			"db__select_staging",
+			"user_id",
+			"ntext",
+			"btnaccept",
+			"$",
+			"OZY_WP_HOME_URL",
+			"dbhandle",
+			"dbhandle2",
+			"$da",
+			"Mydialog",
+			"ntext",
+			"Mydialog",
+			"document",
+			"Mydialog",
+			"vehicle_Number",
+			"});\n",
+			"btnaccept",
+			"html",
+			"waitForMsg",
+			"noti",
+			"insertSIMChallanDetailsRepair",
+			"branchId",
+			"updateSIMChallanDetailsExistBranch",
+			"repair",
+			"selectSIMChallanDetails",
+			"Model",
+			"DetailInstalltion",
+			"Add vehicle number",
+			"Select",
+			"Select imei",
+			"Selectimei",
+			"Select imei",
+			"action=edit",
+			"DetailInstalltion",
+			"selectChallanDetails",
+			"GetInstallerChallanDetailByNo",
+			"GetChallanDetailByNo",
+			"GetInstallerChallanDetailByNo",
+			"GetChallanDetailByNo",
+			"GetDispatchChallanDetailByNo",
+			"selectDeviceType",
+			"insertChallanDetails",
+			"select_Notification",
+			"updateNotificationAlert",
+			"GetChallanDetailByNo",
+			"arrDeviceId",
+			"challan_assign_device_branch.php",
+			"CALL",
+			"GetChallanDetailByNo",
+			"device_idList",
+			"challan_assign_device_branch.php",
+			"GetChallanDetailByNo",
+			"arrDeviceId",
+			"branchIds",
+			"GetChallanDetailByNo",
+			"insertChallanDetails",
+			"GetInstallerChallanDetailByNo",
+			"selectChallanDetails",
+			"updateChallanDetails",
+			"GetInstallerChallanDetailByNo",
+			"selectChallanDetails",
+			"updateChallanDetails",
+			"insertChallanDetailsDeadDeviceInstaller",
+			"selectChallanDetails",
+			"imei",
+			"check_simno",
+			"strResult",
+			"installerList",
+			"selectChallanNo",
+			" No.Of Devices",
+			" No.Of Devices :",
+			"update_query",
+			"query",
+			"return req_info",
+			"return req_info(form2)",
+			"backservice",
+			"Location",
+			"send_notification",
+			"mode=re_install",
+			"pallavi",
+			"69",
+			"select_query_inventory",
+			"ConfirmDelete",
+			"Show_record_stock",
+			"$tablename==\"device\"",
+			"$tablename==\"dev",
+			"$tablename==\"device\"",
+			"device",
+			"?>\n",
+			"ffc",
+			"ffcnew",
+			"device"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"$s",
+			"<?php ",
+			"//=$result"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 11,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "/opt/lampp/htdocs/service/serviceprovider/edit_installation.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 14327,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								320,
+								320
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 270.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/opt/lampp/htdocs/inventory/assigndevicesinstaller.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 39507,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 7810.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/opt/lampp/htdocs/inventory/private/master.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 21807,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 5350.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 36548,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								36548,
+								36548
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 16191.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/opt/lampp/htdocs/inventory/viewdevicestatus.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7983,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1665.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/opt/lampp/htdocs/service/serviceprovider/service.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 7792,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								6549,
+								6549
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 310.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 16,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/opt/lampp/htdocs/service/serviceprovider/editservice.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 65963,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								36554,
+								36554
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 790.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 19,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "/opt/lampp/htdocs/InstallerAPI/install_service_close.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3061,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1969,
+								1969
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 495.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 20,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "/opt/lampp/htdocs/service/serviceprovider/installations.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10889,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10889,
+								10889
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3576.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "installation.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 12003,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1034,
+								1034
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 325.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": "add_installation.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 53678,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								22704,
+								22704
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 9510.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "vehicle_no_change.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 14214,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								578,
+								578
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 945.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "/opt/lampp/htdocs/distance_google.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 888,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								26,
+								26
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 13,
+					"file": "/opt/lampp/htdocs/format/js/function.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 16771,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10055,
+								10055
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4398.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "/opt/lampp/htdocs/format/admin/userInfo.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 187589,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1472,
+								1472
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 565.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "/opt/lampp/htdocs/format/admin/stockView.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1620,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 16,
+					"file": "userInfo.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 161816,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3228,
+								3228
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1345.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 17,
+					"file": "/opt/lampp/htdocs/service/serviceprovider/edit_newinstallation.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 44914,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1662,
+								1662
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1045.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				},
+				{
+					"buffer": 18,
+					"file": "/opt/lampp/htdocs/service/js/function.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10064,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1262,
+								1262
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 315.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 17,
+					"type": "text"
+				},
+				{
+					"buffer": 19,
+					"file": "/opt/lampp/htdocs/service/include/header.inc.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3622,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 18,
+					"type": "text"
+				},
+				{
+					"buffer": 20,
+					"file": "/opt/lampp/htdocs/service/userInfo.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 150260,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								32406,
+								32406
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 13885.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 15,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "tarun.sublime-project",
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 241.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

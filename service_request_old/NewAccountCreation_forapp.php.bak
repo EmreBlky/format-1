@@ -1,0 +1,118 @@
+﻿<?php
+include("../connection.php");
+//include_once(__DOCUMENT_ROOT.'/include/header.php');
+//include_once(__DOCUMENT_ROOT.'/include/leftmenu_service.php');
+
+/*include($_SERVER['DOCUMENT_ROOT']."/format/include/header.php");
+include($_SERVER['DOCUMENT_ROOT']."/format/include/leftmenu_service.php");*/
+ 
+$action = $_GET['action'];
+$id = $_GET['id'];
+$page = $_POST['page'];
+if($action=='edit' or $action=='editp')
+    {
+        $result = select_query("select * from new_account_creation where id=$id");   
+    }
+  $device_price = 0;
+ $device_price_vat = 0;
+ $device_price_total = 0;
+ $device_rent_Price = 0;
+ $device_rent_service_tax = 0;
+ $TxtDTotalREnt = 0;
+
+
+if(isset($_POST))
+{
+    $action = $_POST['action'];
+    $id = $_POST["id"];
+    $date = date("Y-m-d H:i:s");
+    $company = (isset($_POST["company"])) ? trim($_POST["company"]): "";
+    $account_manager = $_SESSION['user_name'];
+    $potential = (isset($_POST["potential"])) ? trim($_POST["potential"]): "";
+    $contact_person = (isset($_POST["contact_person"])) ? trim($_POST["contact_person"]): "";
+    $contact_number = (isset($_POST["contact_number"])) ? trim($_POST["contact_number"]): "";
+    $billing_name = (isset($_POST["billing_name"])) ? trim($_POST["billing_name"]): "";
+    $billing_address = (isset($_POST["billing_address"])) ? trim($_POST["billing_address"]): "";
+    $mode_of_payment = (isset($_POST["mode_of_payment"])) ? trim($_POST["mode_of_payment"]): "";
+    $type_of_org = (isset($_POST["type_of_org"])) ? trim($_POST["type_of_org"]): "";
+    $pan_no = (isset($_POST["pan_no"])) ? trim($_POST["pan_no"]): "";
+    $dimts = (isset($_POST["dimts"])) ? trim($_POST["dimts"]): "";
+   
+    //device_price, device_price_vat,device_price_total,device_rent_Price,device_rent_service_tax,TxtDTotalREnt
+   
+    if($mode_of_payment=="Cash")
+    {
+        $device_price_total = (isset($_POST["device_price_total1"])) ? trim($_POST["device_price_total1"]): 0;
+        $TxtDTotalREnt = (isset($_POST["TxtDTotalREnt1"])) ? trim($_POST["TxtDTotalREnt1"]): 0;
+        $rent_month = (isset($_POST["rent_month"])) ? trim($_POST["rent_month"]): "";
+   
+    }
+    else if($mode_of_payment=="Cheque")
+    {
+        $device_price = (isset($_POST["device_price"])) ? trim($_POST["device_price"]): 0;
+        $device_price_vat = (isset($_POST["device_price_vat"])) ? trim($_POST["device_price_vat"]): 0;
+        $device_price_total = (isset($_POST["device_price_total"])) ? trim($_POST["device_price_total"]): 0;
+        $device_rent_Price = (isset($_POST["device_rent_Price"])) ? trim($_POST["device_rent_Price"]): 0;
+        $device_rent_service_tax = (isset($_POST["device_rent_service_tax"])) ? trim($_POST["device_rent_service_tax"]): 0;
+        $TxtDTotalREnt = (isset($_POST["TxtDTotalREnt"])) ? trim($_POST["TxtDTotalREnt"]): 0;
+        $rent_month = (isset($_POST["rent_month1"])) ? trim($_POST["rent_month1"]): "";
+   
+    }
+    else if($mode_of_payment=="Demo")
+    {
+        $demo = (isset($_POST["Demo"])) ? trim($_POST["Demo"]): 0;
+    }
+    else if($mode_of_payment=="Lease")
+    {
+        $device_price_total = (isset($_POST["device_amount_total"])) ? trim($_POST["device_amount_total"]): 0;
+    }
+   
+    $vehicle_type = (isset($_POST["vehicle_type"])) ? trim($_POST["vehicle_type"]): "";
+    $account_type = (isset($_POST["account_type"])) ? trim($_POST["account_type"]): "";
+    $immobilizer = (isset($_POST["immobilizer"])) ? trim($_POST["immobilizer"]): "";
+    $ac_on_off = (isset($_POST["ac_on_off"])) ? trim($_POST["ac_on_off"]): "";
+    $email_id = (isset($_POST["email_id"])) ? trim($_POST["email_id"]): "";
+    $user_name = (isset($_POST["user_name"])) ? trim($_POST["user_name"]): "";
+    $user_password = (isset($_POST["user_password"])) ? trim($_POST["user_password"]): "";
+    $service_comment = (isset($_POST["service_comment"])) ? trim($_POST["service_comment"]): "";
+    $new_acc_salescomment = (isset($_POST["new_acc_salescomment"])) ? trim($_POST["new_acc_salescomment"]): "";
+   
+    $sales_manager = $_POST["sales_manager"];
+    //device_price, device_price_vat,device_price_total,device_rent_Price,device_rent_service_tax,TxtDTotalREnt
+ 
+ 
+  if($sales_manager=="") {
+    $sales_manager_edit = $result[0]['sales_manager'];
+    }
+    else {
+    $sales_manager_edit = $sales_manager;
+    }
+ 
+    $rent_status = (isset($_POST["rent_status"])) ? trim($_POST["rent_status"]): "";
+    $dimts_fee = (isset($_POST["dimts_fee"])) ? trim($_POST["dimts_fee"]): "";
+
+
+
+if($action=='edit')
+    {
+   
+     $query="update new_account_creation set company='".$company."',potential='".$potential."',contact_person='".$contact_person."',contact_number='".$contact_number."',billing_name='".$billing_name."' ,billing_address='".$billing_address."',type_of_org='".$type_of_org."',pan_no='".$pan_no."',demo_time='".$demo."',device_price='".$device_price."',device_price_vat='".$device_price_vat."',device_price_total='".$device_price_total."',device_rent_Price='".$device_rent_Price."',device_rent_service_tax='".$device_rent_service_tax."',DTotalREnt='".$TxtDTotalREnt."',mode_of_payment='".$mode_of_payment."',vehicle_type='".$vehicle_type."',immobilizer='".$immobilizer."',ac_on_off='".$ac_on_off."',account_type='".$account_type."',email_id='".$email_id."',user_name='".$user_name."',user_password='".$user_password."',dimts='".$dimts."',new_acc_salescomment='".$new_acc_salescomment."',sales_manager='".$sales_manager_edit."',rent_status='".$rent_status."',dimts_fee='".$dimts_fee."',rent_month='".$rent_month."' where id=$id";
+ 
+   
+    mysql_query($query);
+    echo "<script>document.location.href ='accountcreation.php?for=formatrequest'</script>";
+    }
+  else
+  {
+    echo  $query="insert into new_account_creation(date,account_manager, company,potential, contact_person,contact_number,billing_name, billing_address, type_of_org,pan_no, demo_time,device_price, device_price_vat,device_price_total, device_rent_Price,device_rent_service_tax, DTotalREnt, mode_of_payment,vehicle_type,immobilizer, ac_on_off,account_type, email_id,user_name,user_password,sales_manager, dimts,rent_status,dimts_fee,rent_month ,new_acc_salescomment, branch_id)
+      values('".$date."','".$account_manager."','".$company."','".$potential."','".$contact_person."','".$contact_number."','".$billing_name."','".$billing_address."','".$type_of_org."','".$pan_no."','".$demo."',".$device_price.",".$device_price_vat.",".$device_price_total.",".$device_rent_Price.",".$device_rent_service_tax.",".$TxtDTotalREnt.",'".$mode_of_payment."','".$vehicle_type."','".$immobilizer."','".$ac_on_off."','".$account_type."','".$email_id."','".$user_name."','".$user_password."','".$sales_manager."','".$dimts."','".$rent_status."','".$dimts_fee."','".$rent_month."','".$new_acc_salescomment."','".$_POST["branch_id"]."')";
+    
+    mysql_query($query);
+    //echo "<script>document.location.href ='accountcreation.php?for=formatrequest'</script>";
+	echo "success";
+     }
+
+}
+
+?>
+ 
