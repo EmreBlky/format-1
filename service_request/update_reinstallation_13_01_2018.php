@@ -1177,17 +1177,17 @@ $jq(document).ready(function(){
   $jq('#datetimepicker').datetimepicker({
     onChangeDateTime:logic,
     onShow:logic,
-    startDate:  '#datetimepicker_format_locale',step:10
+    //startDate:  '#datetimepicker_format_locale',step:10
   });
   $jq('#datetimepicker1').datetimepicker({
     onChangeDateTime:logic,
     onShow:logic,
-    startDate:  '#datetimepicker_format_locale',step:10
+    //startDate:  '#datetimepicker_format_locale',step:10
   });
   $jq('#datetimepicker2').datetimepicker({
     onChangeDateTime:logic,
     onShow:logic,
-    startDate:  '#datetimepicker_format_locale',step:10
+    //startDate:  '#datetimepicker_format_locale',step:10
   });
 
 

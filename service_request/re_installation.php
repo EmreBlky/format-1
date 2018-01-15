@@ -349,8 +349,6 @@ function deviceStatus(device){
 }
 
 
-
-
 function req_info(){  
   
   if(document.form1.main_user_id.value=="")

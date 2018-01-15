@@ -139,8 +139,6 @@ if(isset($_POST['submit']))
 
         if($atime_status=="Till")
         {
-
-       
             $time=$_POST['time'];
             $sql="update $internalsoftware.installation_request set sales_person='".$sales_person_id."', `user_id`= '".$main_user_id2."', `company_name`='".$company."', time='".$time."', atime_status='".$atime_status."', model='".$model."', contact_number='".$contact_number."' , contact_person='".$contact_person."',Zone_area='".$Area."', location='".$branchLocation."',veh_type='".$veh_type."',required='".$required."',designation='".$designation."',alt_designation='".$alt_designation."',alt_cont_person='".$alt_cont_person."',standard='".$del_nodelux."',actype='".$actype."',MachineType='".$MachineType."',TruckType='".$TruckType."',TrailerType='".$TrailerType."',billing='".$billing."',accessories_tollkit='".$accessories_tollkits."',alter_contact_no='".$alt_cont_number."',device_type='".$deviceType."',luxury='".$luxury."',branch_type='".$location1."',inter_branch='".$interbranch."',installation_status='".$installation_status."' where id='".$id."'"; 
             
@@ -586,19 +584,16 @@ function showAccess(radioValue)
    
 }
  
- function standardType(radioValue){
+ function aclux(radioValue){
 
   //alert(radioValue);
-     if(radioValue=='Delux')
-     {
-          document.getElementById('actype').style.display = "block";
-     }
-     else if(radioValue=='NonDelux')
+     if(radioValue=='NonLuxury')
      {
           document.getElementById('actype').style.display = "none";
      }
+     
      else{
-          document.getElementById('actype').style.display = "none";
+          document.getElementById('actype').style.display = "block";
      }
 
 
@@ -638,12 +633,12 @@ function vehicleType(radioValue)
     }
     else if(radioValue=="Car")
     {
-        document.getElementById('standard').style.display = "none";
+       document.getElementById('MachineType').style.display = "none";
         document.getElementById('TruckType').style.display = "none";
-        document.getElementById('MachineType').style.display = "none";
         document.getElementById('TrailerType').style.display = "none";
+        document.getElementById('standard').style.display = "none";
         document.getElementById('lux').style.display = "block";
-        document.getElementById('actype').style.display = "none";
+        document.getElementById('actype').style.display = "block";
         
     }
     else if(radioValue=="Tempo")
@@ -679,7 +674,6 @@ function vehicleType(radioValue)
         document.getElementById('standard').style.display = "none";
         document.getElementById('TruckType').style.display = "none";
         document.getElementById('actype').style.display = "none";
-        document.getElementById('actype').style.display = "none";
         document.getElementById('TrailerType').style.display = "none";
         document.getElementById('lux').style.display = "none";
         document.getElementById('MachineType').style.display = "block";
@@ -703,6 +697,24 @@ function vehicleType(radioValue)
 }
 
 
+function lux(radioValue){
+
+  alert(radioValue);
+     if(radioValue=='Delux')
+     {
+          document.getElementById('actype').style.display = "block";
+     }
+     else if(radioValue=='NonDelux')
+     {
+          document.getElementById('actype').style.display = "none";
+     }
+     else{
+          document.getElementById('actype').style.display = "none";
+     }
+
+
+}
+
 function standardType(radioValue){
 
   //alert(radioValue);
@@ -721,14 +733,12 @@ function standardType(radioValue){
 
 }
 
-function aclux(radioValue)
-{
-
- 
+// function aclux(radioValue)
+// { 
   
-          document.getElementById('actype').style.display = "block";
+//           document.getElementById('actype').style.display = "block";
           
-}
+// }
 // function aclux(radioValue)
 // {
 //     //alert(radioValue);
@@ -1077,13 +1087,15 @@ ul,li { margin:0; padding:0; list-style:none;}
                   <option value="NonDelux" <?php if($result[0]['standard']=='NonDelux') {?> selected="selected" <?php } ?>>NonDelux</option>
                 </select>
               </td>
+            
               <td>
                 <select name="actype" id="actype" >
                   <option value="" selected>Select AC Category</option>
-                  <option value="AC" <?php if($result[0]['actype']=='AC') {?> selected="selected" <?php } ?>>AC</option>
+                  <option value="AC" <?php if($result[0]['actype']=='AC' && (($result[0]['veh_type']=='Bus') || ($result[0]['veh_type']=='Truck'))) {?> selected="selected" <?php } ?>>AC</option>
                   <option value="NonAC" <?php if($result[0]['actype']=='NonAC') {?> selected="selected" <?php } ?>>Non-AC</option>
                 </select>
               </td>
+    
               <td>
                 <select name="TrailerType" id="TrailerType" palceholder="Vehicle Type" style="width:150px;display:none" >
                   <option value="" selected>Select Trailer Type</option>
@@ -1177,17 +1189,17 @@ $jq(document).ready(function(){
   $jq('#datetimepicker').datetimepicker({
     onChangeDateTime:logic,
     onShow:logic,
-    //startDate:  '#datetimepicker_format_locale',step:10
+    startDate:  '#datetimepicker_format_locale',step:10
   });
   $jq('#datetimepicker1').datetimepicker({
     onChangeDateTime:logic,
     onShow:logic,
-    //startDate:  '#datetimepicker_format_locale',step:10
+    startDate:  '#datetimepicker_format_locale',step:10
   });
   $jq('#datetimepicker2').datetimepicker({
     onChangeDateTime:logic,
     onShow:logic,
-    //startDate:  '#datetimepicker_format_locale',step:10
+    startDate:  '#datetimepicker_format_locale',step:10
   });
 
 
@@ -1327,7 +1339,7 @@ include("../include/footer.php");
 
 
 <script>StatusBranch12("<?php echo $result[0]['branch_type'];?>");TillBetweenTime12("<?php echo $result[0]['atime_status'];?>");
-vehicleType("<?php echo $result[0]['veh_type'];?>");standardType("<?php echo $result[0]['standard'];?>");aclux("<?php echo $result[0]['actype'];?>");accesShow("<?php echo $result[0]['acess_selection'];?>")
+vehicleType("<?php echo $result[0]['veh_type'];?>");standardType("<?php echo $result[0]['standard'];?>");accesShow("<?php echo $result[0]['acess_selection'];?>")
 
 function deviceStaus(imei,setDivId){
   $jq.ajax({
