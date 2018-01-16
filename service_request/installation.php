@@ -81,18 +81,14 @@ tbody tr {
 <div class="top-bar">
   
   <h1>Installation Request</h1>
-  <!-- <div style="margin-left:796px;font-size:12px;"> -->
-    <!-- <a href="add_installation.php">Installation</a> ||  -->
-    <!-- <a href="re_installation.php">Re-Addition</a> ||  -->
+  <div style="margin-left:796px;font-size:12px;">
+    <a href="add_installation.php">Installation</a> || 
+    <a href="re_installation.php">Re-Addition</a> || 
     <!-- <a href="add_installation.php">Crack</a> ||  -->
-    <!-- <a href="online_crack.php">Online-Crack</a> -->
-  <!-- </div> -->
+    <a href="online_crack.php">Online-Crack</a>
+  </div>
 </div>
 <div class="top-bar">
-
-  
-    <span style><a style="float:right" href="online_crack.php" > Online Crack </a><span style="float:right">||</span><a style="float:right" href="re_installation.php" >Re-Addition </a><span style="float:right">||</span><a style="float:right" href="add_installation.php" >Installation </a></h4><br/>
-
   <div style="float:right";><font style="color:#e5e50d;font-weight:bold;">GreenYellow:</font> Urgent Installation</div>
   <br/>
   <div style="float:right";><font style="color:#f9f500;font-weight:bold;">Yellow:</font> Back from Admin</div>
@@ -212,7 +208,20 @@ for($i=0;$i<count($query);$i++)
         <?php if($query[$i]['location']!=""){?>
         <td width="1%" align="center">&nbsp;<?php echo $query[$i]['location'];?></td>
         <?php }else{ $city= select_query("select * from tbl_city_name where branch_id='".$query[$i]['inter_branch']."'");?>
-        <td width="1%" align="center">&nbsp;<?php echo $city[0]['city'];?></td>
+        <td width="1%" align="center">
+
+
+
+          &nbsp;<?php echo $city[0]['city'];
+
+          $wrapcity = wordwrap($city[0]['city'], 8, "\n", true);
+
+          echo "$wrapcity\n";
+          
+          ?>
+
+
+        </td>
         <?php }?>
         <td width="1%">&nbsp;
           <?php 
