@@ -8,6 +8,7 @@ include($_SERVER['DOCUMENT_ROOT']."/format/include/leftmenu_service.php");*/
 
 ?>
 <script>
+
 function backComment(row_id)
 {
    var retVal = prompt("Write Comment : ", "Comment");
@@ -22,19 +23,14 @@ function backComment(row_id)
 
 function addComment(row_id,retVal)
 {
-	//alert(user_id);
-	//return false;
 $.ajax({
-		type:"GET",
-		url:"userInfo.php?action=InstallationbackComment",
- 		 
-		 data:"row_id="+row_id+"&comment="+retVal,
-		success:function(msg){
-			 // alert(msg);
-		 
-		location.reload(true);		
-		}
-	});
+    type:"GET",
+    url:"userInfo.php?action=InstallationbackComment",
+    data:"row_id="+row_id+"&comment="+retVal,
+    success:function(msg){
+      location.reload(true);    
+    }
+  });
 }
 
 function doneConfirm(row_id)
@@ -43,7 +39,7 @@ function doneConfirm(row_id)
   if (x)
   {
   approve(row_id);
-      return ture;
+      return true;
   }
   else
     return false;
@@ -51,44 +47,74 @@ function doneConfirm(row_id)
 
 function approve(row_id)
 {
-	
+ // alert(row_id);
 $.ajax({
-		type:"GET",
-		url:"userInfo.php?action=InstallationConfirm",
- 		data:"row_id="+row_id,
-		success:function(msg){
-			//alert(msg);
-		location.reload(true);		
-		}
-	});
+    type:"GET",
+    url:"userInfo.php?action=InstallationConfirm",
+    data:"row_id="+row_id,
+    success:function(msg){
+     // alert("Request Confirmed");
+      location.reload(true);    
+    }
+  });
 }
 
 </script>
-
-
+<style>
+thead {
+  display:table;
+  width:100%;
+  width:calc(100% - 20px);
+}
+tbody {
+  height:400px;
+  overflow:auto;
+  overflow-x:hidden;
+  display:block;
+}
+tbody tr {
+  display:table;
+  width:100%;
+  table-layout:fixed;
+}
+thead td{
+      width:20;
+}
+</style>
 <div class="top-bar">
-  <h3><a style="float:right" href="online_crack.php" > Online Crack </a><span style="float:right">||</span><a style="float:right" href="re_addition.php" >Re-Addition </a><span style="float:right">||</span><a style="float:right" href="add_installation.php" >Installation </a></h3><br/><br>
-  <div style="float:right";><font style="color:#ADFF2F;font-weight:bold;">GreenYellow:</font> Urgent Installation</div>
+  
+  <h1>Installation Request</h1>
+  <div style="margin-left:796px;font-size:12px;">
+    <a href="add_installation.php">Installation</a> || 
+    <a href="re_installation.php">Re-Addition</a> || 
+    <!-- <a href="add_installation.php">Crack</a> ||  -->
+    <a href="online_crack.php">Online-Crack</a>
+  </div>
+</div>
+<div class="top-bar">
+  <div style="float:right";><font style="color:#e5e50d;font-weight:bold;">GreenYellow:</font> Urgent Installation</div>
   <br/>
-  <div style="float:right";><font style="color:#F2F5A9;font-weight:bold;">Yellow:</font> Back from Admin</div>
+  <div style="float:right";><font style="color:#f9f500;font-weight:bold;">Yellow:</font> Back from Admin</div>
   <br/>
   <div style="float:right";><font style="color:#99FF66;font-weight:bold;">Green:</font> Closed Installation</div>
   <br/>
   <div style="float:right";><font style="color:#B6B6B4;font-weight:bold;">Grey:</font> Approved</div>
   <br/>
   <div style="float:right";><font style="color:#EDA4FF;font-weight:bold;">LightBlue:</font> InterBranch Installation</div>
+  <br/>
+  <div style="float:right";><font style="color:#ff9bc8;font-weight:bold;">Pink:</font> Pending Installtion</div>
 </div>
 <div class="table">
-  <? 
+<?php 
 $fromdateof_service="";
 $todaydate = date("Y-m-d  H:i:s");
 $newdate = strtotime ( '-5 day' , strtotime ( $todaydate ) ) ;
 $fromdateof_service = date ( 'Y-m-j H:i:s' , $newdate );
-
+$PendingDateService = date('Y-m-d', strtotime("-4 days"));
 $mode=$_GET['mode'];
 if($mode=='') { $mode="new"; }
-	
-   if($mode=='close')
+  
+  if($mode=='close')
   {
     $query = select_query("SELECT *,DATE_FORMAT(req_date,'%d %b %Y %h:%i %p') as req_date,DATE_FORMAT(time,'%d %b %Y %h:%i %p') as time FROM installation where (installation_status='5' or installation_status='6') and time>'".$fromdateof_service."' and branch_id=".$_SESSION['BranchId']." and request_by='".$_SESSION['username']."' order by id desc");
   }
@@ -96,21 +122,17 @@ if($mode=='') { $mode="new"; }
   {
    
   $query = select_query("SELECT *,DATE_FORMAT(req_date,'%d %b %Y %h:%i %p') as req_date,DATE_FORMAT(time,'%d %b %Y %h:%i %p') as time FROM installation_request where  (installation_status ='1' or installation_status='2' or installation_status='4' or installation_status='7' or installation_status='8' or installation_status='9' or installation_status='3')   and branch_id=".$_SESSION['BranchId']."  and request_by='".$_SESSION['username']."'  order by id desc");
-  }	
-
-	?>
+  } 
+  //echo '<pre>'; print_r($query); die;
+  ?>
   <div style="float:right"><a href="installation.php?mode=new">New</a> | <a href="installation.php?mode=close">Closed</a></div>
   <?php
  
-
-	
- 
-
 ?>
   <table cellpadding="0" cellspacing="0" border="0" class="display" id="example">
     <thead>
       <tr>
-        <th>Job Type</th>
+        <th nowrap>Job Type</th>
         <th>Request By </th>
         <th>Request Date </th>
         <th><font color="#0E2C3C"><b>Sales Person </b></font></th>
@@ -126,7 +148,7 @@ if($mode=='') { $mode="new"; }
         <th><font color="#0E2C3C"><b>Contact Details</b></font></th>
         <th><font color="#0E2C3C"><b>Current Status</b></font></th>
         <?php if($mode=='close') { ?>
-        <th><font color="#0E2C3C"><b>View Detail/Closed</b></font></th>
+        <th  ><font color="#0E2C3C"><b>View Detail/Closed</b></font></th>
         <?php }
         else
         { ?>
@@ -139,29 +161,25 @@ if($mode=='') { $mode="new"; }
  
 for($i=0;$i<count($query);$i++)
 {
-
   $date1=date_create(date("Y-m-d"));
   $date2=date_create(date("Y-m-d",strtotime($query[$i]['req_date'])));
   $diff=date_diff($date2,$date1);
 
-	$sales=select_query("select name from sales_person where id='".$query[$i]['sales_person']."' ");
-	 	
+  $sales=select_query("select name from sales_person where id='".$query[$i]['sales_person']."' ");
+
 ?>
-      
       <tr <?php if($diff->format("%a") > 5) { echo 'style="background-color:#ff9bc8"';} else{if($query[$i]["approve_status"]==1 && $query[$i]["installation_status"]==9){ echo 'style="background-color:#B6B6B4"';} elseif($query[$i]['installation_status']==5 or $query[$i]['installation_status']==6 )  {  ?> style="background:#99FF66;" <?php }elseif( $query[$i]["admin_comment"]!="" && ($query[$i]["sales_comment"]=="" || $query[$i]["installation_status"]==7)){ echo 'style="background-color:#F2F5A9"';}elseif($query[$i]['required']=='urgent'){ if($PendingSql[$i]["req_date"] == $query[$i]['req_date']){ ?> style="background:#ff9bc8" <?php } else{ ?> style="background:#ADFF2F" <?php } }elseif($query[$i]['inter_branch']!=0){ ?>style="background:#EDA4FF" <?php }elseif($PendingSql[$i]["req_date"] == $query[$i]['req_date']){ ?>style="background:#ff9bc8" <?php }} ?>>
-        <td align="center">
-        <?php 
+        <td style="width:10px;" align="center" nowrap>
+          <?php 
        
           $sql1 = select_query("select instal_reinstall from installation_request WHERE id='".$query[$i]['id']."'");
 
           if($query[$i]['instal_reinstall'] == "installation"){ echo "I";}elseif($query[$i]['instal_reinstall'] == "re_install"){ echo "Re-Add";}elseif($query[$i]['instal_reinstall'] == "crack"){ echo "C";}elseif($query[$i]['instal_reinstall'] == "online_crack"){ echo "OC";}
           
-        ?>
+          ?>
         </td>
-        <td align="center">&nbsp;
-          <?php echo $query[$i]['request_by'];?>
-        </td>
-        <td nowrap>&nbsp;
+        <td style="width:10px;" align="center">&nbsp;<?php echo $query[$i]['request_by'];?></td>
+        <td width="3%" nowrap> &nbsp;
           <?php 
 
           echo date("Y-m-d",strtotime($query[$i]['req_date']))."<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -169,14 +187,16 @@ for($i=0;$i<count($query);$i++)
 
           ?>
         </td>
-        <td align="center">&nbsp;
-          <?php echo $sales[0]['name'];?></td>
-        <? $sql="SELECT Userid AS id,UserName AS sys_username FROM addclient  WHERE Userid=".$query[$i]["user_id"];
-      	$rowuser=select_query($sql);
-      	?>
-        <td align="center"><?echo $rowuser[0]["sys_username"];?></td>
-        <td align="center">&nbsp;<?php echo $query[$i]['no_of_vehicals'];?></td>
-        <td align="center">
+        <td width="2%" align="center">&nbsp;<?php echo $sales[0]['name'];?></td>
+        <?php 
+          $sql="SELECT Userid AS id,UserName AS sys_username FROM addclient  WHERE Userid=".$query[$i]["user_id"];
+          $rowuser=select_query($sql);
+
+          //print_r($rowuser);die();
+        ?>
+        <td width="3%" align="center"><?echo $rowuser[0]["sys_username"];?></td>
+        <td width="2%" align="center">&nbsp;<?php echo $query[$i]['no_of_vehicals'];?></td>
+        <td width="4%"align="center">&nbsp;
           <?php 
             if(($query[$i]['instal_reinstall'] == 're_install') || ($query[$i]['instal_reinstall'] == 'online_crack')){
               echo "Not Required";
@@ -187,39 +207,45 @@ for($i=0;$i<count($query);$i++)
           ?>
         </td>
         <?php if($query[$i]['location']!=""){?>
-        <td align="center">&nbsp;
+        <td width="2%" align="center">
 
-          <?php 
-            $wrapcity = wordwrap($query[$i]['location'], 8, "\n", true);
-            echo "$wrapcity\n";
-          ?>
+          &nbsp;<?php 
+          $wrapcity = wordwrap($query[$i]['location'], 8, "\n", true);
 
-        </td>
+          echo "$wrapcity\n";
+
+          ?></td>
         <?php }else{ $city= select_query("select * from tbl_city_name where branch_id='".$query[$i]['inter_branch']."'");?>
-        <td align="center">&nbsp;
-          <?php
+        <td width="2%" align="center">
 
-            $wrapcity = wordwrap($city[0]['city'], 2, "\n", false);
-            echo "$wrapcity\n";
+
+
+         <?php
+
+          //print_r($city);
+          $wrapcity = wordwrap($city[0]['city'], 2, "\n", false);
+
+          echo "$wrapcity\n";
           
           ?>
+
 
         </td>
         <?php }?>
-        <td align="center">&nbsp;
-
+        <td width="4%">&nbsp;
           <?php 
-          $sql2 = select_query("select Zone_area from installation_request WHERE id='".$query[$i]['id']."'");
-          $sql3 = select_query("SELECT name FROM re_city_spr_1 WHERE id='".$sql2[0]['Zone_area']."'");
+          $sql1 = select_query("select Zone_area from installation_request WHERE id='".$query[$i]['id']."'");
+          $sql2 = select_query("SELECT name FROM re_city_spr_1 WHERE id='".$sql1[0]['Zone_area']."'");
 
-          $wraplocation = wordwrap($sql3[0]['name'], 10, "\n", true);
+          $wraplocation = wordwrap($sql2[0]['name'], 10, "\n", true);
+
           echo "$wraplocation\n";
+
+          //echo $sql2[0]['name'];
           
           ?>
-
         </td>
-        <td align="center">&nbsp;
-
+        <td width="3%" align="center">
           <?php
           $sql5 = select_query("select landmark from installation_request WHERE id='".$query[$i]['id']."'");
 
@@ -229,8 +255,8 @@ for($i=0;$i<count($query);$i++)
           ?>
 
         </td>
-        <td align="center">&nbsp;
-          <?php 
+        <td width="2%" align="center" nowrap>
+        <?php 
         
 
           if($query[$i]['instal_reinstall'] == 're_install'){
@@ -246,27 +272,27 @@ for($i=0;$i<count($query);$i++)
           }
       
           ?>
-
         </td>
-        <td align="center">
+  
+        <td width="3%" align="center">
           <?php
 
           echo $query[$i]['accessories_tollkit'] == '' ? "no" : "yes";
 
           ?>
+
         </td>
-        
-        <td nowrap>&nbsp;
+        <td width="3%" align="center" nowrap>
+
           <?php 
             echo date("Y-m-d",strtotime($query[$i]['time']))."<br>";
-            echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".date("G:i",strtotime($query[$i]['time']))."<br>";
+            echo date("G:i",strtotime($query[$i]['time']))."<br>";
 
             $sql4 = select_query("select atime_status from installation_request WHERE id='".$query[$i]['id']."'");
-            if($sql4[0]['atime_status'] == 'Till')
-            echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;".$sql4[0]['atime_status'];
-            else
-            echo "&nbsp;&nbsp;&nbsp;&nbsp;".$sql4[0]['atime_status'];  
+
+            echo $sql4[0]['atime_status'];
           ?>
+
         </td>
         <td width="3%">
           <?php
@@ -280,7 +306,9 @@ for($i=0;$i<count($query);$i++)
           ?>
 
         </td>
-        <td width="3%" align="center">
+
+
+<td width="3%" align="center">
          <b><?  if($query[$i]["installation_status"]==7 && ($query[$i]["admin_comment"]!="" || $query[$i]["sales_comment"]=="")){echo "Reply Pending at Request Side";}
        elseif($query[$i]["installation_status"]==7 && $query[$i]["admin_comment"]=="" ){echo "Pending Saleslogin for Information";}
        elseif($query[$i]["approve_status"]==0 && $query[$i]["installation_status"]==8 ){echo "Pending Admin Approval";}
@@ -293,9 +321,11 @@ for($i=0;$i<count($query);$i++)
        elseif($query[$i]["installation_status"]==5 || $query[$i]["installation_status"]==6){echo "Installation Close";}?></b>
 
        </td>
-       <td width="3%" align="center" nowrap>
+
+
+        <td width="3%" align="center" nowrap>
             <?php if($mode=='close') { ?>
-                  <a href="#" onclick="Show_record(<?php echo $query[$i]["id"];?>,'installation_request','popup1'); " class="topopup">View Detail <br> Closed</a>
+                  <a href="#" onclick="Show_record(<?php echo $query[$i]["id"];?>,'installation','popup1'); " class="topopup">View Detail <br> Closed</a>
             <?php }
              else {
             ?>
@@ -342,7 +372,8 @@ for($i=0;$i<count($query);$i++)
         
         
       </tr>
-      <?php  }?>
+      <?php   }?>
+      
   </table>
   <div id="toPopup">
     <div class="close">close</div>
@@ -358,7 +389,10 @@ for($i=0;$i<count($query);$i++)
   <div class="loader"></div>
   <div id="backgroundPopup"></div>
 </div>
-<?
+
+
+<?php
+
 include("../include/footer.php");
 
 ?>

@@ -27,21 +27,20 @@ $page=$_POST['page'];
 if($action=='edit')
 {
     $Header="Edit Re-Addition";
-    $result = select_query("select * from installation_request where id=$id and branch_id=".$_SESSION['BranchId']);  
-    //echo '<pre>';print_r($result);
+    $result = select_query("select * from $internalsoftware.installation_request where id=$id and branch_id=".$_SESSION['BranchId']);   
     $Zone_area = $result[0]["Zone_area"];
-    $area = select_query("SELECT id,`name` FROM re_city_spr_1 WHERE id='".$Zone_area."'");
-    $devicelList = select_query("SELECT dtype.id as dev_type_id,dtype.device_type as deviceType FROM new_account_model_master as newmodel LEFT JOIN device_type as dtype ON newmodel.device_type=dtype.id WHERE new_account_reqid='".$result[0]['user_id']."'");
-    $devModelList = select_query("SELECT dm.id as model_id,dm.device_model as model_name from new_account_model_master as newmodel inner join device_model as dm  ON newmodel.device_model=dm.id WHERE newmodel.new_account_reqid='".$result[0]['user_id']."' and dm.parent_id='".$result[0]['device_type']."'");
-    $sql=select_query("select access_toolkit from new_account_creation where user_id='".$result[0]["user_id"]."' ");
+    $area = select_query("SELECT id,`name` FROM $internalsoftware.re_city_spr_1 WHERE id='".$Zone_area."'");
+    $devicelList = select_query("SELECT dtype.id as dev_type_id,dtype.device_type as deviceType FROM $internalsoftware.new_account_model_master as newmodel LEFT JOIN $internalsoftware.device_type as dtype ON newmodel.device_type=dtype.id WHERE new_account_reqid='".$result[0]['user_id']."'");
+    $devModelList = select_query("SELECT dm.id as model_id,dm.device_model as model_name from $internalsoftware.new_account_model_master as newmodel inner join $internalsoftware.device_model as dm  ON newmodel.device_model=dm.id WHERE newmodel.new_account_reqid='".$result[0]['user_id']."' and dm.parent_id='".$result[0]['device_type']."'");
+    $sql=select_query("select $internalsoftware.access_toolkit from new_account_creation where user_id='".$result[0]["user_id"]."' ");
     $toolName=array();
 
-      $sql1=select_query("select accessories_tollkit from installation_request where id=".$id);
+      $sql1=select_query("select $internalsoftware.accessories_tollkit from installation_request where id=".$id);
       $toolkitId = explode("#",$sql1[0]['accessories_tollkit']);
 
       for($i=0;$i<=count($toolkitId)-1;$i++)
       {
-        $sqlToolsName=select_query("select * from toolkit_access where id='".$toolkitId[$i]."'");
+        $sqlToolsName=select_query("select * from $internalsoftware.toolkit_access where id='".$toolkitId[$i]."'");
         $data = array(
 
           "item_id"=>$sqlToolsName[0]['id'],
@@ -65,7 +64,7 @@ if(isset($_POST['submit']))
     $date=date("Y-m-d H:i:s");
     $account_manager=$_SESSION['username'];
     $sales_person=trim($_POST['sales_person']);
-    $sales_manager = select_query("select id as sales_id from sales_person where name='".$sales_person."' limit 1");
+    $sales_manager = select_query("select id as sales_id from $internalsoftware.sales_person where name='".$sales_person."' limit 1");
     $sales_person_id=$sales_manager[0]['sales_id'];
     $main_user_id2=$_POST['main_user_id2'];
     $company=$_POST['company'];
@@ -109,7 +108,7 @@ if(isset($_POST['submit']))
 
     // $installation_status = $_POST['installation_status'];
     $installation_status=1;
-    $Zone_data = select_query("SELECT id,`name` FROM re_city_spr_1 WHERE `name`='".$_POST['Zone_area']."'");
+    $Zone_data = select_query("SELECT id,`name` FROM $internalsoftware.re_city_spr_1 WHERE `name`='".$_POST['Zone_area']."'");
     $zone_count = count($Zone_data);
     
     if($zone_count > 0)
@@ -127,7 +126,7 @@ if(isset($_POST['submit']))
     $interbranch = $_POST['inter_branch_loc'];
 
     if($location1 == 'Interbranch'){
-      $query = select_query("select city from tbl_city_name where branch_id='".$interbranch."'");
+      $query = select_query("select city from $internalsoftware.tbl_city_name where branch_id='".$interbranch."'");
       $branchLocation = $query[0]['city'];
     }
     else
@@ -140,8 +139,10 @@ if(isset($_POST['submit']))
 
         if($atime_status=="Till")
         {
+
+       
             $time=$_POST['time'];
-            $sql="update installation_request set sales_person='".$sales_person_id."', `user_id`= '".$main_user_id2."', `company_name`='".$company."', time='".$time."', atime_status='".$atime_status."', model='".$model."', contact_number='".$contact_number."' , contact_person='".$contact_person."',Zone_area='".$Area."', location='".$branchLocation."',veh_type='".$veh_type."',required='".$required."',designation='".$designation."',alt_designation='".$alt_designation."',alt_cont_person='".$alt_cont_person."',standard='".$del_nodelux."',actype='".$actype."',MachineType='".$MachineType."',TruckType='".$TruckType."',TrailerType='".$TrailerType."',billing='".$billing."',accessories_tollkit='".$accessories_tollkits."',alter_contact_no='".$alt_cont_number."',device_type='".$deviceType."',luxury='".$luxury."',installation_status='".$installation_status."' where id='".$id."'";
+            $sql="update $internalsoftware.installation_request set sales_person='".$sales_person_id."', `user_id`= '".$main_user_id2."', `company_name`='".$company."', time='".$time."', atime_status='".$atime_status."', model='".$model."', contact_number='".$contact_number."' , contact_person='".$contact_person."',Zone_area='".$Area."', location='".$branchLocation."',veh_type='".$veh_type."',required='".$required."',designation='".$designation."',alt_designation='".$alt_designation."',alt_cont_person='".$alt_cont_person."',standard='".$del_nodelux."',actype='".$actype."',MachineType='".$MachineType."',TruckType='".$TruckType."',TrailerType='".$TrailerType."',billing='".$billing."',accessories_tollkit='".$accessories_tollkits."',alter_contact_no='".$alt_cont_number."',device_type='".$deviceType."',luxury='".$luxury."',branch_type='".$location1."',inter_branch='".$interbranch."',installation_status='".$installation_status."' where id='".$id."'"; 
             
             $execute=mysql_query($sql);
         }
@@ -151,12 +152,12 @@ if(isset($_POST['submit']))
             $time=$_POST['time1'];
             $totime=$_POST['totime'];
 
-            $sql="update installation_request set sales_person='".$sales_person_id."', `user_id`= '".$main_user_id2."', `company_name`='".$company."', time='".$time."',totime='".$totime."',atime_status='".$atime_status."', model='".$model."', contact_number='".$contact_number."' ,contact_person='".$contact_person."',Zone_area='".$Area."', location='".$branchLocation."',  veh_type='".$veh_type."',required='".$required."',designation='".$designation."',alt_designation='".$alt_designation."',alt_cont_person='".$alt_cont_person."',standard='".$del_nodelux."',actype='".$actype."',MachineType='".$MachineType."',TruckType='".$TruckType."',TrailerType='".$TrailerType."',billing='".$billing."',accessories_tollkit='".$accessories_tollkits."',alter_contact_no='".$alt_cont_number."',device_type='".$deviceType."',luxury='".$luxury."',landmark='".$landmark."',installation_status='".$installation_status."' where id='".$id."'";      
+            $sql="update $internalsoftware.installation_request set sales_person='".$sales_person_id."', `user_id`= '".$main_user_id2."', `company_name`='".$company."', time='".$time."',totime='".$totime."',atime_status='".$atime_status."', model='".$model."', contact_number='".$contact_number."' ,contact_person='".$contact_person."',Zone_area='".$Area."', location='".$branchLocation."',  veh_type='".$veh_type."',required='".$required."',designation='".$designation."',alt_designation='".$alt_designation."',alt_cont_person='".$alt_cont_person."',standard='".$del_nodelux."',actype='".$actype."',MachineType='".$MachineType."',TruckType='".$TruckType."',TrailerType='".$TrailerType."',billing='".$billing."',accessories_tollkit='".$accessories_tollkits."',alter_contact_no='".$alt_cont_number."',device_type='".$deviceType."',luxury='".$luxury."',landmark='".$landmark."',branch_type='".$location1."',inter_branch='".$interbranch."',installation_status='".$installation_status."' where id='".$id."'";       
             $execute=mysql_query($sql);
             
         }
          
-        $idImei = select_query("select id from installation where inst_req_id=$id");
+        $idImei = select_query("select id from $internalsoftware.installation where inst_req_id=$id");
 
         if(count($idImei) > 0){
           
@@ -167,14 +168,14 @@ if(isset($_POST['submit']))
           }
           
           for($j=0;$j<=count($id);$j++){
-            $sql="update installation set device_imei='".$deviceimeiupdate[$j]."', `imei_status`= '".$devicestatusUpdate[$j]."' where id='".$id[$j]."'"; 
+            $sql="update $internalsoftware.installation set device_imei='".$deviceimeiupdate[$j]."', `imei_status`= '".$devicestatusUpdate[$j]."' where id='".$id[$j]."'"; 
             $execute=mysql_query($sql);
           }
         }
 
         if($installation_status == '7')
         {
-            $update_query = mysql_query("update installation_request set installation_status=8 where id=$id");
+            $update_query = mysql_query("update $internalsoftware.installation_request set installation_status=8 where id=$id");
         }
        
         echo "<script>document.location.href ='installation.php'</script>";
@@ -190,6 +191,10 @@ var mode;
 
 function req_info()
 { 
+
+
+
+
 
    var inter_branch=document.forms["form1"]["inter_branch"].value;
     if (inter_branch==null || inter_branch=="")
@@ -328,8 +333,7 @@ function req_info()
     document.form1.contact_person.focus();
     return false;
   }
-  
-  else if  ((/[^a-z|^A-Z|^0-9|^\s]/).test(contactPerson)) {
+  else if (/[\d]/.test(contactPerson)) {
     alert("Contact Person should be Characters");
     document.form1.contact_person.focus();
     return false;
@@ -369,9 +373,7 @@ function req_info()
       document.form1.contact_person2.focus();
       return false;
     }
-     
-  else if  ((/[^a-z|^A-Z|^0-9|^\s]/).test(contactPerson2)) {
-      contactPerson
+    else if (/[\d]/.test(contactPerson2)) {
       alert("Contact Person should be Characters");
       document.form1.contact_person2.focus();
       return false;
@@ -498,9 +500,8 @@ function req_info()
 
   } 
   
- }     
-
-
+ } 
+} 
    
 function setVisibility(id, visibility)
 {
@@ -638,13 +639,12 @@ function vehicleType(radioValue)
     }
     else if(radioValue=="Car")
     {
-        document.getElementById('actype').style.display = "none";
-        document.getElementById('standard').style.display = "none";
+         document.getElementById('MachineType').style.display = "none";
         document.getElementById('TruckType').style.display = "none";
-        document.getElementById('MachineType').style.display = "none";
         document.getElementById('TrailerType').style.display = "none";
-        document.getElementById('lux').style.display = "block";
-        
+        document.getElementById('standard').style.display = "block";
+        document.getElementById('lux').style.display = "none";
+        document.getElementById('actype').style.display = "block";
         
     }
     else if(radioValue=="Tempo")
@@ -721,22 +721,22 @@ function standardType(radioValue){
 
 
 }
-function aclux(radioValue)
-{
-    //alert(radioValue);
-     if(radioValue=='luxury')
-     {
-          document.getElementById('actype').style.display = "block";
-     }
-     else if(radioValue=='NonLuxury')
-     {
-          document.getElementById('actype').style.display = "none";
-     }
-     else{
-          document.getElementById('actype').style.display = "none";
-     }
+// function aclux(radioValue)
+// {
+//     //alert(radioValue);
+//      if(radioValue=='luxury')
+//      {
+//           document.getElementById('actype').style.display = "block";
+//      }
+//      else if(radioValue=='NonLuxury')
+//      {
+//           document.getElementById('actype').style.display = "none";
+//      }
+//      else{
+//           document.getElementById('actype').style.display = "none";
+//      }
 
-} 
+// } 
 
 function accesShow(radioValue)
 {
@@ -879,19 +879,19 @@ ul,li { margin:0; padding:0; list-style:none;}
       </tr>
 
       <?php } ?>
-       <tr>
+      <tr>
         <td nowrap align="right">Branch:* </td>
         <td><?php $branch_data = select_query("select * from tbl_city_name where branch_id='".$_SESSION['BranchId']."'"); ?>
-          <input type='radio' disabled="disabled" name ='inter_branch' readonly id='inter_branch' value= 'Samebranch' <?php if($result[0]['branch_type']=='Samebranch'){echo "checked=\"checked\""; }?> onchange="StatusBranch(this.value);">
+          <input type='radio' Name ='inter_branch' id='inter_branch' value= 'Samebranch' <?php if($result[0]['branch_type']=='Samebranch'){echo "checked=\"checked\""; }?> onchange="StatusBranch(this.value);">
           <?php echo $branch_data[0]["city"];?>
-          <input type='radio' disabled="disabled" name ='inter_branch' readonly id='inter_branch1' value= 'Interbranch' <?php if($result[0]['branch_type']=='Interbranch'){echo "checked=\"checked\""; }?>
+          <input type='radio' Name ='inter_branch' id='inter_branch1' value= 'Interbranch' <?php if($result[0]['branch_type']=='Interbranch'){echo "checked=\"checked\""; }?>
         onchange="StatusBranch(this.value);">
           Inter Branch 
         </td>
       </tr>
       <tr>
         <td colspan="2">
-          <table  id="branchlocation"  align="left"  <?php if($result[0]['branch_type']=='Interbranch') { ?>style="margin-left:25px;" <?php } ?> style="display:none;margin-left:40px;" cellspacing="5" cellpadding="5">
+          <table  id="branchlocation"  align="left"  <?php if($result[0]['branch_type']=='Interbranch') { ?>style="margin-left:8px;" <?php } ?> style="display:none;margin-left:8px;" cellspacing="5" cellpadding="5">
             <tr>
               <td align="left">Branch Name:*</td>
               <td>
@@ -938,7 +938,7 @@ ul,li { margin:0; padding:0; list-style:none;}
       
     <tr>
         <td nowrap align="right">Availbale Time status:*</td>
-        <td><select name="atime_status" id="atime_status" style="width:150px" onchange="TillBetweenTime12(this.value)">
+        <td><select name="atime_status" id="atime_status" style="width:150px" onchange="TillBetweenTime(this.value)">
             <option value="">Select Status</option>
             <option value="Till" <?php if($result[0]['atime_status']=='Till') {?> selected="selected" <?php } ?> >Till</option>
             <option value="Between" <?php if($result[0]['atime_status']=='Between') {?> selected="selected" <?php } ?> >Between</option>
@@ -950,7 +950,7 @@ ul,li { margin:0; padding:0; list-style:none;}
           <table  id="TillTime" align="left" style="width:100%;display:none;margin-left:63px;"  cellspacing="5" cellpadding="5">
             <tr>
               <td align="right">Time:*</td>
-              <td><input type="text" name="time" id="datetimepicker" value="<?php echo date("Y/m/d H:i",strtotime($result[0]['time']))?>"  style="width:147px"/></td>
+              <td><input type="text" name="time" id="datetimepicker" value="<?php echo date("Y/m/d H:i",strtotime($result[0]['time']))?>"  style="width:145px;border-radius: 5px;padding:2px;"/></td>
             </tr>
           </table>
           <table  id="BetweenTime" align="left" style="width:100%;display:none;margin-left:34px;"  cellspacing="5" cellpadding="5">
@@ -963,7 +963,7 @@ ul,li { margin:0; padding:0; list-style:none;}
               <td>
                 <?php
                 if($result[0]['totime'] == ''){ ?>
-                  <input type="text" name="totime" id="datetimepicker2"  style="width:147px" /></td>
+                  <input type="text" name="totime" id="datetimepicker2"  style="width:145px;border-radius: 5px;padding:2px;" /></td>
                 <?php }
                  else{ 
                  ?>  
@@ -1070,7 +1070,7 @@ ul,li { margin:0; padding:0; list-style:none;}
                 </select>
               </td>
               <td>
-                <select name="actype" id="actype" <?php if($result[0]['veh_type']=='Car' || $result[0]['veh_type']=='Bus') {?> style="width:147px;display:none;" <?php } ?>  style="width:147px;">
+                <select name="actype" id="actype" >
                   <option value="" selected>Select AC Category</option>
                   <option value="AC" <?php if($result[0]['actype']=='AC') {?> selected="selected" <?php } ?>>AC</option>
                   <option value="NonAC" <?php if($result[0]['actype']=='NonAC') {?> selected="selected" <?php } ?>>Non-AC</option>
@@ -1169,17 +1169,17 @@ $jq(document).ready(function(){
   $jq('#datetimepicker').datetimepicker({
     onChangeDateTime:logic,
     onShow:logic,
-    startDate:  '#datetimepicker_format_locale',step:10
+    //startDate:  '#datetimepicker_format_locale',step:10
   });
   $jq('#datetimepicker1').datetimepicker({
     onChangeDateTime:logic,
     onShow:logic,
-    startDate:  '#datetimepicker_format_locale',step:10
+    //startDate:  '#datetimepicker_format_locale',step:10
   });
   $jq('#datetimepicker2').datetimepicker({
     onChangeDateTime:logic,
     onShow:logic,
-    startDate:  '#datetimepicker_format_locale',step:10
+   // startDate:  '#datetimepicker_format_locale',step:10
   });
 
 
@@ -1196,11 +1196,16 @@ $jq(document).ready(function(){
 
       // End Accessories Checked Unchecked  
 
-   
+    $jq(document).click(function(){
+      $jq("#ajax_response").fadeOut('slow');
+    });
+
+    $jq("#required").focus();
+
     var offset = $jq("#Zone_area").offset();
     var width = $jq("#Zone_area").width()-2;
     $jq("#ajax_response").css("left",offset);
-    $jq("#ajax_response").css("width","13%");
+    $jq("#ajax_response").css("width","15%");
     $jq("#ajax_response").css("z-index","1");
     $jq("#Zone_area").keyup(function(event){
          //alert(event.keyCode);
@@ -1212,7 +1217,7 @@ $jq(document).ready(function(){
          {
             city_id=1;
          }
-         //alert(city_id);
+          //alert(keyword);
          if(keyword.length)
          {
              if(event.keyCode != 40 && event.keyCode != 38 && event.keyCode != 13)
@@ -1222,8 +1227,8 @@ $jq(document).ready(function(){
                    type: "POST",
                    url: "load_zone_area.php",
                    data: "data="+keyword+"&city_id="+city_id,
-                   success: function(msg){  
-                  // alert(msg); 
+                   success: function(msg){   
+                    //alert(msg)
                     if(msg != 0)
                       $jq("#ajax_response").fadeIn("slow").html(msg);
                     else
@@ -1275,7 +1280,7 @@ $jq(document).ready(function(){
                  break;
                  case 13:
                     $jq("#ajax_response").fadeOut("slow");
-                    $jq("#Zone_area").val($jq("li[class='selected'] a").text());
+                    $jq("#Zone_area").val($jqs("li[class='selected'] a").text());
                  break;
                 }
              }
@@ -1283,21 +1288,27 @@ $jq(document).ready(function(){
          else
             $jq("#ajax_response").fadeOut("slow");
     });
-   
     $jq("#ajax_response").mouseover(function(){
-        $jq(this).find("li a:first-child").mouseover(function () {
-              $jq(this).addClass("selected");
-        });
-        $jq(this).find("li a:first-child").mouseout(function () {
-              $jq(this).removeClass("selected");
-        });
-        $jq(this).find("li a:first-child").click(function () {
-              $jq("#Zone_area").val($jq(this).text());
-              $jq("#ajax_response").fadeOut("slow");
-        });
-    });
+      $jq(this).find("li a:first-child").mouseover(function () {
+        $jq(this).addClass("selected");
+      });
+      $jq(this).find("li a:first-child").mouseout(function () {
+        $jq(this).removeClass("selected");
+      });
+      $jq(this).find("li a:first-child").click(function () {
+        $jq("#Zone_area").val($jq(this).text());
+        $jq("#ajax_response").fadeOut("slow");
+      });
+   
+    
 
- });
+    $jq('#accessories').multiselect({
+      columns: 1,
+      placeholder: 'Select Accessories',
+      search: true
+    });
+  });
+});
 
 </script>
 
@@ -1308,7 +1319,39 @@ include("../include/footer.php");
 
 
 <script>StatusBranch12("<?php echo $result[0]['branch_type'];?>");TillBetweenTime12("<?php echo $result[0]['atime_status'];?>");
-vehicleType("<?php echo $result[0]['veh_type'];?>");standardType("<?php echo $result[0]['standard'];?>");accesShow("<?php echo $result[0]['acess_selection'];?>")
+vehicleType("<?php echo $result[0]['veh_type'];?>");standardType("<?php echo $result[0]['standard'];?>");aclux("<?php echo $result[0]['actype'];?>");accesShow("<?php echo $result[0]['acess_selection'];?>")
 
+function deviceStaus(imei,setDivId){
+  $jq.ajax({
+      type:"GET",
+      url:"userinfo.php?action=imeistatus",
+      data:"imeiNo="+imei,
+      success:function(msg){
+        document.getElementById(setDivId).value = msg;
+      }
+  });
+}
+
+function imeiDeviceType(imei,setDivId){
+  $jq.ajax({
+      type:"GET",
+      url:"userinfo.php?action=imeiDeviceType",
+      data:"imeiNo="+imei,
+      success:function(msg){
+        document.getElementById(setDivId).value = msg;
+      }
+  });
+}
+
+function imeiDeviceModel(imei,setDivId){
+  $jq.ajax({
+      type:"GET",
+      url:"userinfo.php?action=imeiModelName",
+      data:"imeiNo="+imei,
+      success:function(msg){
+        //alert(msg)
+        document.getElementById(setDivId).value = msg;
+      }
+  });
+}
 </script>
-

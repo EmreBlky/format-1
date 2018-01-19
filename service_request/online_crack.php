@@ -1103,8 +1103,8 @@ $t.ajax({
 
 $t("#required").focus();
 
-    var offset = $t("#Zone_area").offset();
-    var width = $t("#Zone_area").width()-2;
+     var offset = $t("#Zone_area").offset();
+    var width = $t("#Zone_area").width();
     $t("#ajax_response").css("left",offset);
     $t("#ajax_response").css("width","15%");
     $t("#ajax_response").css("z-index","1");
@@ -1189,6 +1189,7 @@ $t("#required").focus();
          else
             $t("#ajax_response").fadeOut("slow");
     });
+   
     $t("#ajax_response").mouseover(function(){
         $t(this).find("li a:first-child").mouseover(function () {
               $t(this).addClass("selected");
@@ -1202,24 +1203,7 @@ $t("#required").focus();
         });
     });
 
-     $t('.checkbox1').on('change', function() {
-     var bool = $t('.checkbox1:checked').length === $t('.checkbox1').length;  
-      $t('#acess_all').prop('checked', bool);       
-       }); 
-       $t('#acess_all').on('change', function() {    
-       $t('.checkbox1').prop('checked', this.checked);      
-      });
-
-
-
-
-
-
-
-        $t(document).click(function(){
-        $t("#ajax_response").fadeOut('slow');
-    });
-
+ 
 
 
 

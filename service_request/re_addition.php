@@ -4,7 +4,6 @@ include_once(__DOCUMENT_ROOT.'/include/header.inc.php');
 include_once(__DOCUMENT_ROOT.'/include/leftmenu_service.php');
 ?>
 <link  href="<?php echo __SITE_URL;?>/css/auto_dropdown.css" rel="stylesheet" type="text/css" />
-<!-- <link href="<?php echo __SITE_URL;?>/js/Interbranchjquery.multiselect.css" rel="stylesheet" type="text/css"> -->
 <link rel="stylesheet" type="text/css" href="<?php echo __SITE_URL;?>/build/jquery.datetimepicker.css"/>
 <script src="<?php echo __SITE_URL;?>/build/jquery.datetimepicker.full.js"></script>
 
@@ -99,20 +98,27 @@ function vehicleType(radioValue)
 }
 function standardType(radioValue)
 {
-
-   document.getElementById('actype').style.display = "block";
+  if(radioValue=="Delux")
+  {
+        document.getElementById('actype').style.display = "block";
+  }
+  else
+  {
+        document.getElementById('actype').style.display = "none";
+  }
 
 }
 function aclux(radioValue)
 {
-
-  //alert(radioValue)
-  
-          document.getElementById('actype').style.display = "block";
-          //document.getElementById('deviceMdl').style.display = "block";
-
+  if(radioValue=="luxury")
+  {
+        document.getElementById('actype').style.display = "block";
+  }
+  else
+  {
+        document.getElementById('actype').style.display = "none";
+  }
 }
-
 /*Start auto ajax value load code*/
 
 /* End auto ajax value load code*/
@@ -133,7 +139,7 @@ $account_manager=$_SESSION['username'];
 
 if(isset($_POST['submit']))
 { 
-    //echo "<pre>";print_r($_POST);die;
+    echo "<pre>";print_r($_POST);die;
 
     $date=date("Y-m-d H:i:s");
     $account_manager=$_SESSION['username'];
@@ -199,12 +205,6 @@ if(isset($_POST['submit']))
     }
 
    
-    // for($i=0;$i<count($_POST['accessories']);$i++)
-    // {
-    //   $accessories_tollkit.=$_POST['accessories'][$i]."#";
-    //   $accessories_tollkits=substr($accessories_tollkit,0,strlen($accessories_tollkit)-1);
-    // }
-
     $veh_type=$_POST['veh_type'];
     $del_nodelux=$_POST['standard'];
     $actype=$_POST['actype'];
@@ -252,10 +252,7 @@ if(isset($_POST['submit']))
     
     if($required=="") { $required="normal"; }
        
-      $datapullingtime=$_POST['datapullingtime'];
-
-
-            
+      $datapullingtime=$_POST['datapullingtime'];            
         
         if($errorMsg=="")   
         { 
@@ -275,22 +272,7 @@ if(isset($_POST['submit']))
 
                    $insert_id = mysql_insert_id();
 
-                 //  if($installation_status == 1)
-                 //  {
-                 //    //echo $no_of_vehicals;die;
-                 //    for($N=0;$N<$no_of_vehicals;$N++)
-                 //    { 
-                 //        $installation = "INSERT INTO installation(`inst_req_id`, `req_date`, `request_by`,sales_person,`user_id`, `company_name`, no_of_vehicals, device_imei, device_status, imei_status, location,model,time, contact_number,installed_date, status, contact_person, veh_type, required,branch_id,installation_status, Zone_area,atime_status,`inter_branch`, branch_type, instal_reinstall, designation, device_type, alter_contact_no, accessories_tollkit, billing, TrailerType, TruckType, MachineType, actype, standard, alt_cont_person, alt_designation, acess_selection, imei_device_type, imei_device_model) VALUES('".$insert_id."','".$date."',
-                 //        '".$account_manager."','".$sales_person_id."', '".$main_user_id."', '".$company."','".$no_of_vehicals."','".$imei[$N]."','".$status."','".$deviceStatus[$N]."','".$location."','".$model."','".$time."',
-                 //        '".$contact_number."',now(),1,'".$contact_person."','".$veh_type."','".$required."','".$_SESSION['BranchId']."','".$installation_status."','".$Area."',
-                 //        '".$atime_status."','".$city."','".$branch_type."','".$instal_reinstall."','".$designation2."','".$deviceType."','".$contact_number2."','".$accessories_tollkits."','".$billing."','".$TrailerType."','".$TruckType."','".$MachineType."','".$actype."','".$del_nodelux."','".$contact_person2."','".$designation1."','".$acess_selection."','".$txtDeviceType[$N]."','".$txtDeviceModel[$N]."')";
-
-                 //       $execute_inst=mysql_query($installation);
-                 //    }
-
-                 //   // echo $installation; die;
-                  
-                 // }
+                 
                
                  header("location:installation.php");
           }
@@ -314,22 +296,7 @@ if(isset($_POST['submit']))
                        $execute=mysql_query($sql);
                        $insert_id = mysql_insert_id();   
 
-                    //   if($installation_status == 1)
-                    //   {
-
-                    //       for($N=0;$N<$no_of_vehicals;$N++)  
-                    //       {
-                    //           $installation = "INSERT INTO installation(`inst_req_id`, `req_date`, `request_by`,sales_person,`user_id`, `company_name`,no_of_vehicals,location,model,time, totime,contact_number,installed_date, status, contact_person, veh_type,required,branch_id,installation_status, Zone_area,atime_status,`inter_branch`,
-                    //            branch_type, instal_reinstall,designation,device_type,alter_contact_no,accessories_tollkit,billing,TrailerType,TruckType,MachineType,actype,standard,alt_cont_person,alt_designation,acess_selection,device_imei,device_status,imei_status, imei_device_type, imei_device_model) VALUES('".$insert_id."','".$date."',
-                    //            '".$account_manager."','".$sales_person_id."', '".$main_user_id."', '".$company."','1','".$location."','".$model."','".$time."',
-                    //            '".$totime."','".$contact_number."',now(),1,'".$contact_person."','".$veh_type."'  ,
-                    //            '".$required."','".$_SESSION['BranchId']."',
-                    //            '".$installation_status."','".$Area."','".$atime_status."','".$city."','".$branch_type."','".$instal_reinstall."','".$designation."','".$deviceType."','".$alt_cont_number."','".$accessories_tollkits."','".$billing."','".$TrailerType."','".$TruckType."','".$MachineType."','".$actype."','".$del_nodelux."','".$alt_cont_person."','".$alt_designation."','".$acess_selection."','".$imei[$N]."','".$status."','".$deviceStatus[$N]."','".$txtDeviceType[$N]."','".$txtDeviceModel[$N]."')";
-                       
-                    //           $execute_inst=mysql_query($installation);
-                    //       }  
-                    //      // echo $installation; die;   
-                    // }
+                   
                  header("location:installation.php");
             }
         }   
@@ -541,8 +508,7 @@ function req_info(){
 
               alert('Please check (To Time) is greater (From Time)');  
               document.form1.datetimepicker2.focus();   
-              return false; 
-
+              return false;
           }
         }
     } 
@@ -563,7 +529,7 @@ function req_info(){
     document.form1.contact_person.focus();
     return false;
   }
-  else if (/[\d]/.test(contactPerson)) {
+  else if ((/[^a-z|^A-Z|^0-9|^\s]/).test(contactPerson)) {
     alert("Contact Person should be Characters");
     document.form1.contact_person.focus();
     return false;
@@ -603,7 +569,7 @@ function req_info(){
       document.form1.contact_person2.focus();
       return false;
     }
-    else if (/[\d]/.test(contactPerson2)) {
+    else if  ((/[^a-z|^A-Z|^0-9|^\s]/).test(contactPerson2)) {
       alert("Contact Person should be Characters");
       document.form1.contact_person2.focus();
       return false;
@@ -790,10 +756,12 @@ function StatusBranch(radioValue)
   //alert(radioValue)
    if(radioValue=="Interbranch")
     {
+        document.getElementById('Zone_area').value= "" ;
         document.getElementById('branchlocation').style.display = "block";
     }
     else if(radioValue=="Samebranch")
     {
+        document.getElementById('Zone_area').value= "" ;
         document.getElementById('branchlocation').style.display = "none";
     }
     else
@@ -962,9 +930,9 @@ ul,li { margin:0; padding:0; list-style:none;}
       <tr>
         <td  align="right">Branch:<font color="red">*</font></td>
         <td><?php $branch_data = select_query("select * from tbl_city_name where branch_id='".$_SESSION['BranchId']."'"); ?>
-          <input type='radio' Name ='inter_branch' id='inter_branch' value='Samebranch' onchange="StatusBranch(this.value);">
+          <input type='radio' name ='inter_branch' id='inter_branch' value='Samebranch' onchange="StatusBranch(this.value);">
           <?php echo $branch_data[0]["city"];?>
-          <Input type='radio' Name ='inter_branch' id='inter_branch' value='Interbranch'
+          <Input type='radio' name ='inter_branch' id='inter_branch' value='Interbranch'
         onchange="StatusBranch(this.value);">
           Inter Branch &#160;&#160;&#160;&#160;&#160;<span id="msg2"></span>
         </td>
@@ -1214,9 +1182,7 @@ $jq(document).ready(function(){
 
   // End Designation Hide Show
 
-  // $jq('#deviecestatus').change(function() {
-  //   location.reload();
-  // });
+ 
 
   // Accessories Checked Unchecked
 
@@ -1236,14 +1202,14 @@ $jq(document).ready(function(){
   var offset = $jq("#Zone_area").offset();
     var width = $jq("#Zone_area").width()-2;
     $jq("#ajax_response").css("left",offset);
-    $jq("#ajax_response").css("width","15%");
+    $jq("#ajax_response").css("width","13%");
     $jq("#ajax_response").css("z-index","1");
     $jq("#Zone_area").keyup(function(event){
          //alert(event.keyCode);
          var keyword = $jq("#Zone_area").val();
          var city_id= $jq("#inter_branch_loc").val();
          var inter_branch= $jq("#inter_branch").val();
-          //alert(inter_branch);
+          alert(inter_branch);
          if(city_id=='')
          {
             city_id=1;
@@ -1359,6 +1325,7 @@ $jq(document).ready(function(){
               //alert(JSON.stringify(msg))
 
               var isNull = JSON.stringify(msg).indexOf("null")
+              //alert(isNull)
               
               if(isNull < 0){
                 
@@ -1580,7 +1547,6 @@ $jq.ajax({
 }
 
 
-  
 var logic = function( currentDateTime ){
   if (currentDateTime && currentDateTime.getDay() == 6){
     this.setOptions({
@@ -1591,18 +1557,40 @@ var logic = function( currentDateTime ){
       minTime:'8:00'
     });
 };
+
+    // var today = new Date();
+    // var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    // var time = today.getHours() + ":" + today.getMinutes();
+    // var dateTime = date+' '+time;
+
 $jq('#datetimepicker').datetimepicker({
-  onChangeDateTime:logic,
-  onShow:logic
+    'format': 'd/m/Y H:i',
+    'minDate': 0,
+    'closeOnDateSelect' : true,
+    'stepMinute' : 5,
+    'validateOnBlur' : true,
+    'minDateTime': new Date()
+
 });
+//var TIMESETTING = {format:'H:i',datepicker:false,scrollMonth: false,scrollInput: false,minTime:'07:00',maxTime:'09:00',formatTime:'H:i'};
+//$jq('#datetimepicker').datetimepicker(TIMESETTING);
+
 $jq('#datetimepicker1').datetimepicker({
-  onChangeDateTime:logic,
-  onShow:logic
+   'format': 'd/m/Y H:i',
+    'minDate': 0,
+    'closeOnDateSelect' : true,
+    'interval': 15,
+    'validateOnBlur' : true,
+    'minDateTime': new Date()
 });
 
 $jq('#datetimepicker2').datetimepicker({
-  onChangeDateTime:logic,
-  onShow:logic
+   'format': 'd/m/Y H:i',
+    'minDate': 0,
+    'closeOnDateSelect' : true,
+    'step': 15,
+    'validateOnBlur' : true,
+    'minDateTime': new Date()
 });
 
      $jq('.checkbox1').on('change', function() {
