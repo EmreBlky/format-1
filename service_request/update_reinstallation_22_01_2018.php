@@ -27,21 +27,21 @@ $page=$_POST['page'];
 if($action=='edit')
 {
     $Header="Edit Re-Addition";
-    $result = select_query("select * from $internalsoftware.installation_request where id=$id and branch_id=".$_SESSION['BranchId']);   
-    //echo "<pre>";print_r($result);
+    $result = select_query("select * from installation_request where id=$id and branch_id=".$_SESSION['BranchId']);  
+    //echo '<pre>';print_r($result);
     $Zone_area = $result[0]["Zone_area"];
-    $area = select_query("SELECT id,`name` FROM $internalsoftware.re_city_spr_1 WHERE id='".$Zone_area."'");
-    $devicelList = select_query("SELECT dtype.id as dev_type_id,dtype.device_type as deviceType FROM $internalsoftware.new_account_model_master as newmodel LEFT JOIN $internalsoftware.device_type as dtype ON newmodel.device_type=dtype.id WHERE new_account_reqid='".$result[0]['user_id']."'");
-    $devModelList = select_query("SELECT dm.id as model_id,dm.device_model as model_name from $internalsoftware.new_account_model_master as newmodel inner join $internalsoftware.device_model as dm  ON newmodel.device_model=dm.id WHERE newmodel.new_account_reqid='".$result[0]['user_id']."' and dm.parent_id='".$result[0]['device_type']."'");
-    $sql=select_query("select $internalsoftware.access_toolkit from new_account_creation where user_id='".$result[0]["user_id"]."' ");
+    $area = select_query("SELECT id,`name` FROM re_city_spr_1 WHERE id='".$Zone_area."'");
+    $devicelList = select_query("SELECT dtype.id as dev_type_id,dtype.device_type as deviceType FROM new_account_model_master as newmodel LEFT JOIN device_type as dtype ON newmodel.device_type=dtype.id WHERE new_account_reqid='".$result[0]['user_id']."'");
+    $devModelList = select_query("SELECT dm.id as model_id,dm.device_model as model_name from new_account_model_master as newmodel inner join device_model as dm  ON newmodel.device_model=dm.id WHERE newmodel.new_account_reqid='".$result[0]['user_id']."' and dm.parent_id='".$result[0]['device_type']."'");
+    $sql=select_query("select access_toolkit from new_account_creation where user_id='".$result[0]["user_id"]."' ");
     $toolName=array();
 
-      $sql1=select_query("select $internalsoftware.accessories_tollkit from installation_request where id=".$id);
+      $sql1=select_query("select accessories_tollkit from installation_request where id=".$id);
       $toolkitId = explode("#",$sql1[0]['accessories_tollkit']);
 
       for($i=0;$i<=count($toolkitId)-1;$i++)
       {
-        $sqlToolsName=select_query("select * from $internalsoftware.toolkit_access where id='".$toolkitId[$i]."'");
+        $sqlToolsName=select_query("select * from toolkit_access where id='".$toolkitId[$i]."'");
         $data = array(
 
           "item_id"=>$sqlToolsName[0]['id'],
@@ -60,12 +60,12 @@ if($action=='edit')
 <?php
 if(isset($_POST['submit']))
 { 
-    //echo '<pre>'; print_r($_POST);die;
+   //echo '<pre>'; print_r($_POST);die;
    
     $date=date("Y-m-d H:i:s");
     $account_manager=$_SESSION['username'];
     $sales_person=trim($_POST['sales_person']);
-    $sales_manager = select_query("select id as sales_id from $internalsoftware.sales_person where name='".$sales_person."' limit 1");
+    $sales_manager = select_query("select id as sales_id from sales_person where name='".$sales_person."' limit 1");
     $sales_person_id=$sales_manager[0]['sales_id'];
     $main_user_id2=$_POST['main_user_id2'];
     $company=$_POST['company'];
@@ -171,10 +171,11 @@ if(isset($_POST['submit']))
       $del_nodelux='';
       $actype='';
     }
-   
+    
     $billing = $_POST['billing'];
     $acess_selection = $_POST['access_radio'];
     $deviceType=$_POST['deviceType'];
+   
     $landmark = $_POST['landmark'];
    
     if($_POST['required']=="") { $required="normal"; }
@@ -182,7 +183,7 @@ if(isset($_POST['submit']))
 
     // $installation_status = $_POST['installation_status'];
     $installation_status=1;
-    $Zone_data = select_query("SELECT id,`name` FROM $internalsoftware.re_city_spr_1 WHERE `name`='".$_POST['Zone_area']."'");
+    $Zone_data = select_query("SELECT id,`name` FROM re_city_spr_1 WHERE `name`='".$_POST['Zone_area']."'");
     $zone_count = count($Zone_data);
     
     if($zone_count > 0)
@@ -200,7 +201,7 @@ if(isset($_POST['submit']))
     $interbranch = $_POST['inter_branch_loc'];
 
     if($location1 == 'Interbranch'){
-      $query = select_query("select city from $internalsoftware.tbl_city_name where branch_id='".$interbranch."'");
+      $query = select_query("select city from tbl_city_name where branch_id='".$interbranch."'");
       $branchLocation = $query[0]['city'];
     }
     else
@@ -213,10 +214,8 @@ if(isset($_POST['submit']))
 
         if($atime_status=="Till")
         {
-
-       
             $time=$_POST['time'];
-            $sql="update $internalsoftware.installation_request set sales_person='".$sales_person_id."', `user_id`= '".$main_user_id2."', `company_name`='".$company."', time='".$time."', atime_status='".$atime_status."', model='".$model."', contact_number='".$contact_number."' , contact_person='".$contact_person."',Zone_area='".$Area."', location='".$branchLocation."',veh_type='".$veh_type."',required='".$required."',designation='".$designation."',alt_designation='".$alt_designation."',alt_cont_person='".$alt_cont_person."',standard='".$del_nodelux."',actype='".$actype."',MachineType='".$MachineType."',TruckType='".$TruckType."',TrailerType='".$TrailerType."',billing='".$billing."',accessories_tollkit='".$accessories_tollkits."',alter_contact_no='".$alt_cont_number."',device_type='".$deviceType."',luxury='".$luxury."',inter_branch='".$interbranch."',installation_status='".$installation_status."' where id='".$id."'";
+            $sql="update installation_request set sales_person='".$sales_person_id."', `user_id`= '".$main_user_id2."', `company_name`='".$company."', time='".$time."', atime_status='".$atime_status."', model='".$model."', contact_number='".$contact_number."' , contact_person='".$contact_person."',Zone_area='".$Area."', location='".$branchLocation."',veh_type='".$veh_type."',required='".$required."',designation='".$designation."',alt_designation='".$alt_designation."',alt_cont_person='".$alt_cont_person."',standard='".$del_nodelux."',actype='".$actype."',MachineType='".$MachineType."',TruckType='".$TruckType."',TrailerType='".$TrailerType."',billing='".$billing."',accessories_tollkit='".$accessories_tollkits."',alter_contact_no='".$alt_cont_number."',device_type='".$deviceType."',luxury='".$luxury."',landmark='".$landmark."',installation_status='".$installation_status."' where id='".$id."'";
             
             $execute=mysql_query($sql);
         }
@@ -226,12 +225,12 @@ if(isset($_POST['submit']))
             $time=$_POST['time1'];
             $totime=$_POST['totime'];
 
-            $sql="update $internalsoftware.installation_request set sales_person='".$sales_person_id."', `user_id`= '".$main_user_id2."', `company_name`='".$company."', time='".$time."',totime='".$totime."',atime_status='".$atime_status."', model='".$model."', contact_number='".$contact_number."' ,contact_person='".$contact_person."',Zone_area='".$Area."', location='".$branchLocation."',  veh_type='".$veh_type."',required='".$required."',designation='".$designation."',alt_designation='".$alt_designation."',alt_cont_person='".$alt_cont_person."',standard='".$del_nodelux."',actype='".$actype."',MachineType='".$MachineType."',TruckType='".$TruckType."',TrailerType='".$TrailerType."',billing='".$billing."',accessories_tollkit='".$accessories_tollkits."',alter_contact_no='".$alt_cont_number."',device_type='".$deviceType."',luxury='".$luxury."',landmark='".$landmark."',inter_branch='".$interbranch."',installation_status='".$installation_status."' where id='".$id."'"; 
+            $sql="update installation_request set sales_person='".$sales_person_id."', `user_id`= '".$main_user_id2."', `company_name`='".$company."', time='".$time."',totime='".$totime."',atime_status='".$atime_status."', model='".$model."', contact_number='".$contact_number."' ,contact_person='".$contact_person."',Zone_area='".$Area."', location='".$branchLocation."',  veh_type='".$veh_type."',required='".$required."',designation='".$designation."',alt_designation='".$alt_designation."',alt_cont_person='".$alt_cont_person."',standard='".$del_nodelux."',actype='".$actype."',MachineType='".$MachineType."',TruckType='".$TruckType."',TrailerType='".$TrailerType."',billing='".$billing."',accessories_tollkit='".$accessories_tollkits."',alter_contact_no='".$alt_cont_number."',device_type='".$deviceType."',luxury='".$luxury."',landmark='".$landmark."',installation_status='".$installation_status."' where id='".$id."'";
             $execute=mysql_query($sql);
             
         }
          
-        $idImei = select_query("select id from $internalsoftware.installation where inst_req_id=$id");
+        $idImei = select_query("select id from installation where inst_req_id=$id");
 
         if(count($idImei) > 0){
           
@@ -242,14 +241,14 @@ if(isset($_POST['submit']))
           }
           
           for($j=0;$j<=count($id);$j++){
-            $sql="update $internalsoftware.installation set device_imei='".$deviceimeiupdate[$j]."', `imei_status`= '".$devicestatusUpdate[$j]."' where id='".$id[$j]."'"; 
+            $sql="update installation set device_imei='".$deviceimeiupdate[$j]."', `imei_status`= '".$devicestatusUpdate[$j]."' where id='".$id[$j]."'"; 
             $execute=mysql_query($sql);
           }
         }
 
         if($installation_status == '7')
         {
-            $update_query = mysql_query("update $internalsoftware.installation_request set installation_status=8 where id=$id");
+            $update_query = mysql_query("update installation_request set installation_status=8 where id=$id");
         }
        
         echo "<script>document.location.href ='installation.php'</script>";
@@ -264,7 +263,8 @@ if(isset($_POST['submit']))
 var mode;
 
 function req_info()
-{
+{ 
+
    var inter_branch=document.forms["form1"]["inter_branch"].value;
     if (inter_branch==null || inter_branch=="")
     {
@@ -402,7 +402,8 @@ function req_info()
     document.form1.contact_person.focus();
     return false;
   }
-  else if (/[\d]/.test(contactPerson)) {
+  
+  else if  ((/[^a-z|^A-Z|^0-9|^\s]/).test(contactPerson)) {
     alert("Contact Person should be Characters");
     document.form1.contact_person.focus();
     return false;
@@ -442,7 +443,9 @@ function req_info()
       document.form1.contact_person2.focus();
       return false;
     }
-    else if (/[\d]/.test(contactPerson2)) {
+     
+  else if  ((/[^a-z|^A-Z|^0-9|^\s]/).test(contactPerson2)) {
+      contactPerson
       alert("Contact Person should be Characters");
       document.form1.contact_person2.focus();
       return false;
@@ -483,7 +486,7 @@ function req_info()
 
     var luxaryType=document.forms["form1"]["lux"].value;
 
-    if(luxaryType=="luxury" || luxaryType=="NonLuxury")
+    if(luxaryType=="luxury")
     {
 
       if(document.form1.actype.value=="")
@@ -508,7 +511,7 @@ function req_info()
 
     var deluxType=document.forms["form1"]["standard"].value;
 
-    if(deluxType=="Delux" || deluxType=="NonDelux")
+    if(deluxType=="Delux")
     {
 
       if(document.form1.actype.value=="")
@@ -557,9 +560,21 @@ function req_info()
     }
 
   }
-  
+  if(vehType=="Tempo")
+  {
+
+    if(document.form1.actype.value=="")
+    {
+      alert("Please Select AC Type") ;
+      document.form1.actype.focus();
+      return false;
+    }
+
+  } 
   
  }     
+
+
    
 function setVisibility(id, visibility)
 {
@@ -645,23 +660,7 @@ function showAccess(radioValue)
    
 }
  
- function standardType(radioValue){
-
-  //alert(radioValue);
-     if(radioValue=='Delux')
-     {
-          document.getElementById('actype').style.display = "block";
-     }
-     else if(radioValue=='NonDelux')
-     {
-          document.getElementById('actype').style.display = "none";
-     }
-     else{
-          document.getElementById('actype').style.display = "none";
-     }
-
-
-}         
+       
 
 function StatusBranch12(radioValue)
 {
@@ -697,17 +696,18 @@ function vehicleType(radioValue)
     }
     else if(radioValue=="Car")
     {
+        document.getElementById('actype').style.display = "none";
         document.getElementById('standard').style.display = "none";
         document.getElementById('TruckType').style.display = "none";
         document.getElementById('MachineType').style.display = "none";
         document.getElementById('TrailerType').style.display = "none";
         document.getElementById('lux').style.display = "block";
-        document.getElementById('actype').style.display = "none";
+        
         
     }
     else if(radioValue=="Tempo")
     {
-        document.getElementById('actype').style.display = "none";
+        document.getElementById('actype').style.display = "block";
         document.getElementById('standard').style.display = "none";
         document.getElementById('TruckType').style.display = "none";
         document.getElementById('TrailerType').style.display = "none";
@@ -779,50 +779,24 @@ function standardType(radioValue){
 
 
 }
-
 function aclux(radioValue)
 {
-
- if(radioValue=='luxury'){
+    //alert(radioValue);
+     if(radioValue=='luxury')
+     {
           document.getElementById('actype').style.display = "block";
+     }
+     else if(radioValue=='NonLuxury')
+     {
+          document.getElementById('actype').style.display = "none";
      }
      else{
           document.getElementById('actype').style.display = "none";
      }
-          
-}
-// function aclux(radioValue)
-// {
-//     //alert(radioValue);
-//      if(radioValue=='luxury')
-//      {
-//           document.getElementById('actype').style.display = "block";
-//      }
-//      else if(radioValue=='NonLuxury')
-//      {
-//           document.getElementById('actype').style.display = "none";
-//      }
-//      else{
-//           document.getElementById('actype').style.display = "none";
-//      }
 
-// } 
+} 
 
-function accesShow(radioValue)
-{
-    if(radioValue=="yes")
-     {
-          document.getElementById('acc_yes').checked = true;
-          document.getElementById('accessTable').style.display = "block";
-          
-     }
-     else
-     {
-           document.getElementById('acc_no').checked = true;
-           document.getElementById('accessTable').style.display = "none";
-     }
 
-}
 </script> 
 
 <?php echo "<p align='left' style='padding-left: 250px;width: 500px;' class='message'>" .$errorMsg. "</p>" ; ?>
@@ -949,22 +923,22 @@ ul,li { margin:0; padding:0; list-style:none;}
       </tr>
 
       <?php } ?>
-      <tr>
+       <tr>
         <td nowrap align="right">Branch:* </td>
         <td><?php $branch_data = select_query("select * from tbl_city_name where branch_id='".$_SESSION['BranchId']."'"); ?>
-          <input type='radio' name ='inter_branch' id='inter_branch' value= 'Samebranch' <?php if($result[0]['branch_type']=='Samebranch'){echo "checked=\"checked\""; }?> onchange="StatusBranch(this.value);" disabled="disabled">
+          <input type='radio' disabled="disabled" name ='inter_branch' readonly id='inter_branch' value= 'Samebranch' <?php if($result[0]['branch_type']=='Samebranch'){echo "checked=\"checked\""; }?> onchange="StatusBranch(this.value);">
           <?php echo $branch_data[0]["city"];?>
-          <input type='radio' name ='inter_branch' id='inter_branch1' value= 'Interbranch' <?php if($result[0]['branch_type']=='Interbranch'){echo "checked=\"checked\""; }?>
-        onchange="StatusBranch(this.value);" disabled="disabled">
+          <input type='radio' disabled="disabled" name ='inter_branch' readonly id='inter_branch1' value= 'Interbranch' <?php if($result[0]['branch_type']=='Interbranch'){echo "checked=\"checked\""; }?>
+        onchange="StatusBranch(this.value);">
           Inter Branch 
         </td>
       </tr>
       <tr>
         <td colspan="2">
-          <table  id="branchlocation"  align="left"  <?php if($result[0]['branch_type']=='Interbranch') { ?> style="margin-left:25px;" <?php } ?> style="display:none;margin-left:15px;" cellspacing="5" cellpadding="5">
+          <table  id="branchlocation"  align="left"  <?php if($result[0]['branch_type']=='Interbranch') { ?>style="margin-left:25px;" <?php } ?> style="display:none;margin-left:40px;" cellspacing="5" cellpadding="5">
             <tr>
               <td align="left">Branch Name:*</td>
-              <td >
+              <td>
                 <select name="inter_branch_loc" id="inter_branch_loc" style="width:150px;">
                   <option value="" >-- Select One --</option>
                   <?php
@@ -1008,7 +982,7 @@ ul,li { margin:0; padding:0; list-style:none;}
       
     <tr>
         <td nowrap align="right">Availbale Time status:*</td>
-        <td><select name="atime_status" id="atime_status" style="width:150px" onchange="TillBetweenTime(this.value)">
+        <td><select name="atime_status" id="atime_status" style="width:150px" onchange="TillBetweenTime12(this.value)">
             <option value="">Select Status</option>
             <option value="Till" <?php if($result[0]['atime_status']=='Till') {?> selected="selected" <?php } ?> >Till</option>
             <option value="Between" <?php if($result[0]['atime_status']=='Between') {?> selected="selected" <?php } ?> >Between</option>
@@ -1020,25 +994,25 @@ ul,li { margin:0; padding:0; list-style:none;}
           <table  id="TillTime" align="left" style="width:100%;display:none;margin-left:63px;"  cellspacing="5" cellpadding="5">
             <tr>
               <td align="right">Time:*</td>
-              <td><input type="text" name="time" id="datetimepicker" value="<?php echo date("Y-m-d H:i",strtotime($result[0]['time']))?>"  style="width:145px;border-radius: 5px;padding:2px;"/></td>
+              <td><input type="text" name="time" id="datetimepicker" value="<?php echo date("Y/m/d H:i",strtotime($result[0]['time']))?>"  style="width:147px"/></td>
             </tr>
           </table>
           <table  id="BetweenTime" align="left" style="width:100%;display:none;margin-left:34px;"  cellspacing="5" cellpadding="5">
             <tr>
               <td align="right">From Time:*</td>
-              <td><input type="text" name="time1" id="datetimepicker1" style="width:145px;border-radius: 5px;padding:2px;" value="<?php echo date("Y-m-d H:i",strtotime($result[0]['time']))?>" /></td>
+              <td><input type="text" name="time1" id="datetimepicker1" style="width:145px;border-radius: 5px;padding:2px;" value="<?php echo date("Y/m/d H:i",strtotime($result[0]['time']))?>" /></td>
             </tr>
             <tr>
               <td align="right">To Time:*</td>
               <td>
                 <?php
                 if($result[0]['totime'] == ''){ ?>
-                  <input type="text" name="totime" id="datetimepicker2"  style="width:145px;border-radius: 5px;padding:2px;" <?php if(empty($result[0]['totime'])) { ?> value="" <?php } else { ?> value="<?php echo date("Y-m-d H:i",strtotime($result[0]['totime']))?>" <?php } ?> /></td>
+                  <input type="text" name="totime" id="datetimepicker2"  style="width:147px" /></td>
                 <?php }
                  else{ 
                  ?>  
                  
-                <input type="text" name="totime" id="datetimepicker2" value="<?php echo date("Y-m-d H:i",strtotime($result[0]['totime']))?>" style="width:145px;border-radius: 5px;padding:2px;"/></td>
+                <input type="text" name="totime" id="datetimepicker2" value="<?php echo date("Y/m/d H:i",strtotime($result[0]['totime']))?>" style="width:145px;border-radius: 5px;padding:2px;"/></td>
                 <?php } ?>
 
             </tr>
@@ -1064,13 +1038,13 @@ ul,li { margin:0; padding:0; list-style:none;}
             <td  height="32" align="right"><select name="designation" id="designation" style="margin-left:-4px"
             onchange="designationChange(this.value)">
                 <option value="">-- Select Designation --</option>
-                <option value="Driver" <?php if($result[0]['designation']=='Driver') {?> selected="selected" <?php } ?> >Driver</option>
-                <option value="Supervisor"  <?php if($result[0]['designation']=='Supervisor') {?> selected="selected" <?php } ?> >Supervisor</option>
-                <option value="Manager"  <?php if($result[0]['designation']=='Manager') {?> selected="selected" <?php } ?> >Manager</option>
-                <option value="Senior Manager"  <?php if($result[0]['designation']=='Senior Manager') {?> selected="selected" <?php } ?>  >Senior Manager</option>
-                 <option value="Owner"  <?php if($result[0]['designation']=='Owner') {?> selected="selected" <?php } ?> >Owner</option>
-                 <option value="Sale Person"  <?php if($result[0]['designation']=='Sale Person') {?> selected="selected" <?php } ?> >Sale Person</option>
-                 <option value="Others"  <?php if($result[0]['designation']=='Others') {?> selected="selected" <?php } ?>>Others</option>
+                <option value="driver" <?php if($result[0]['designation']=='driver') {?> selected="selected" <?php } ?> >Driver</option>
+                <option value="supervisor"  <?php if($result[0]['designation']=='supervisor') {?> selected="selected" <?php } ?> >Supervisor</option>
+                <option value="manager"  <?php if($result[0]['designation']=='manager') {?> selected="selected" <?php } ?> >Manager</option>
+                <option value="senior manager"  <?php if($result[0]['designation']=='senior manager') {?> selected="selected" <?php } ?>  >Senior Manager</option>
+                 <option value="owner"  <?php if($result[0]['designation']=='owner') {?> selected="selected" <?php } ?> >Owner</option>
+                 <option value="sale person"  <?php if($result[0]['designation']=='sale person') {?> selected="selected" <?php } ?> >Sale Person</option>
+                 <option value="others"  <?php if($result[0]['designation']=='others') {?> selected="selected" <?php } ?>>Others</option>
               
               </select>
             </td>
@@ -1078,7 +1052,7 @@ ul,li { margin:0; padding:0; list-style:none;}
               <input type="text" name="contact_person" id="contact_person"  placeholder="Contact Person" value="<?php echo $result[0]['contact_person']?>"  style="width:147px"/>
             </td>
             <td>
-              <input type="text" name="contact_number" id="contact_number" placeholder="Contact Number" minlength="10" maxlength="10" value="<?php echo $result[0]['contact_number']?>"  onkeypress="return event.charCode >= 48 && event.charCode <= 57"  style="width:147px"/>
+              <input type="text" name="contact_number" id="contact_number" placeholder="Contact Number"  value="<?php echo $result[0]['contact_number']?>"  onkeypress="return event.charCode >= 48 && event.charCode <= 57"  style="width:147px"/>
             </td>       
           </tr>
 
@@ -1086,13 +1060,13 @@ ul,li { margin:0; padding:0; list-style:none;}
             <td  height="32" align="right">
               <select name="designation2" id="designation2" style="margin-left:-4px" onchange="designationChange(this.value)">
                 <option value="">-- Select Designation --</option>
-                <option value="Driver" <?php if($result[0]['alt_designation']=='Driver') {?> selected="selected" <?php } ?> >Driver</option>
-                <option value="Supervisor"  <?php if($result[0]['alt_designation']=='Supervisor') {?> selected="selected" <?php } ?> >Supervisor</option>
-                <option value="Manager"  <?php if($result[0]['alt_designation']=='Manager') {?> selected="selected" <?php } ?> >Manager</option>
-                <option value="Senior Manager"  <?php if($result[0]['alt_designation']=='Senior Manager') {?> selected="selected" <?php } ?>  >Senior Manager</option>
-                 <option value="Owner"  <?php if($result[0]['alt_designation']=='Owner') {?> selected="selected" <?php } ?> >Owner</option>
-                <option value="Sale Person"  <?php if($result[0]['alt_designation']=='Sale Person') {?> selected="selected" <?php } ?> >Sale Person</option>
-                <option value="Others"  <?php if($result[0]['alt_designation']=='Others') {?> selected="selected" <?php } ?>>Others</option>
+                <option value="driver" <?php if($result[0]['alt_designation']=='driver') {?> selected="selected" <?php } ?> >Driver</option>
+                <option value="supervisor"  <?php if($result[0]['alt_designation']=='supervisor') {?> selected="selected" <?php } ?> >Supervisoer</option>
+                <option value="manager"  <?php if($result[0]['alt_designation']=='manager') {?> selected="selected" <?php } ?> >Manager</option>
+                <option value="senior manager"  <?php if($result[0]['alt_designation']=='senior manager') {?> selected="selected" <?php } ?>  >Senior Manager</option>
+                 <option value="owner"  <?php if($result[0]['alt_designation']=='owner') {?> selected="selected" <?php } ?> >Owner</option>
+                <option value="sale person"  <?php if($result[0]['alt_designation']=='sale person') {?> selected="selected" <?php } ?> >Sale Person</option>
+                <option value="others"  <?php if($result[0]['alt_designation']=='others') {?> selected="selected" <?php } ?>>Others</option>
               </select>
             </td>
             <td>
@@ -1140,7 +1114,7 @@ ul,li { margin:0; padding:0; list-style:none;}
                 </select>
               </td>
               <td>
-                <select name="actype" id="actype">
+                <select name="actype" id="actype" <?php if($result[0]['veh_type']=='Car' || $result[0]['veh_type']=='Bus') {?> style="width:147px;display:none;" <?php } ?>  style="width:147px;">
                   <option value="" selected>Select AC Category</option>
                   <option value="AC" <?php if($result[0]['actype']=='AC') {?> selected="selected" <?php } ?>>AC</option>
                   <option value="NonAC" <?php if($result[0]['actype']=='NonAC') {?> selected="selected" <?php } ?>>Non-AC</option>
@@ -1149,8 +1123,8 @@ ul,li { margin:0; padding:0; list-style:none;}
               <td>
                 <select name="TrailerType" id="TrailerType" palceholder="Vehicle Type" style="width:150px;display:none" >
                   <option value="" selected>Select Trailer Type</option>
-                  <option value="Genset  AC Trailer" <?php if($result[0]['TrailerType']=='Genset  AC Trailer') {?> selected="selected" <?php } ?>>Genset  AC Trailer</option>
-                  <option value="Refrigerated Trailer" <?php if($result[0]['TrailerType']=='Refrigerated Trailer') {?> selected="selected" <?php } ?>>Refrigerated Trailer</option>
+                  <option value="Genset  AC Trailer" <?php if($result[0]['veh_type']=='Machine') {?> selected="selected" <?php } ?>>Genset  AC Trailer</option>
+                  <option value="Refrigerated Trailer" <?php if($result[0]['veh_type']=='Machine') {?> selected="selected" <?php } ?>>Refrigerated Trailer</option>
                 </select>
               </td>
               <td>
@@ -1227,40 +1201,30 @@ $jq(document).ready(function(){
 
   
   var logic = function( currentDateTime ){
-  if (currentDateTime && currentDateTime.getDay() == 6){
-    this.setOptions({
-      minTime:'11:00'
-    });
-  }else
-    this.setOptions({
-      minTime:'8:00'
-    });
-};
-$jq('#datetimepicker').datetimepicker({
-  'format': 'Y-m-d H:i',
-    'minDate': 0,
-    'closeOnDateSelect' : true,
-    'interval': 15,
-    'validateOnBlur' : true,
-    'minDateTime': new Date()
-});
-$jq('#datetimepicker1').datetimepicker({
-    'format': 'Y-m-d H:i',
-    'minDate': 0,
-    'closeOnDateSelect' : true,
-    'interval': 15,
-    'validateOnBlur' : true,
-    'minDateTime': new Date()
-});
-
-$jq('#datetimepicker2').datetimepicker({
-  'format': 'Y-m-d H:i',
-    'minDate': 0,
-    'closeOnDateSelect' : true,
-    'interval': 15,
-    'validateOnBlur' : true,
-    'minDateTime': new Date()
-});
+    if (currentDateTime && currentDateTime.getDay() == 6){
+      this.setOptions({
+        minTime:'11:00'
+      });
+    }else
+      this.setOptions({
+        minTime:'8:00'
+      });
+  };
+  $jq('#datetimepicker').datetimepicker({
+    onChangeDateTime:logic,
+    onShow:logic,
+    startDate:  '#datetimepicker_format_locale',step:10
+  });
+  $jq('#datetimepicker1').datetimepicker({
+    onChangeDateTime:logic,
+    onShow:logic,
+    startDate:  '#datetimepicker_format_locale',step:10
+  });
+  $jq('#datetimepicker2').datetimepicker({
+    onChangeDateTime:logic,
+    onShow:logic,
+    startDate:  '#datetimepicker_format_locale',step:10
+  });
 
 
      // Accessories Checked Unchecked
@@ -1276,16 +1240,11 @@ $jq('#datetimepicker2').datetimepicker({
 
       // End Accessories Checked Unchecked  
 
-    $jq(document).click(function(){
-      $jq("#ajax_response").fadeOut('slow');
-    });
-
-    $jq("#required").focus();
-
+   
     var offset = $jq("#Zone_area").offset();
     var width = $jq("#Zone_area").width()-2;
     $jq("#ajax_response").css("left",offset);
-    $jq("#ajax_response").css("width","15%");
+    $jq("#ajax_response").css("width","13%");
     $jq("#ajax_response").css("z-index","1");
     $jq("#Zone_area").keyup(function(event){
          //alert(event.keyCode);
@@ -1297,7 +1256,7 @@ $jq('#datetimepicker2').datetimepicker({
          {
             city_id=1;
          }
-          //alert(keyword);
+         //alert(city_id);
          if(keyword.length)
          {
              if(event.keyCode != 40 && event.keyCode != 38 && event.keyCode != 13)
@@ -1307,8 +1266,8 @@ $jq('#datetimepicker2').datetimepicker({
                    type: "POST",
                    url: "load_zone_area.php",
                    data: "data="+keyword+"&city_id="+city_id,
-                   success: function(msg){   
-                    //alert(msg)
+                   success: function(msg){  
+                  // alert(msg); 
                     if(msg != 0)
                       $jq("#ajax_response").fadeIn("slow").html(msg);
                     else
@@ -1360,7 +1319,7 @@ $jq('#datetimepicker2').datetimepicker({
                  break;
                  case 13:
                     $jq("#ajax_response").fadeOut("slow");
-                    $jq("#Zone_area").val($jqs("li[class='selected'] a").text());
+                    $jq("#Zone_area").val($jq("li[class='selected'] a").text());
                  break;
                 }
              }
@@ -1368,27 +1327,21 @@ $jq('#datetimepicker2').datetimepicker({
          else
             $jq("#ajax_response").fadeOut("slow");
     });
-    $jq("#ajax_response").mouseover(function(){
-      $jq(this).find("li a:first-child").mouseover(function () {
-        $jq(this).addClass("selected");
-      });
-      $jq(this).find("li a:first-child").mouseout(function () {
-        $jq(this).removeClass("selected");
-      });
-      $jq(this).find("li a:first-child").click(function () {
-        $jq("#Zone_area").val($jq(this).text());
-        $jq("#ajax_response").fadeOut("slow");
-      });
    
-    
-
-    $jq('#accessories').multiselect({
-      columns: 1,
-      placeholder: 'Select Accessories',
-      search: true
+    $jq("#ajax_response").mouseover(function(){
+        $jq(this).find("li a:first-child").mouseover(function () {
+              $jq(this).addClass("selected");
+        });
+        $jq(this).find("li a:first-child").mouseout(function () {
+              $jq(this).removeClass("selected");
+        });
+        $jq(this).find("li a:first-child").click(function () {
+              $jq("#Zone_area").val($jq(this).text());
+              $jq("#ajax_response").fadeOut("slow");
+        });
     });
-  });
-});
+
+ });
 
 </script>
 
@@ -1399,39 +1352,7 @@ include("../include/footer.php");
 
 
 <script>StatusBranch12("<?php echo $result[0]['branch_type'];?>");TillBetweenTime12("<?php echo $result[0]['atime_status'];?>");
-vehicleType("<?php echo $result[0]['veh_type'];?>");standardType("<?php echo $result[0]['standard'];?>");aclux("<?php echo $result[0]['actype'];?>");accesShow("<?php echo $result[0]['acess_selection'];?>")
+vehicleType("<?php echo $result[0]['veh_type'];?>");standardType("<?php echo $result[0]['standard'];?>");
 
-function deviceStaus(imei,setDivId){
-  $jq.ajax({
-      type:"GET",
-      url:"userinfo.php?action=imeistatus",
-      data:"imeiNo="+imei,
-      success:function(msg){
-        document.getElementById(setDivId).value = msg;
-      }
-  });
-}
-
-function imeiDeviceType(imei,setDivId){
-  $jq.ajax({
-      type:"GET",
-      url:"userinfo.php?action=imeiDeviceType",
-      data:"imeiNo="+imei,
-      success:function(msg){
-        document.getElementById(setDivId).value = msg;
-      }
-  });
-}
-
-function imeiDeviceModel(imei,setDivId){
-  $jq.ajax({
-      type:"GET",
-      url:"userinfo.php?action=imeiModelName",
-      data:"imeiNo="+imei,
-      success:function(msg){
-        //alert(msg)
-        document.getElementById(setDivId).value = msg;
-      }
-  });
-}
 </script>
+

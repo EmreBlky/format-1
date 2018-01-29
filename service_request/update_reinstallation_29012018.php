@@ -500,8 +500,7 @@ function req_info()
 
   } 
   
- } 
-} 
+ }     
    
 function setVisibility(id, visibility)
 {
@@ -639,12 +638,12 @@ function vehicleType(radioValue)
     }
     else if(radioValue=="Car")
     {
-         document.getElementById('MachineType').style.display = "none";
+        document.getElementById('standard').style.display = "none";
         document.getElementById('TruckType').style.display = "none";
+        document.getElementById('MachineType').style.display = "none";
         document.getElementById('TrailerType').style.display = "none";
-        document.getElementById('standard').style.display = "block";
-        document.getElementById('lux').style.display = "none";
-        document.getElementById('actype').style.display = "block";
+        document.getElementById('lux').style.display = "block";
+        document.getElementById('actype').style.display = "none";
         
     }
     else if(radioValue=="Tempo")
@@ -720,6 +719,15 @@ function standardType(radioValue){
      }
 
 
+}
+
+function aclux(radioValue)
+{
+
+ 
+  
+          document.getElementById('actype').style.display = "block";
+          
 }
 // function aclux(radioValue)
 // {
@@ -891,7 +899,7 @@ ul,li { margin:0; padding:0; list-style:none;}
       </tr>
       <tr>
         <td colspan="2">
-          <table  id="branchlocation"  align="left"  <?php if($result[0]['branch_type']=='Interbranch') { ?>style="margin-left:8px;" <?php } ?> style="display:none;margin-left:8px;" cellspacing="5" cellpadding="5">
+          <table  id="branchlocation"  align="left"  <?php if($result[0]['branch_type']=='Interbranch') { ?>style="margin-left:8px;" <?php } ?> style="display:none;margin-left:25px;" cellspacing="5" cellpadding="5">
             <tr>
               <td align="left">Branch Name:*</td>
               <td>
@@ -963,7 +971,7 @@ ul,li { margin:0; padding:0; list-style:none;}
               <td>
                 <?php
                 if($result[0]['totime'] == ''){ ?>
-                  <input type="text" name="totime" id="datetimepicker2"  style="width:145px;border-radius: 5px;padding:2px;" /></td>
+                  <input type="text" name="totime" id="datetimepicker2"  style="width:145px;border-radius: 5px;padding:2px;" <?php if(empty($result[0]['totime'])) { ?> value="" <?php } else { ?> value="<?php echo date("Y/m/d H:i",strtotime($result[0]['totime']))?>" <?php } ?> /></td>
                 <?php }
                  else{ 
                  ?>  
@@ -1008,7 +1016,7 @@ ul,li { margin:0; padding:0; list-style:none;}
               <input type="text" name="contact_person" id="contact_person"  placeholder="Contact Person" value="<?php echo $result[0]['contact_person']?>"  style="width:147px"/>
             </td>
             <td>
-              <input type="text" name="contact_number" id="contact_number" placeholder="Contact Number"  value="<?php echo $result[0]['contact_number']?>"  onkeypress="return event.charCode >= 48 && event.charCode <= 57"  style="width:147px"/>
+              <input type="text" name="contact_number" id="contact_number" placeholder="Contact Number" minlength="10" maxlength="10" value="<?php echo $result[0]['contact_number']?>"  onkeypress="return event.charCode >= 48 && event.charCode <= 57"  style="width:147px"/>
             </td>       
           </tr>
 
@@ -1169,17 +1177,17 @@ $jq(document).ready(function(){
   $jq('#datetimepicker').datetimepicker({
     onChangeDateTime:logic,
     onShow:logic,
-    //startDate:  '#datetimepicker_format_locale',step:10
+    startDate:  '#datetimepicker_format_locale',step:10
   });
   $jq('#datetimepicker1').datetimepicker({
     onChangeDateTime:logic,
     onShow:logic,
-    //startDate:  '#datetimepicker_format_locale',step:10
+    startDate:  '#datetimepicker_format_locale',step:10
   });
   $jq('#datetimepicker2').datetimepicker({
     onChangeDateTime:logic,
     onShow:logic,
-   // startDate:  '#datetimepicker_format_locale',step:10
+    startDate:  '#datetimepicker_format_locale',step:10
   });
 
 

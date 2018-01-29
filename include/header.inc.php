@@ -14,10 +14,6 @@ else
 	 
 }
 
- /*include("../connection.php");*/
- 
-
-
 
 $sql_pending=mysql_query("SELECT COUNT(*) FROM services WHERE (pending='1' or newpending='1') and (pending_closed='0')");
 $row_pending=mysql_fetch_array($sql_pending);
@@ -38,10 +34,9 @@ $row_pending=mysql_fetch_array($sql_pending);
 		<link rel="shortcut icon" type="image/ico" href="http://www.datatables.net/media/images/favicon.ico" />
 		<link  href="<?php echo __SITE_URL;?>/css/admin.css" rel="stylesheet" type="text/css" />
 		<title>Online Request Portal</title>
-<script></script>
  
-<!--  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"> </script> 
- -->		<style type="text/css" title="currentStyle">
+ <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"> </script> 
+		<style type="text/css" title="currentStyle">
 			@import "<?php echo __SITE_URL;?>/media/css/demo_page.css";
 			@import "<?php echo __SITE_URL;?>/media/css/demo_table.css";
 		</style>
@@ -68,11 +63,12 @@ $row_pending=mysql_fetch_array($sql_pending);
     <link rel="stylesheet" href="http://trackingexperts.com/collection/thickbox/thickbox.css" type="text/css" media="projection, screen" />
 
 	<script type="text/javascript" charset="utf-8">
-        $(document).ready(function() {
-            $('#example').dataTable( {
+		var $jqt = jQuery.noConflict();
+        $jqt(document).ready(function() {
+            $jqt('#example').dataTable( {
                 "aaSorting": [[ 7, "desc" ]]
-            } );
-        } );
+            });
+        });
     </script> 
     <script type="text/javascript" language="javascript" src="<?php echo __SITE_URL;?>/media/js/jquery.dataTables.js"></script>
 

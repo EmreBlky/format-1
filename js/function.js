@@ -1,5 +1,5 @@
-var Path="http://203.115.101.54/format_testing/";
-//var Path="http://localhost/format/";
+//var Path="http://203.115.101.54/format_testing/";
+var Path="http://localhost/format/";
 
 var $s = jQuery.noConflict();
 

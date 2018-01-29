@@ -53,15 +53,15 @@ if(isset($_GET['action']) && $_GET['action']=='countDeletedImei')
 }
 
 if(isset($_GET['action']) && $_GET['action']=='getAllImei')
-  {    
+  {
     //echo 'tt'; die;
     $device_imei_data=array();
     $userId=$_GET['userId'];
-    $deviceStatus=$_GET['dStatus'];   
+    $deviceStatus=$_GET['dStatus'];
     //$sql="select distinct(imei) from deletion where user_id=".$userId;
 
     $deactive_query = select_query_live_con("SELECT sys_service_id FROM matrix.group_services WHERE active=0 AND sys_group_id=(SELECT sys_group_id FROM matrix.group_users where sys_user_id='".$userId."')");
-      
+
           //print_r($deactive_query); die;
     //echo count($deactive_query);die;
 
@@ -79,7 +79,7 @@ if(isset($_GET['action']) && $_GET['action']=='getAllImei')
             $device_get_query = select_query_live_con("SELECT id,sys_device_id FROM matrix.services WHERE id IN ('".$veh_id_data."')");
 
             //print_r($device_get_query);die;
-           
+
             $sys_device_id = "";
             $sys_device_id_data='';
             for($de=0;$de<count($device_get_query);$de++)
@@ -90,7 +90,7 @@ if(isset($_GET['action']) && $_GET['action']=='getAllImei')
 
             $sys_device_id_data=substr($sys_device_id,0,strlen($sys_device_id)-3);
             //echo $sys_device_id_data; die;
-           
+
             $sys_device_imei = "";
             $sys_device_imei_data='';
 
@@ -103,11 +103,11 @@ if(isset($_GET['action']) && $_GET['action']=='getAllImei')
             }
 
             $sys_device_imei_data =substr($sys_device_imei,0,strlen($sys_device_imei)-3);
-  
+
             $IMEI =  "'".$sys_device_imei_data."'";
 
             if(count($sys_device_imei_arr) > 0){
-            
+
               if($deviceStatus == 1){
                 //echo "SELECT device_imei FROM inventory.device WHERE device_status IN (57,63,64) and device_imei IN ($IMEI)";die;
                 $result=select_query_inventory("SELECT device_imei FROM inventory.device WHERE device_status IN (57,63,64) and device_imei IN ($IMEI)");
@@ -118,11 +118,11 @@ if(isset($_GET['action']) && $_GET['action']=='getAllImei')
                //echo "SELECT device_imei FROM inventory.device WHERE device_status IN (103) and device_imei IN ($IMEI)";die;
                 $result=select_query_inventory("SELECT device_imei FROM inventory.device WHERE device_status IN (103) and device_imei IN ($IMEI)");
                 //print_r($result);die;
-                
-              } 
 
-            } 
-            echo json_encode($result); 
+              }
+
+            }
+            echo json_encode($result);
   }
 
 
