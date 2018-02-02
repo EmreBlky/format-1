@@ -4,12 +4,8 @@ include_once(__DOCUMENT_ROOT.'/include/header.inc.php');
 include_once(__DOCUMENT_ROOT.'/include/leftmenu_service.php');
 ?>
 <link  href="<?php echo __SITE_URL;?>/css/auto_dropdown.css" rel="stylesheet" type="text/css" />
-<!-- <link href="<?php echo __SITE_URL;?>/js/Interbranchjquery.multiselect.css" rel="stylesheet" type="text/css"> -->
 <link rel="stylesheet" type="text/css" href="<?php echo __SITE_URL;?>/build/jquery.datetimepicker.css"/>
 <script src="<?php echo __SITE_URL;?>/build/jquery.datetimepicker.full.js"></script>
-
-<!-- <script src="<?php echo __SITE_URL;?>/js/jquery.min.js"></script> -->
-<!-- <script src="<?php echo __SITE_URL;?>/js/jquery.multiselect.js"></script> -->
 <script type="text/javascript">
 
 
@@ -199,11 +195,6 @@ if(isset($_POST['submit']))
     }
 
    
-    // for($i=0;$i<count($_POST['accessories']);$i++)
-    // {
-    //   $accessories_tollkit.=$_POST['accessories'][$i]."#";
-    //   $accessories_tollkits=substr($accessories_tollkit,0,strlen($accessories_tollkit)-1);
-    // }
 
     $veh_type=$_POST['veh_type'];
     $del_nodelux=$_POST['standard'];
@@ -269,28 +260,13 @@ if(isset($_POST['submit']))
                   
                   
 
-                 // echo $sql;die; 
+                  //echo $sql;die; 
           
                    $execute=mysql_query($sql);
 
                    $insert_id = mysql_insert_id();
 
-                 //  if($installation_status == 1)
-                 //  {
-                 //    //echo $no_of_vehicals;die;
-                 //    for($N=0;$N<$no_of_vehicals;$N++)
-                 //    { 
-                 //        $installation = "INSERT INTO installation(`inst_req_id`, `req_date`, `request_by`,sales_person,`user_id`, `company_name`, no_of_vehicals, device_imei, device_status, imei_status, location,model,time, contact_number,installed_date, status, contact_person, veh_type, required,branch_id,installation_status, Zone_area,atime_status,`inter_branch`, branch_type, instal_reinstall, designation, device_type, alter_contact_no, accessories_tollkit, billing, TrailerType, TruckType, MachineType, actype, standard, alt_cont_person, alt_designation, acess_selection, imei_device_type, imei_device_model) VALUES('".$insert_id."','".$date."',
-                 //        '".$account_manager."','".$sales_person_id."', '".$main_user_id."', '".$company."','".$no_of_vehicals."','".$imei[$N]."','".$status."','".$deviceStatus[$N]."','".$location."','".$model."','".$time."',
-                 //        '".$contact_number."',now(),1,'".$contact_person."','".$veh_type."','".$required."','".$_SESSION['BranchId']."','".$installation_status."','".$Area."',
-                 //        '".$atime_status."','".$city."','".$branch_type."','".$instal_reinstall."','".$designation2."','".$deviceType."','".$contact_number2."','".$accessories_tollkits."','".$billing."','".$TrailerType."','".$TruckType."','".$MachineType."','".$actype."','".$del_nodelux."','".$contact_person2."','".$designation1."','".$acess_selection."','".$txtDeviceType[$N]."','".$txtDeviceModel[$N]."')";
-
-                 //       $execute_inst=mysql_query($installation);
-                 //    }
-
-                 //   // echo $installation; die;
-                  
-                 // }
+                
                
                  header("location:installation.php");
           }
@@ -314,22 +290,7 @@ if(isset($_POST['submit']))
                        $execute=mysql_query($sql);
                        $insert_id = mysql_insert_id();   
 
-                    //   if($installation_status == 1)
-                    //   {
-
-                    //       for($N=0;$N<$no_of_vehicals;$N++)  
-                    //       {
-                    //           $installation = "INSERT INTO installation(`inst_req_id`, `req_date`, `request_by`,sales_person,`user_id`, `company_name`,no_of_vehicals,location,model,time, totime,contact_number,installed_date, status, contact_person, veh_type,required,branch_id,installation_status, Zone_area,atime_status,`inter_branch`,
-                    //            branch_type, instal_reinstall,designation,device_type,alter_contact_no,accessories_tollkit,billing,TrailerType,TruckType,MachineType,actype,standard,alt_cont_person,alt_designation,acess_selection,device_imei,device_status,imei_status, imei_device_type, imei_device_model) VALUES('".$insert_id."','".$date."',
-                    //            '".$account_manager."','".$sales_person_id."', '".$main_user_id."', '".$company."','1','".$location."','".$model."','".$time."',
-                    //            '".$totime."','".$contact_number."',now(),1,'".$contact_person."','".$veh_type."'  ,
-                    //            '".$required."','".$_SESSION['BranchId']."',
-                    //            '".$installation_status."','".$Area."','".$atime_status."','".$city."','".$branch_type."','".$instal_reinstall."','".$designation."','".$deviceType."','".$alt_cont_number."','".$accessories_tollkits."','".$billing."','".$TrailerType."','".$TruckType."','".$MachineType."','".$actype."','".$del_nodelux."','".$alt_cont_person."','".$alt_designation."','".$acess_selection."','".$imei[$N]."','".$status."','".$deviceStatus[$N]."','".$txtDeviceType[$N]."','".$txtDeviceModel[$N]."')";
-                       
-                    //           $execute_inst=mysql_query($installation);
-                    //       }  
-                    //      // echo $installation; die;   
-                    // }
+               
                  header("location:installation.php");
             }
         }   
@@ -374,7 +335,7 @@ function deviceStatus(device){
 
   if(document.form1.deviecestatus.value=="")
   {
-  alert("Please Select Device Status") ;
+  alert("Please Select Device Location") ;
   document.form1.imeistatus.focus();
   return false;
   }
@@ -484,7 +445,10 @@ function deviceStatus(device){
         var d = new Date();
         var n = d.getTime();
         var currntTime4=(n/(3600*1000));
+        alert(time)
+        alert(currntTime4)
         var diff=time-currntTime4;
+        alert(diff)
         if(timestatus=="Till")
         {
           if(diff<=3.80)
@@ -787,7 +751,7 @@ function TillBetweenTime12(radioValue)
 function StatusBranch(radioValue)
 {
   //alert(radioValue)
-  	$jq("#inter_branch_loc option[value='']").attr('selected', true);
+    $jq("#inter_branch_loc option[value='']").attr('selected', true);
    if(radioValue=="Interbranch")
     {
         document.getElementById('branchlocation').style.display = "block";
@@ -802,6 +766,7 @@ function StatusBranch(radioValue)
     }
    
 } 
+ 
 
 function showAccess(radioValue)
 {
@@ -864,7 +829,7 @@ ul,li { margin:0; padding:0; list-style:none;}
 .label { color:#000; font-size:16px;}
 /*td{ border :1px solid#000; }*/
 </style>
- <input type="hidden" name="branchsession"  id="branchsession" value="<?php echo $_SESSION['BranchId'];?>">
+<input type="hidden" name="branchsession"  id="branchsession" value="<?php echo $_SESSION['BranchId'];?>">
  <form method="post" action="" name="form1" onSubmit="return req_info();" autocomplete="off">
     <table style="padding-left: 100px;width: 600px;" cellspacing="5" cellpadding="5">
       <tr>
@@ -922,7 +887,7 @@ ul,li { margin:0; padding:0; list-style:none;}
         </td>
       </tr>
       <tr>        
-        <td align="right" nowrap >Select Device Status<font color="red">*</font></td>
+        <td align="right" nowrap >Select Device Location<font color="red">*</font></td>
         <td>
            <select name="deviecestatus" id="deviecestatus" style="width:150px" onchange="deviceStatus2(this.value)">
             <option value="" selected disabled>Select Device Status</option>
@@ -936,11 +901,8 @@ ul,li { margin:0; padding:0; list-style:none;}
         <td align="right" nowrap>No. Of Installation:<font color="red">*</font></td>
         <td>
           <select name="no_of_installation" id="no_of_installation" style="width:150px" onchange="deviceRecords(this.value)">
-                <option value="" selected="selected" >Select Installation</option>
-                <?php for($i=1;$i<=20;$i++) { ?>  
-                  <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
-                <?php } ?>  
-                </select>
+             
+          </select>
         </td>
       </tr>
       <tr>
@@ -1002,8 +964,8 @@ ul,li { margin:0; padding:0; list-style:none;}
       </tr>
       <tr>
         <td align="right" nowrap> Location:<font color="red">*</font></td>
-        <td><input style="width:146px" type="text" name="Zone_area" id="Zone_area" value="<?php echo $area["name"];?>" />
-          <div id="ajax_response"></div>
+        <td> <input id="pac-input" class="controls" type="text" placeholder="Search Location" style="font-size:11px;font-family:verdana;">
+         
         </td>
       </tr>
       <tr>
@@ -1044,7 +1006,7 @@ ul,li { margin:0; padding:0; list-style:none;}
           <table cellspacing="0" cellpadding="0">
             <tr>
               <td>
-                  <INPUT type="button" value="+" id='addRowss' onClick="addRow('dataTable')" />
+                  <INPUT type="button" value="+" id='addRowss'  />
               </td>
               <td>
                   <INPUT type="button" value="-" id='delRowss' onClick="deleteRow('dataTable')" />
@@ -1054,7 +1016,7 @@ ul,li { margin:0; padding:0; list-style:none;}
           <table id="dataTable"  cellspacing="" cellpadding="">
            <tr>
               <td  height="32" align="right">
-                <select name="designation" id="designation">
+                <select name="designation" id="designation" onchange="designationChange(this.value)">
                   <option value="" disabled selected>-- Select Designation --</option>
                   <option value="driver" >Driver</option>
                   <option value="supervisor" >Supervisor</option>
@@ -1074,7 +1036,7 @@ ul,li { margin:0; padding:0; list-style:none;}
            </tr>
            <tr id="dataDesignation" style="display:none">
               <td  height="32" align="right">
-                <select name="designation2" id="designation2" style="margin-left:-4px">
+                <select name="designation2" id="designation2" style="margin-left:-4px" onchange="designationChange(this.value)">
                   <option value="" disabled selected>-- Select Designation --</option>
                   <option value="driver" >Driver</option>
                   <option value="supervisor" >Supervisor</option>
@@ -1127,7 +1089,7 @@ ul,li { margin:0; padding:0; list-style:none;}
                 </select>
               </td>
               <td>
-                <select name="actype" id="actype" style="width:150px;display:none">
+                <select name="actype" id="actype" style="width:150px;display:none" onchange="checkbox_lease();" >
                   <option value="" disabled  selected>Select AC Category</option>
                   <option value="AC" <?php if($result[0]['actype']=='AC') {?> selected="selected" <?php } ?>>AC</option>
                   <option value="NonAC" <?php if($result[0]['actype']=='NonAC') {?> selected="selected" <?php } ?>>Non-AC</option>
@@ -1370,10 +1332,22 @@ $jq(document).ready(function(){
                 imeiNumber.push(deviceImei[i].device_imei)
                       
                }
+
+              
+
+              
+                var options = "<option>Select Installation</option>";
+                for(var y=1; y<=deviceImei.length; y++){
+                  options += "<option>"+ y +"</option>";
+                }
+
+                document.getElementById("no_of_installation").innerHTML = options;
+
+
                if(d_status == 1)
                {
                  $jq('#no_of_installation').prop('disabled', false);
-                 alert("Deleted GTRAC IMEI("+deviceImei.length+"): "+imeiNumber) 
+                 alert("Deleted GTRAC IMEI("+deviceImei.length+"): "+imeiNumber); 
                }
                else if(d_status == 2){
                  $jq('#no_of_installation').prop('disabled', false);
@@ -1590,7 +1564,7 @@ var logic = function( currentDateTime ){
     });
 };
 $jq('#datetimepicker').datetimepicker({
- 	'format': 'd-m-Y H:i',
+  'format': 'Y-m-d H:i',
     'minDate': 0,
     'closeOnDateSelect' : true,
     'interval': 15,
@@ -1598,7 +1572,7 @@ $jq('#datetimepicker').datetimepicker({
     'minDateTime': new Date()
 });
 $jq('#datetimepicker1').datetimepicker({
-  	'format': 'd-m-Y H:i',
+    'format': 'Y-m-d H:i',
     'minDate': 0,
     'closeOnDateSelect' : true,
     'interval': 15,
@@ -1607,7 +1581,7 @@ $jq('#datetimepicker1').datetimepicker({
 });
 
 $jq('#datetimepicker2').datetimepicker({
- 	'format': 'd-m-Y H:i',
+  'format': 'Y-m-d H:i',
     'minDate': 0,
     'closeOnDateSelect' : true,
     'interval': 15,
@@ -1629,6 +1603,21 @@ $jq('#datetimepicker2').datetimepicker({
      
     </script>
 <script>StatusBranch12("<?=$result['branch_type'];?>");TillBetweenTime12("<?=$result['atime_status'];?>");</script>
+<script>
+     
+
+      function initAutocomplete() {
+        
+        var input = document.getElementById('pac-input');
+        var searchBox = new google.maps.places.SearchBox(input);
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+       
+      }
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAOmB0NUl8HigD3XItbC6Pn-pJdNtJRdLw&libraries=places&callback=initAutocomplete"
+         async defer></script>
 
 <?
 include("../include/footer.php");

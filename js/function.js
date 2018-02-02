@@ -509,7 +509,11 @@ function getModelName(dev_type,setDivId)
 	});
 }
  
+function getRequestClose(dev_type,setDivId)
+{
 
+  alert(dev_type);
+  alert(setDivId);
 
-
- 
+  
+} 

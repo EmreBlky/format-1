@@ -269,7 +269,7 @@ if(isset($_POST['submit']))
                   
                   
 
-                  //echo $sql;die; 
+                 // echo $sql;die; 
           
                    $execute=mysql_query($sql);
 
@@ -787,7 +787,7 @@ function TillBetweenTime12(radioValue)
 function StatusBranch(radioValue)
 {
   //alert(radioValue)
-    $jq("#inter_branch_loc option[value='']").attr('selected', true);
+  	$jq("#inter_branch_loc option[value='']").attr('selected', true);
    if(radioValue=="Interbranch")
     {
         document.getElementById('branchlocation').style.display = "block";
@@ -802,7 +802,6 @@ function StatusBranch(radioValue)
     }
    
 } 
- 
 
 function showAccess(radioValue)
 {
@@ -865,7 +864,7 @@ ul,li { margin:0; padding:0; list-style:none;}
 .label { color:#000; font-size:16px;}
 /*td{ border :1px solid#000; }*/
 </style>
-<input type="hidden" name="branchsession"  id="branchsession" value="<?php echo $_SESSION['BranchId'];?>">
+ <input type="hidden" name="branchsession"  id="branchsession" value="<?php echo $_SESSION['BranchId'];?>">
  <form method="post" action="" name="form1" onSubmit="return req_info();" autocomplete="off">
     <table style="padding-left: 100px;width: 600px;" cellspacing="5" cellpadding="5">
       <tr>
@@ -1055,7 +1054,7 @@ ul,li { margin:0; padding:0; list-style:none;}
           <table id="dataTable"  cellspacing="" cellpadding="">
            <tr>
               <td  height="32" align="right">
-                <select name="designation" id="designation" onchange="designationChange(this.value)">
+                <select name="designation" id="designation">
                   <option value="" disabled selected>-- Select Designation --</option>
                   <option value="driver" >Driver</option>
                   <option value="supervisor" >Supervisor</option>
@@ -1075,7 +1074,7 @@ ul,li { margin:0; padding:0; list-style:none;}
            </tr>
            <tr id="dataDesignation" style="display:none">
               <td  height="32" align="right">
-                <select name="designation2" id="designation2" style="margin-left:-4px" onchange="designationChange(this.value)">
+                <select name="designation2" id="designation2" style="margin-left:-4px">
                   <option value="" disabled selected>-- Select Designation --</option>
                   <option value="driver" >Driver</option>
                   <option value="supervisor" >Supervisor</option>
@@ -1128,7 +1127,7 @@ ul,li { margin:0; padding:0; list-style:none;}
                 </select>
               </td>
               <td>
-                <select name="actype" id="actype" style="width:150px;display:none" onchange="checkbox_lease();" >
+                <select name="actype" id="actype" style="width:150px;display:none">
                   <option value="" disabled  selected>Select AC Category</option>
                   <option value="AC" <?php if($result[0]['actype']=='AC') {?> selected="selected" <?php } ?>>AC</option>
                   <option value="NonAC" <?php if($result[0]['actype']=='NonAC') {?> selected="selected" <?php } ?>>Non-AC</option>
@@ -1374,7 +1373,7 @@ $jq(document).ready(function(){
                if(d_status == 1)
                {
                  $jq('#no_of_installation').prop('disabled', false);
-                 alert("Deleted GTRAC IMEI("+deviceImei.length+"): "+imeiNumber); 
+                 alert("Deleted GTRAC IMEI("+deviceImei.length+"): "+imeiNumber) 
                }
                else if(d_status == 2){
                  $jq('#no_of_installation').prop('disabled', false);
@@ -1591,7 +1590,7 @@ var logic = function( currentDateTime ){
     });
 };
 $jq('#datetimepicker').datetimepicker({
-  'format': 'Y-m-d H:i',
+ 	'format': 'd-m-Y H:i',
     'minDate': 0,
     'closeOnDateSelect' : true,
     'interval': 15,
@@ -1599,7 +1598,7 @@ $jq('#datetimepicker').datetimepicker({
     'minDateTime': new Date()
 });
 $jq('#datetimepicker1').datetimepicker({
-    'format': 'Y-m-d H:i',
+  	'format': 'd-m-Y H:i',
     'minDate': 0,
     'closeOnDateSelect' : true,
     'interval': 15,
@@ -1608,7 +1607,7 @@ $jq('#datetimepicker1').datetimepicker({
 });
 
 $jq('#datetimepicker2').datetimepicker({
-  'format': 'Y-m-d H:i',
+ 	'format': 'd-m-Y H:i',
     'minDate': 0,
     'closeOnDateSelect' : true,
     'interval': 15,

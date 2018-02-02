@@ -312,15 +312,15 @@ function getcountRow_inventory($query)
  function select_query_inventory($query,$condition=0){
 	 
 	global $dblink_inv;
-	// $hostname_inv = "203.115.101.54";
-	// $username_inv = "visiontek11000";
-	// $password_inv = "123456";
-	// $databasename_inv = "inventory_testing";
+	$hostname_inv = "203.115.101.54";
+	$username_inv = "visiontek11000";
+	$password_inv = "123456";
+	$databasename_inv = "inventory_testing";
 
-	$hostname_inv = "localhost";
-	$username_inv = "root";
-	$password_inv = "";
-	$databasename_inv = "inventory";
+	// $hostname_inv = "localhost";
+	// $username_inv = "root";
+	// $password_inv = "";
+	// $databasename_inv = "inventory";
 	
 	$dblink_inv = mysql_connect($hostname_inv,$username_inv,$password_inv) ;
 

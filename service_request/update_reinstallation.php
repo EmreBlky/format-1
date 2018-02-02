@@ -60,7 +60,7 @@ if($action=='edit')
 <?php
 if(isset($_POST['submit']))
 { 
-    //echo '<pre>'; print_r($_POST);die;
+   // echo '<pre>'; print_r($_POST);die;
    
     $date=date("Y-m-d H:i:s");
     $account_manager=$_SESSION['username'];
@@ -199,14 +199,31 @@ if(isset($_POST['submit']))
     $location1=$_POST['inter_branch'];
     $interbranch = $_POST['inter_branch_loc'];
 
-    if($location1 == 'Interbranch'){
-      $query = select_query("select city from $internalsoftware.tbl_city_name where branch_id='".$interbranch."'");
-      $branchLocation = $query[0]['city'];
-    }
-    else
-    {
-      $branchLocation = "Delhi";
-    }
+    // if($location1 == 'Interbranch'){
+    //   $query = select_query("select city from $internalsoftware.tbl_city_name where branch_id='".$interbranch."'");
+    //   $branchLocation = $query[0]['city'];
+    // }
+    // else
+    // {
+    //   $branchLocation = "Delhi";
+    // }
+
+
+    if(isset($_POST['inter_branch_loc']))
+     {
+        $city=$_POST['inter_branch_loc'];
+         $query = select_query("select city from $internalsoftware.tbl_city_name where branch_id='".$_POST['inter_branch_loc']."' ");
+         $branchLocation = $query[0]['city'];
+    
+     }
+     
+     if(($_POST['inter_branch_loc']) == '')
+     {
+      
+       $branchLocation = "Delhi";
+     }
+
+
 
     if($errorMsg=="")   
     { 
@@ -226,7 +243,7 @@ if(isset($_POST['submit']))
             $time=$_POST['time1'];
             $totime=$_POST['totime'];
 
-            $sql="update $internalsoftware.installation_request set sales_person='".$sales_person_id."', `user_id`= '".$main_user_id2."', `company_name`='".$company."', time='".$time."',totime='".$totime."',atime_status='".$atime_status."', model='".$model."', contact_number='".$contact_number."' ,contact_person='".$contact_person."',Zone_area='".$Area."', location='".$branchLocation."',  veh_type='".$veh_type."',required='".$required."',designation='".$designation."',alt_designation='".$alt_designation."',alt_cont_person='".$alt_cont_person."',standard='".$del_nodelux."',actype='".$actype."',MachineType='".$MachineType."',TruckType='".$TruckType."',TrailerType='".$TrailerType."',billing='".$billing."',accessories_tollkit='".$accessories_tollkits."',alter_contact_no='".$alt_cont_number."',device_type='".$deviceType."',luxury='".$luxury."',landmark='".$landmark."',inter_branch='".$interbranch."',installation_status='".$installation_status."' where id='".$id."'"; 
+           $sql="update $internalsoftware.installation_request set sales_person='".$sales_person_id."', `user_id`= '".$main_user_id2."', `company_name`='".$company."', time='".$time."',totime='".$totime."',atime_status='".$atime_status."', model='".$model."', contact_number='".$contact_number."' ,contact_person='".$contact_person."',Zone_area='".$Area."', location='".$branchLocation."',  veh_type='".$veh_type."',required='".$required."',designation='".$designation."',alt_designation='".$alt_designation."',alt_cont_person='".$alt_cont_person."',standard='".$del_nodelux."',actype='".$actype."',MachineType='".$MachineType."',TruckType='".$TruckType."',TrailerType='".$TrailerType."',billing='".$billing."',accessories_tollkit='".$accessories_tollkits."',alter_contact_no='".$alt_cont_number."',device_type='".$deviceType."',luxury='".$luxury."',landmark='".$landmark."',inter_branch='".$interbranch."',installation_status='".$installation_status."' where id='".$id."'";
             $execute=mysql_query($sql);
             
         }
@@ -645,23 +662,7 @@ function showAccess(radioValue)
    
 }
  
- function standardType(radioValue){
-
-  //alert(radioValue);
-     if(radioValue=='Delux')
-     {
-          document.getElementById('actype').style.display = "block";
-     }
-     else if(radioValue=='NonDelux')
-     {
-          document.getElementById('actype').style.display = "none";
-     }
-     else{
-          document.getElementById('actype').style.display = "none";
-     }
-
-
-}         
+        
 
 function StatusBranch12(radioValue)
 {
@@ -702,7 +703,7 @@ function vehicleType(radioValue)
         document.getElementById('MachineType').style.display = "none";
         document.getElementById('TrailerType').style.display = "none";
         document.getElementById('lux').style.display = "block";
-        document.getElementById('actype').style.display = "none";
+        document.getElementById('actype').style.display = "block";
         
     }
     else if(radioValue=="Tempo")
@@ -764,61 +765,42 @@ function vehicleType(radioValue)
 
 function standardType(radioValue){
 
-  //alert(radioValue);
-     if(radioValue=='Delux')
-     {
-          document.getElementById('actype').style.display = "block";
-     }
-     else if(radioValue=='NonDelux')
-     {
-          document.getElementById('actype').style.display = "none";
-     }
-     else{
-          document.getElementById('actype').style.display = "none";
-     }
-
-
+   if(radioValue=='Delux')
+   {
+        document.getElementById('actype').style.display = "block";
+   }
+   else if(radioValue=='NonDelux')
+   {
+        document.getElementById('actype').style.display = "none";
+   }
+  
 }
 
-function aclux(radioValue)
-{
+function aclux(value){
 
- if(radioValue=='luxury'){
-          document.getElementById('actype').style.display = "block";
-     }
-     else{
-          document.getElementById('actype').style.display = "none";
-     }
-          
+  if(radioValue=='luxury')
+  {
+      document.getElementById('actype').style.display = "block";
+  }
+  else if(radioValue=='NonLuxury')
+  {
+      document.getElementById('actype').style.display = "none";
+  }
+  
+
 }
-// function aclux(radioValue)
-// {
-//     //alert(radioValue);
-//      if(radioValue=='luxury')
-//      {
-//           document.getElementById('actype').style.display = "block";
-//      }
-//      else if(radioValue=='NonLuxury')
-//      {
-//           document.getElementById('actype').style.display = "none";
-//      }
-//      else{
-//           document.getElementById('actype').style.display = "none";
-//      }
-
-// } 
 
 function accesShow(radioValue)
 {
     if(radioValue=="yes")
-     {
-          document.getElementById('acc_yes').checked = true;
-          document.getElementById('accessTable').style.display = "block";
+    {
+        document.getElementById('acc_yes').checked = true;
+        document.getElementById('accessTable').style.display = "block";
           
-     }
-     else
-     {
-           document.getElementById('acc_no').checked = true;
+    }
+    else
+    {
+          document.getElementById('acc_no').checked = true;
            document.getElementById('accessTable').style.display = "none";
      }
 
@@ -1064,13 +1046,13 @@ ul,li { margin:0; padding:0; list-style:none;}
             <td  height="32" align="right"><select name="designation" id="designation" style="margin-left:-4px"
             onchange="designationChange(this.value)">
                 <option value="">-- Select Designation --</option>
-                <option value="Driver" <?php if($result[0]['designation']=='Driver') {?> selected="selected" <?php } ?> >Driver</option>
-                <option value="Supervisor"  <?php if($result[0]['designation']=='Supervisor') {?> selected="selected" <?php } ?> >Supervisor</option>
-                <option value="Manager"  <?php if($result[0]['designation']=='Manager') {?> selected="selected" <?php } ?> >Manager</option>
-                <option value="Senior Manager"  <?php if($result[0]['designation']=='Senior Manager') {?> selected="selected" <?php } ?>  >Senior Manager</option>
-                 <option value="Owner"  <?php if($result[0]['designation']=='Owner') {?> selected="selected" <?php } ?> >Owner</option>
-                 <option value="Sale Person"  <?php if($result[0]['designation']=='Sale Person') {?> selected="selected" <?php } ?> >Sale Person</option>
-                 <option value="Others"  <?php if($result[0]['designation']=='Others') {?> selected="selected" <?php } ?>>Others</option>
+                <option value="driver" <?php if($result[0]['designation']=='driver') {?> selected="selected" <?php } ?> >Driver</option>
+                <option value="supervisor"  <?php if($result[0]['designation']=='supervisor') {?> selected="selected" <?php } ?> >Supervisor</option>
+                <option value="manager"  <?php if($result[0]['designation']=='manager') {?> selected="selected" <?php } ?> >Manager</option>
+                <option value="senior manager"  <?php if($result[0]['designation']=='senior manager') {?> selected="selected" <?php } ?>  >Senior Manager</option>
+                 <option value="owner"  <?php if($result[0]['designation']=='owner') {?> selected="selected" <?php } ?> >Owner</option>
+                 <option value="sale person"  <?php if($result[0]['designation']=='sale person') {?> selected="selected" <?php } ?> >Sale Person</option>
+                 <option value="others"  <?php if($result[0]['designation']=='others') {?> selected="selected" <?php } ?>>Others</option>
               
               </select>
             </td>
@@ -1140,7 +1122,7 @@ ul,li { margin:0; padding:0; list-style:none;}
                 </select>
               </td>
               <td>
-                <select name="actype" id="actype">
+                <select name="actype" id="actype" >
                   <option value="" selected>Select AC Category</option>
                   <option value="AC" <?php if($result[0]['actype']=='AC') {?> selected="selected" <?php } ?>>AC</option>
                   <option value="NonAC" <?php if($result[0]['actype']=='NonAC') {?> selected="selected" <?php } ?>>Non-AC</option>
@@ -1181,8 +1163,8 @@ ul,li { margin:0; padding:0; list-style:none;}
         </td>
       </tr>
       <tr>
-        <td align="right"><input type="submit" name="submit" id="button1" value="submit" align="right" /></td>
-        <td><input type="button" name="Cancel" style="margin-left:-4px" value="Cancel" onClick="window.location = 'installation.php' " /></td>
+        <td align="right"><input type="submit" name="submit" id="button1" value="UPDATE" align="right" /></td>
+        <td><input type="button" name="Cancel" style="margin-left:-4px" value="CANCEL" onClick="window.location = 'installation.php' " /></td>
       </tr>
     </form>
 </div>
@@ -1240,26 +1222,30 @@ $jq('#datetimepicker').datetimepicker({
   'format': 'Y-m-d H:i',
     'minDate': 0,
     'closeOnDateSelect' : true,
-    'interval': 15,
+    'interval': 20,
     'validateOnBlur' : true,
-    'minDateTime': new Date()
+    'minDateTime': new Date(),
+    'step':30
+
 });
 $jq('#datetimepicker1').datetimepicker({
     'format': 'Y-m-d H:i',
     'minDate': 0,
     'closeOnDateSelect' : true,
-    'interval': 15,
+    'interval': 20,
     'validateOnBlur' : true,
-    'minDateTime': new Date()
+    'minDateTime': new Date(),
+    'step':30
 });
 
 $jq('#datetimepicker2').datetimepicker({
   'format': 'Y-m-d H:i',
     'minDate': 0,
     'closeOnDateSelect' : true,
-    'interval': 15,
+    'interval': 20,
     'validateOnBlur' : true,
-    'minDateTime': new Date()
+    'minDateTime': new Date(),
+    'step':30
 });
 
 
@@ -1399,7 +1385,7 @@ include("../include/footer.php");
 
 
 <script>StatusBranch12("<?php echo $result[0]['branch_type'];?>");TillBetweenTime12("<?php echo $result[0]['atime_status'];?>");
-vehicleType("<?php echo $result[0]['veh_type'];?>");standardType("<?php echo $result[0]['standard'];?>");aclux("<?php echo $result[0]['actype'];?>");accesShow("<?php echo $result[0]['acess_selection'];?>")
+vehicleType("<?php echo $result[0]['veh_type'];?>");standardType("<?php echo $result[0]['standard'];?>");aclux("<?php echo $result[0]['luxury'];?>");accesShow("<?php echo $result[0]['acess_selection'];?>")
 
 function deviceStaus(imei,setDivId){
   $jq.ajax({

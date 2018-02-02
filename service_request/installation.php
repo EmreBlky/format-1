@@ -67,6 +67,7 @@ $.ajax({
 
 
 <div class="top-bar">
+  <h1>Installation Request</h1>
   <h3><a style="float:right" href="online_crack.php" > Online Crack </a><span style="float:right">||</span><a style="float:right" href="re_addition.php" >Re-Addition </a><span style="float:right">||</span><a style="float:right" href="add_installation.php" >Installation </a></h3><br/><br>
   <div style="float:right";><font style="color:#ADFF2F;font-weight:bold;">GreenYellow:</font> Urgent Installation</div>
   <br/>
@@ -190,7 +191,7 @@ for($i=0;$i<count($query);$i++)
         <td align="center">&nbsp;
 
           <?php 
-            $wrapcity = wordwrap($query[$i]['location'], 8, "\n", true);
+            $wrapcity = wordwrap($query[$i]['location'], 9, "\n", true);
             echo "$wrapcity\n";
           ?>
 
